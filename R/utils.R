@@ -126,6 +126,7 @@ temp_file = function(ext, fileC) {
 #'
 #' @details
 #' Use the read_ methods to feed data from files.
+#' @export
 Spock = R6::R6Class("Spock", list(
 
   #' @field poset Poset list.

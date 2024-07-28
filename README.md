@@ -14,7 +14,7 @@ functions developed at ETH-Zurich.
 You can install the development version of rCBN like so:
 
 ``` r
-# todo
+devtools::install_github("rockwillck/rCBN")
 ```
 
 ## Example

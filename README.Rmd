@@ -25,7 +25,7 @@ The goal of rCBN is to provide an R interface to the CBN family of functions dev
 You can install the development version of rCBN like so:
 
 ``` r
-# todo
+devtools::install_github("rockwillck/rCBN")
 ```
 
 ## Example

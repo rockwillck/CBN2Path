@@ -68,3 +68,10 @@ hcbn(bc)
 #> [10,] 0.524145
 #> [11,] 0.441899
 ```
+
+## CT-CBN
+
+This project is based on and draws on code from CT-CBN from ETH Zurich.
+CT-CBN. (n.d.). Department of Biosystems Science and Engineering –
+Department of Biosystems Science and Engineering \| ETH Zurich.
+<https://bsse.ethz.ch/cbg/software/ct-cbn.html>

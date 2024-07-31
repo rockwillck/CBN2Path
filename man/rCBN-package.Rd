@@ -8,6 +8,15 @@
 \description{
 A family of R functions based on the CBN family of functions created at ETH-Zurich.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/rockwillck/rCBN}
+  \item \url{http://dx.doi.org/10.1093/biomet/asp023}
+  \item \url{http://dx.doi.org/10.1093/bioinformatics/btp505}
+}
+
+}
 \author{
 \strong{Maintainer}: William Choi-Kim \email{william@williamck.com}
 

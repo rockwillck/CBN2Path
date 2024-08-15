@@ -120,7 +120,7 @@ SEXP ctcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP mb, SEXP bs, SEXP rs, SEXP sr, SE
       mode = LEARN_PARAM;
   }
 
-  initialize_random(seed);
+  srand(seed);
   RNG = gsl_rng_alloc(gsl_rng_taus); // global variable
   gsl_rng_set(RNG, seed);            // seed rng
 
@@ -290,7 +290,7 @@ SEXP hcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP s, SEXP temp, SEXP n)
     N_iter = n_temp;
   }
   
-  initialize_random(seed);
+  srand(seed);
   RNG = gsl_rng_alloc(gsl_rng_taus);  // global variable
   gsl_rng_set(RNG, seed);  // seed rng
   

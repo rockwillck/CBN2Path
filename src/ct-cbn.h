@@ -19,12 +19,6 @@
 #define MAX(a,b) ( (a) > (b) ? (a) : (b) )
 #define MIN(a,b) ( (a) < (b) ? (a) : (b) )
 
-#define LCG_MODULUS 4294967296U // 2^32
-#define LCG_MULTIPLIER 1103515245U
-#define LCG_INCREMENT 12345U
-
-static uint32_t seed = 1; // Seed value
-
 enum L_MODE {LEARN_POSET, LEARN_PARAM, LEARN_BOTH};
 
 int verbose;
@@ -82,17 +76,6 @@ int* get_int_array(const int n)
   }
 
   return x;
-}
-
-void initialize_random(uint32_t new_seed) {
-  seed = new_seed;
-}
-
-double random_double() {
-  // Update the seed using LCG formula
-  seed = (LCG_MULTIPLIER * seed + LCG_INCREMENT) % LCG_MODULUS;
-  // Convert the seed to a double between 0 and 1
-  return (double)seed / (double)LCG_MODULUS;
 }
 
 unsigned int* get_uint_array(const int n)
@@ -2466,8 +2449,8 @@ int compare_violation_pairs (const void *A, const void *B)
   int* b = *(int**) B;
 
   // random tie breaking:
-  double da = (double) a[2] + random_double();
-  double db = (double) b[2] + random_double();
+  double da = (double) a[2] + rand();
+  double db = (double) b[2] + rand();
 
   return (da - db);
 }
@@ -2725,7 +2708,7 @@ double try_edge(model* M, model* M2, data* D, int N_u, double* lambda, double* e
 
   /* Draw n^2 random numbers */
   for (i=0;i<n*n;i++)
-    R5[i] = random_double();
+    R5[i] = rand();
 
   /* Sort to generate integers */
   for (i=0;i<n*n;i++)
@@ -2915,7 +2898,7 @@ double try_edge(model* M, model* M2, data* D, int N_u, double* lambda, double* e
     if (alpha_all[R1-1][R2-1] < alpha)
     {
       boltz = exp( (alpha_all[R1-1][R2-1] - alpha ) / 0.05 );
-      R3 = random_double();
+      R3 = rand();
       if (R3 > boltz)
         reject = 1;
     }
@@ -2993,7 +2976,7 @@ double try_edge(model* M, model* M2, data* D, int N_u, double* lambda, double* e
       else // Accept decreasing Loglik with Boltzmann weight
       {
         boltz = exp( (loglik_new - loglik ) / T );
-        R3 = random_double();
+        R3 = rand();
         // printf(" e^{-dL/T}=%f\tR=%f\n", boltz, R3);
         if ( R3 < boltz )
         {

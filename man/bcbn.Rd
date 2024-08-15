@@ -5,7 +5,7 @@
 \title{B-CBN}
 \usage{
 bcbn(
-  data = NULL,
+  data = default_data(),
   n_samples = 25000,
   theta = 0,
   epsilon = 0.05,

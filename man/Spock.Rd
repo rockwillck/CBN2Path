@@ -12,7 +12,7 @@ Use the read_ methods to feed data from files.
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{poset}}{Poset list.}
+\item{\code{poset}}{Poset matrix.}
 
 \item{\code{numMutations}}{Number of mutations.}
 

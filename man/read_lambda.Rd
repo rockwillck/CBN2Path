@@ -16,6 +16,8 @@ A matrix.
 Read a .lambda file
 }
 \examples{
+\dontrun{
 bcPath = get_examples()[1]
 read_lambda(bcPath)
+}
 }

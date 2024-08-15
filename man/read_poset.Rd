@@ -16,7 +16,6 @@ A list containing the number of mutations and a matrix.
 Read a .poset file
 }
 \examples{
-\dontrun{
-read_poset("examples/BC")
-}
+bcPath = get_examples()[1]
+read_poset(bcPath)
 }

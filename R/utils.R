@@ -6,9 +6,8 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#' read_pattern("examples/BC")
-#' }
+#' bcPath = get_examples()[1]
+#' read_pattern(bcPath)
 read_pattern <- function(filestem) {
   lines <- readLines(paste(suppressWarnings(normalizePath(filestem)),
                            ".pat",
@@ -36,9 +35,8 @@ read_pattern <- function(filestem) {
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#' read_poset("examples/BC")
-#' }
+#' bcPath = get_examples()[1]
+#' read_poset(bcPath)
 read_poset <- function(filestem) {
   lines <- readLines(paste(suppressWarnings(normalizePath(filestem)), ".poset", sep =
                              ""))
@@ -66,9 +64,8 @@ read_poset <- function(filestem) {
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#' read_lambda("examples/BC")
-#' }
+#' bcPath = get_examples()[1]
+#' read_lambda(bcPath)
 read_lambda <- function(filestem) {
   lines <- unlist(as.numeric(readLines(
     paste(suppressWarnings(normalizePath(filestem)), ".lambda", sep = "")

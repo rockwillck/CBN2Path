@@ -16,7 +16,6 @@ A matrix.
 Read a .pat file
 }
 \examples{
-\dontrun{
-read_pattern("examples/BC")
-}
+bcPath = get_examples()[1]
+read_pattern(bcPath)
 }

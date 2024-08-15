@@ -8,8 +8,8 @@
 #' @export
 Spock = R6::R6Class("Spock", list(
   
-  #' @field poset Poset list.
-  poset = list(),
+  #' @field poset Poset matrix.
+  poset = matrix(),
   #' @field numMutations Number of mutations.
   numMutations = 0,
   #' @field patternOrLambda Pattern/lambda matrix.

@@ -19,16 +19,18 @@ devtools::install_github("rockwillck/rCBN")
 
 ## Example
 
-rCBN provides an interface to both CT-CBN and H-CBN:
+rCBN provides an interface to CT-CBN, H-CBN, and B-CBN:
 
 ``` r
 library(rCBN)
-
 bc = Spock$new(
-  poset = read_poset("../PATH/TO/examples/BC")$sets,
-  numMutations = read_poset("../PATH/TO/examples/BC")$mutations,
-  patternOrLambda = read_pattern("../PATH/TO/examples/BC")
+  poset = read_poset("inst/extdata/BC")$sets,
+  numMutations = read_poset("inst/extdata/BC")$mutations,
+  patternOrLambda = read_pattern("inst/extdata/BC")
 )
+```
+
+``` r
 ctcbn(bc)
 #> $lambda
 #>           [,1]
@@ -43,7 +45,9 @@ ctcbn(bc)
 #>  [9,] 0.377723
 #> [10,] 0.524174
 #> [11,] 0.441922
+```
 
+``` r
 hcbn(bc)
 #> $poset
 #> $poset$mutations
@@ -69,9 +73,27 @@ hcbn(bc)
 #> [11,] 0.441899
 ```
 
+``` r
+bcbn(
+  generateData(
+    transitiveClosure(bc$poset),
+    c(0.8, 0.7, 0.6, 0.7, 0.4, 0.25, 0.6, 0.75, 0.5, 0.2),
+    0.1,
+    400),
+  n_cores = 4
+  )
+```
+
 ## CT-CBN
 
 This project is based on and draws on code from CT-CBN from ETH Zurich.
 CT-CBN. (n.d.). Department of Biosystems Science and Engineering –
 Department of Biosystems Science and Engineering \| ETH Zurich.
 <https://bsse.ethz.ch/cbg/software/ct-cbn.html>
+
+## B-CBN
+
+This project is based on and draws on code from B-CBN from ETH Zurich.
+bcbn. (n.d.). Department of Biosystems Science and Engineering –
+Department of Biosystems Science and Engineering \| ETH Zurich.
+<https://bsse.ethz.ch/cbg/software/bcbn.html>

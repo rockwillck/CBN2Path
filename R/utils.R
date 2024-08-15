@@ -64,8 +64,10 @@ read_poset <- function(filestem) {
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' bcPath = get_examples()[1]
 #' read_lambda(bcPath)
+#' }
 read_lambda <- function(filestem) {
   lines <- unlist(as.numeric(readLines(
     paste(suppressWarnings(normalizePath(filestem)), ".lambda", sep = "")

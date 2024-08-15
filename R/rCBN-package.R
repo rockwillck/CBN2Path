@@ -3,7 +3,7 @@
 
 ## usethis namespace: start
 #' @importFrom R6 R6Class
-#' @importFrom rBCBN bcbn_mcmc
+#' @importFrom rBCBN bcbn_mcmc transitiveClosure generateData
 ## usethis namespace: end
 NULL
 #' @useDynLib rCBN, .registration=TRUE

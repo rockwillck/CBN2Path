@@ -36,5 +36,7 @@ A matrix
 B-CBN
 }
 \examples{
+\dontrun{
 bcbn()
+}
 }

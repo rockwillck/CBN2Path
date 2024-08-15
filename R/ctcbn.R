@@ -14,14 +14,13 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' example_path = get_examples()[1]
 #' bc = Spock$new(
-#'   poset = read_poset("examples/BC")$sets,
-#'   numMutations = read_poset("examples/BC")$mutations,
-#'   patternOrLambda = read_pattern("examples/BC")
+#'   poset = read_poset(example_path)$sets,
+#'   numMutations = read_poset(example_path)$mutations,
+#'   patternOrLambda = read_pattern(example_path)
 #' )
 #' ctcbn(bc)
-#' }
 ctcbn <- function(datasetObj,
                   bootstrap_mode = FALSE,
                   bootstrap_samples = 0,

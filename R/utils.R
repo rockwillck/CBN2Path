@@ -127,3 +127,15 @@ filter_strings_by_start <- function(strings, start_substring) {
   filtered_strings <- grep(paste0("^", start_substring), strings, value = TRUE)
   return(filtered_strings)
 }
+
+#' Get paths to examples
+#'
+#' @return A vector of paths
+#' @export
+#'
+#' @examples
+#' get_examples()
+get_examples <- function() {
+  examples = c("BC", "CRC", "hiv", "HSD", "prostate", "RCC")
+  gsub(".poset", "", lapply(examples, function(x) system.file("extdata", paste(x, ".poset", sep=""), package="rCBN")))
+}

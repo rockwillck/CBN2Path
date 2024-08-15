@@ -86,14 +86,15 @@ bcbn(
 
 ## CT-CBN
 
-This project is based on and draws on code from CT-CBN from ETH Zurich.
+This project is based on and draws on code from CT-CBN from ETH
+Zurich.  
 CT-CBN. (n.d.). Department of Biosystems Science and Engineering –
 Department of Biosystems Science and Engineering \| ETH Zurich.
 <https://bsse.ethz.ch/cbg/software/ct-cbn.html>
 
 ## B-CBN
 
-This project is based on and draws on code from B-CBN from ETH Zurich.
+This project is based on and draws on code from B-CBN from ETH Zurich.  
 bcbn. (n.d.). Department of Biosystems Science and Engineering –
 Department of Biosystems Science and Engineering \| ETH Zurich.
 <https://bsse.ethz.ch/cbg/software/bcbn.html>

@@ -38,5 +38,5 @@ theta <- c(0.8, 0.7, 0.6, 0.7, 0.4, 0.25, 0.6, 0.75, 0.5, 0.2)
 eps <- 0.1
 N <- 400
 
-data <- generate_data(tr, theta, eps, N)
+generate_data(tr, theta, eps, N)
 }

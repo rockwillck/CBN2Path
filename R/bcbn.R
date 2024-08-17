@@ -72,7 +72,7 @@ transitive_closure<-function(poset){
 #' eps <- 0.1
 #' N <- 400
 #'
-#' data <- generate_data(tr, theta, eps, N)
+#' generate_data(tr, theta, eps, N)
 generate_data <- function(poset, thetas, eps, N)
 {
   generateData(poset, thetas, eps, N)

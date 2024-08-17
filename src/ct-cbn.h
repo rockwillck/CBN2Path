@@ -204,20 +204,36 @@ void print_int_matrix(int** X, int m, int n)
 }
 
 
-void print_double_array(double* x, int n)
+char* print_double_array(double* x, int n)
 {
   int j;
+  size_t buffer_size = 256;
+  char* result = (char*)malloc(buffer_size);
+  result[0] = '\0';
+  char buffer[50];
 
   if (n > 0)
   {
     for (j=0; j<n; j++)
     {
-      // printf(DOUBLE_FORMAT, x[j]);
-      // if (j < n-1)
-      //   printf("\t");
+      snprintf(buffer, sizeof(buffer), DOUBLE_FORMAT, x[j]);
+      size_t new_length = strlen(result) + strlen(buffer) + 2; // +2 for space and null terminator
+      
+      if (new_length > buffer_size) {
+        buffer_size = new_length * 2; // Increase size by a factor of 2
+        char* new_result = (char*)realloc(result, buffer_size);
+        if (new_result == NULL) {
+          free(result);
+        }
+        result = new_result;
+      }
+      
+      strcat(result, buffer);
+      if (j < n-1)
+        strcat(result, " ");
     }
   }
-  // printf("\n");
+  return(result);
 }
 
 
@@ -2623,7 +2639,7 @@ void compatibility(data* D, int N_u, model* M)
 
 
 
-void select_poset(int k, double eps, model* M, double* lambda, data* D, int N_u, int R, int mode, int print)
+char* select_poset(int k, double eps, model* M, double* lambda, data* D, int N_u, int R, int mode, int print)
 {
 
   double loglik = 0.0;
@@ -2646,13 +2662,18 @@ void select_poset(int k, double eps, model* M, double* lambda, data* D, int N_u,
   {
     loglik = estimate_model_parameters(M, D, N_u, R, lambda, &alpha);
     if(print){
-      // printf("%d\t%g\t%g\t%g\t", k, eps, alpha, loglik);
-      print_double_array(lambda, M->n+1);
+      //  free_lattice(M);
+      char* buffer = (char*)malloc(512);
+      if (buffer == NULL) {
+        return("N");
+      }
+      
+      // Format the string into the buffer
+      snprintf(buffer, 512, "%d %g %g %g %s", k, eps, alpha, loglik, print_double_array(lambda, M->n+1));
+      return(buffer);
     }
   }
-
-  //  free_lattice(M);
-
+  return("N");
 }
 
 

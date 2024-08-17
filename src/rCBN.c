@@ -80,6 +80,7 @@ SEXP ctcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP mb, SEXP bs, SEXP rs, SEXP sr, SE
   int B = INTEGER(bs)[0];  // bootstrap samples
   int BM = INTEGER(mb)[0]; // bootstrap mode
   int c = 0;
+  char* output;
 
   // no epsilon provided from R
   if (eps >= 1.0) {
@@ -153,7 +154,7 @@ SEXP ctcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP mb, SEXP bs, SEXP rs, SEXP sr, SE
       eps = MIN(eps, 1.0);
 
       // single run:
-      select_poset(0, eps, &M, lambda, D, N_u, R, mode, 1);
+      output = select_poset(0, eps, &M, lambda, D, N_u, R, mode, 1);
       if (e_flag)
         write_poset(0, ofilestem, M.P, M.n, -1);
       write_lambda(ofilestem, lambda, M.n);
@@ -173,7 +174,7 @@ SEXP ctcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP mb, SEXP bs, SEXP rs, SEXP sr, SE
       for (b = 1; b <= B; b++)
       {
         resample(D, p_orig, N_u);
-        select_poset(b, eps, &M, lambda, D, N_u, R, mode, 1); // e_flag
+        output = select_poset(b, eps, &M, lambda, D, N_u, R, mode, 1); // e_flag
 
         int_matrix_sum(bootstrap_cover_count, M.P, bootstrap_cover_count, M.n + 1);
         transitive_closure(M.P, T, M.n + 1);
@@ -208,7 +209,7 @@ SEXP ctcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP mb, SEXP bs, SEXP rs, SEXP sr, SE
       for (k = 0; k < N; k++)
       {
         epsilon = (double)k / (2.0 * (double)N);
-        select_poset(k, epsilon, &M, lambda, D, N_u, R, LEARN_BOTH, 1);
+        output = select_poset(k, epsilon, &M, lambda, D, N_u, R, LEARN_BOTH, 1);
         if (e_flag)
           write_poset(k, ofilestem, M.P, M.n, -1);
       }
@@ -248,7 +249,7 @@ SEXP ctcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP mb, SEXP bs, SEXP rs, SEXP sr, SE
 
   free(lambda);
 
-  return char_to_sexp(ofilestem);
+  return char_to_sexp(output);
 }
 
 SEXP hcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP s, SEXP temp, SEXP n)

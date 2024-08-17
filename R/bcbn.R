@@ -12,13 +12,68 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
 #' bcbn()
-#' }
 bcbn <-function(data = NULL, n_samples = 25000, theta = 0, epsilon = 0.05, n_chains = 4,thin = 10, n_cores = 1) {
   if (is.null(data)){
     bcbn_mcmc(n_samples = n_samples, theta = theta, epsilon = epsilon, n_chains = n_chains, thin = thin, n_cores = n_cores)
   } else {
     bcbn_mcmc(data, n_samples, theta, epsilon, n_chains, thin, n_cores)
   }
+}
+
+#' Transitive Closure
+#'
+#' @param poset Poset matrix
+#'
+#' @return Poset matrix
+#' @export
+#'
+#' @examples
+#' poset <- matrix(0,10,10)
+#'
+#' poset[1,2] <-1
+#' poset[2,3] <-1
+#' poset[3,4] <-1
+#' poset[5,4] <-1
+#' poset[6,7] <-1
+#' poset[8,9] <-1
+#' poset[8,10] <-1
+#' poset[6,9] <-1
+
+#' transitive_closure(poset)
+transitive_closure<-function(poset){
+  transitiveClosure(poset)
+}
+
+#' Generate Data
+#'
+#' @param poset Poset matrix
+#' @param thetas Vector of theta values
+#' @param eps Epsilon
+#' @param N N
+#'
+#' @return A matrix
+#' @export
+#'
+#' @examples
+#' poset <- matrix(0,10,10)
+#'
+#' poset[1,2] <-1
+#' poset[2,3] <-1
+#' poset[3,4] <-1
+#' poset[5,4] <-1
+#' poset[6,7] <-1
+#' poset[8,9] <-1
+#' poset[8,10] <-1
+#' poset[6,9] <-1
+#'
+#' tr<-transitive_closure(poset)
+#' theta <- c(0.8, 0.7, 0.6, 0.7, 0.4, 0.25, 0.6, 0.75, 0.5, 0.2)
+#' eps <- 0.1
+#' N <- 400
+#'
+#' data <- generate_data(tr, theta, eps, N)
+generate_data <- function(poset, thetas, eps, N)
+{
+  generateData(poset, thetas, eps, N)
 }

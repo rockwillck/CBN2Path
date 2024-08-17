@@ -64,10 +64,8 @@ read_poset <- function(filestem) {
 #' @export
 #'
 #' @examples
-#' \dontrun{
 #' bcPath = get_examples()[1]
 #' read_lambda(bcPath)
-#' }
 read_lambda <- function(filestem) {
   lines <- unlist(as.numeric(readLines(
     paste(suppressWarnings(normalizePath(filestem)), ".lambda", sep = "")
@@ -137,4 +135,14 @@ filter_strings_by_start <- function(strings, start_substring) {
 get_examples <- function() {
   examples = c("BC", "CRC", "hiv", "HSD", "prostate", "RCC")
   gsub(".poset", "", lapply(examples, function(x) system.file("extdata", paste(x, ".poset", sep=""), package="rCBN")))
+}
+
+pad_list <- function(list, length) {
+  vec = unlist(list)
+  length_out = length - length(vec)
+  if (length_out > 0) {
+    c(vec, rep(NA, length_out))
+  } else {
+    vec
+  }
 }

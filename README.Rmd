@@ -16,13 +16,28 @@ knitr::opts_chunk$set(
 # rCBN
 
 <!-- badges: start -->
+
 <!-- badges: end -->
 
 The goal of rCBN is to provide an R interface to the CBN family of functions developed at ETH-Zurich.
 
+## Dependencies
+
+`gsl` can be installed using:
+
+``` bash
+brew install gsl
+```
+
+If `gsl` was installed using any method other Homebrew, uninstall `gsl` before reinstalling using Homebrew.
+
+If Homebrew is not installed, follow the instructions at <https://brew.sh> to install.
+
+Make sure to restart R before proceeding.
+
 ## Installation
 
-You can install the development version of rCBN like so:
+You can install the development version of `rCBN` like so:
 
 ``` r
 devtools::install_github("rockwillck/rCBN")
@@ -30,7 +45,7 @@ devtools::install_github("rockwillck/rCBN")
 
 ## Example
 
-rCBN provides an interface to CT-CBN, H-CBN, and B-CBN:
+`rCBN` provides an interface to CT-CBN, H-CBN, and B-CBN:
 
 ```{r example}
 library(rCBN)
@@ -54,9 +69,11 @@ bcbn()
 ```
 
 ## CT-CBN
-This project is based on and draws on code from CT-CBN from ETH Zurich.  
-CT-CBN. (n.d.). Department of Biosystems Science and Engineering – Department of Biosystems Science and Engineering | ETH Zurich. https://bsse.ethz.ch/cbg/software/ct-cbn.html
+
+This project is based on and draws on code from CT-CBN from ETH Zurich.\
+CT-CBN. (n.d.). Department of Biosystems Science and Engineering – Department of Biosystems Science and Engineering \| ETH Zurich. <https://bsse.ethz.ch/cbg/software/ct-cbn.html>
 
 ## B-CBN
-This project is based on and draws on code from B-CBN from ETH Zurich.  
-bcbn. (n.d.). Department of Biosystems Science and Engineering – Department of Biosystems Science and Engineering | ETH Zurich. https://bsse.ethz.ch/cbg/software/bcbn.html
+
+This project is based on and draws on code from B-CBN from ETH Zurich.\
+bcbn. (n.d.). Department of Biosystems Science and Engineering – Department of Biosystems Science and Engineering \| ETH Zurich. <https://bsse.ethz.ch/cbg/software/bcbn.html>

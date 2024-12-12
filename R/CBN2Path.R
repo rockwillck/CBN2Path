@@ -8,5 +8,5 @@
 #' @importFrom doMC registerDoMC
 ## usethis namespace: end
 NULL
-#' @useDynLib CBNpath, .registration=TRUE
+#' @useDynLib CBN2Path, .registration=TRUE
 NULL

@@ -612,7 +612,7 @@ PACKAGE_STRING=''
 PACKAGE_BUGREPORT=''
 PACKAGE_URL=''
 
-ac_unique_file="src/CBNpath.c"
+ac_unique_file="src/CBN2Path.c"
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
 GSL_LIBS

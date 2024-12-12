@@ -10,7 +10,7 @@ CC=`"${R_HOME}/bin/R" CMD config CC`
 CFLAGS=`"${R_HOME}/bin/R" CMD config CFLAGS`
 AC_PROG_CC
 
-AC_CONFIG_SRCDIR([src/CBNpath.c])
+AC_CONFIG_SRCDIR([src/CBN2Path.c])
 
 
 #AC_CHECK_LIB(gsl, gsl_sf_airy_Ai_e,

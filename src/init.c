@@ -84,7 +84,7 @@ static const R_CallMethodDef CEntries[] = {
 //
 // Change the '_simplecall' suffix to match your package name
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void R_init_CBNpath(DllInfo *info) {
+void R_init_CBN2Path(DllInfo *info) {
   R_registerRoutines(
     info,      // DllInfo
     NULL,      // .C

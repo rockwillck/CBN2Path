@@ -134,7 +134,7 @@ filter_strings_by_start <- function(strings, start_substring) {
 #' get_examples()
 get_examples <- function() {
   examples = c("BC", "CRC", "hiv", "HSD", "prostate", "RCC")
-  gsub(".poset", "", lapply(examples, function(x) system.file("extdata", paste(x, ".poset", sep=""), package="CBNpath")))
+  gsub(".poset", "", lapply(examples, function(x) system.file("extdata", paste(x, ".poset", sep=""), package="CBN2Path")))
 }
 
 pad_list <- function(list, length) {

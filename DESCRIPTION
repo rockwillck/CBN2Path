@@ -1,10 +1,10 @@
-Package: CBNpath
+Package: CBN2Path
 Title: Conjunctive Bayesian Networks
 Version: 0.0.0.9000
 Authors@R: 
     person("William", "Choi-Kim", , "william@williamck.com", role = c("aut", "cre"))
 Description: A family of R functions based on the CBN family of functions created at ETH-Zurich.
-URL: https://github.com/rockwillck/CBNpath, http://dx.doi.org/10.1093/biomet/asp023, http://dx.doi.org/10.1093/bioinformatics/btp505
+URL: https://github.com/rockwillck/CBN2Path, http://dx.doi.org/10.1093/biomet/asp023, http://dx.doi.org/10.1093/bioinformatics/btp505
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

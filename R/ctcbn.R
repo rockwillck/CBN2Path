@@ -18,7 +18,7 @@
 #' bc = Spock$new(
 #'   poset = read_poset(example_path)$sets,
 #'   numMutations = read_poset(example_path)$mutations,
-#'   patternOrLambda = read_pattern(example_path)
+#'   genotypeMatrix = read_pattern(example_path)
 #' )
 #' ctcbn_single(bc)
 ctcbn_single <- function(dataset,
@@ -91,7 +91,7 @@ ctcbn_single <- function(dataset,
 #' bc = Spock$new(
 #'   poset = read_poset(example_path)$sets,
 #'   numMutations = read_poset(example_path)$mutations,
-#'   patternOrLambda = read_pattern(example_path)
+#'   genotypeMatrix = read_pattern(example_path)
 #' )
 #' ctcbn(bc)
 #' ctcbn(c(bc, bc, bc))

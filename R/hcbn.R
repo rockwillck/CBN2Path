@@ -14,7 +14,7 @@
 #' bc = Spock$new(
 #'   poset = read_poset(example_path)$sets,
 #'   numMutations = read_poset(example_path)$mutations,
-#'   patternOrLambda = read_pattern(example_path)
+#'   genotypeMatrix = read_pattern(example_path)
 #' )
 #' hcbn(bc)
 hcbn <- function(datasetObj,

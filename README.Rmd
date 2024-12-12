@@ -40,7 +40,7 @@ Make sure to restart R before proceeding.
 You can install the development version of `CBNpath` like so:
 
 ``` r
-devtools::install_github("rockwillck/rCBN")
+devtools::install_github("rockwillck/CBNpath")
 ```
 
 ## Example
@@ -52,7 +52,7 @@ library(CBNpath)
 bc = Spock$new(
   poset = read_poset("inst/extdata/BC")$sets,
   numMutations = read_poset("inst/extdata/BC")$mutations,
-  patternOrLambda = read_pattern("inst/extdata/BC")
+  genotypeMatrix = read_pattern("inst/extdata/BC")
 )
 ```
 

@@ -12,22 +12,22 @@ Spock = R6::R6Class("Spock", list(
   poset = matrix(),
   #' @field numMutations Number of mutations.
   numMutations = 0,
-  #' @field patternOrLambda Pattern/lambda matrix.
-  patternOrLambda = matrix(),
+  #' @field genotypeMatrix Genotype matrix.
+  genotypeMatrix = matrix(),
   
   #' @description
   #' Create a new Spock object.
   #' @param poset Poset matrix.
   #' @param numMutations Number of mutations.
-  #' @param patternOrLambda Pattern matrix or lambda matrix.
+  #' @param genotypeMatrix Genotype matrix.
   #' @return A new `Spock` object.
-  initialize = function (poset, numMutations, patternOrLambda) {
+  initialize = function (poset, numMutations, genotypeMatrix) {
     stopifnot(is.matrix(poset))
     stopifnot(is.numeric(numMutations))
-    stopifnot(is.matrix(patternOrLambda))
+    stopifnot(is.matrix(genotypeMatrix))
     self$poset = poset
     self$numMutations = numMutations
-    self$patternOrLambda = patternOrLambda
+    self$genotypeMatrix = genotypeMatrix
   },
   
   #' @description
@@ -64,8 +64,8 @@ Spock = R6::R6Class("Spock", list(
   #' @return File path to tempfile.
   getPattern = function() {
     fileC = (paste(
-      paste(as.character(nrow(self$patternOrLambda)), as.character(ncol(self$patternOrLambda)), sep = " "),
-      matrix_to_string(self$patternOrLambda),
+      paste(as.character(nrow(self$genotypeMatrix)), as.character(ncol(self$genotypeMatrix)), sep = " "),
+      matrix_to_string(self$genotypeMatrix),
       sep = "\n"
     ))
     
@@ -77,8 +77,8 @@ Spock = R6::R6Class("Spock", list(
   #' @return File path to tempfile.
   getLambda = function() {
     output = ""
-    for (i in 1:length(self$patternOrLambda)) {
-      output = paste(output, self$patternOrLambda[[i]], sep = "")
+    for (i in 1:length(self$genotypeMatrix)) {
+      output = paste(output, self$genotypeMatrix[[i]], sep = "")
       output = paste(output, "\n")
     }
     fileC = (output)

@@ -30,7 +30,7 @@ Make sure to restart R before proceeding.
 You can install the development version of `CBNpath` like so:
 
 ``` r
-devtools::install_github("rockwillck/rCBN")
+devtools::install_github("rockwillck/CBNpath")
 ```
 
 ## Example
@@ -42,7 +42,7 @@ library(CBNpath)
 bc = Spock$new(
   poset = read_poset("inst/extdata/BC")$sets,
   numMutations = read_poset("inst/extdata/BC")$mutations,
-  patternOrLambda = read_pattern("inst/extdata/BC")
+  genotypeMatrix = read_pattern("inst/extdata/BC")
 )
 ```
 
@@ -107,62 +107,62 @@ bcbn()
 #> [1] 0
 #> [1] "chain: 4"
 #> [1] 0
-#>        V1                V2               V3                  V4         
-#>  Min.   :0.02107   Min.   :0.1352   Min.   :0.0003081   Min.   :0.02569  
-#>  1st Qu.:0.66748   1st Qu.:0.7637   1st Qu.:0.4366964   1st Qu.:0.10239  
-#>  Median :0.80378   Median :0.8723   Median :0.5969084   Median :0.12979  
-#>  Mean   :0.77148   Mean   :0.8389   Mean   :0.5871786   Mean   :0.13266  
-#>  3rd Qu.:0.90473   3rd Qu.:0.9476   3rd Qu.:0.7499415   3rd Qu.:0.15900  
-#>  Max.   :0.99999   Max.   :1.0000   Max.   :0.9999900   Max.   :0.31579  
+#>        V1               V2                  V3                  V4         
+#>  Min.   :0.1460   Min.   :0.0001472   Min.   :0.0000451   Min.   :0.01859  
+#>  1st Qu.:0.8003   1st Qu.:0.2796521   1st Qu.:0.1418145   1st Qu.:0.11056  
+#>  Median :0.8944   Median :0.4256849   Median :0.2839890   Median :0.13839  
+#>  Mean   :0.8590   Mean   :0.4364513   Mean   :0.3334257   Mean   :0.14093  
+#>  3rd Qu.:0.9548   3rd Qu.:0.5789421   3rd Qu.:0.4811127   3rd Qu.:0.16753  
+#>  Max.   :1.0000   Max.   :0.9999941   Max.   :0.9998532   Max.   :0.32130  
 #>        V5         
-#>  Min.   :-12.447  
-#>  1st Qu.: -8.181  
-#>  Median : -7.755  
-#>  Mean   : -7.882  
-#>  3rd Qu.: -7.453  
-#>  Max.   : -6.991  
-#>        V1                V2                V3                 V4         
-#>  Min.   :0.06648   Min.   :0.04497   Min.   :0.003555   Min.   :0.02746  
-#>  1st Qu.:0.66208   1st Qu.:0.76233   1st Qu.:0.439097   1st Qu.:0.10125  
-#>  Median :0.79747   Median :0.87339   Median :0.599634   Median :0.12707  
-#>  Mean   :0.76753   Mean   :0.83623   Mean   :0.589607   Mean   :0.13150  
-#>  3rd Qu.:0.90465   3rd Qu.:0.94537   3rd Qu.:0.749613   3rd Qu.:0.15668  
-#>  Max.   :0.99999   Max.   :0.99996   Max.   :0.999870   Max.   :0.32878  
+#>  Min.   :-12.872  
+#>  1st Qu.: -8.440  
+#>  Median : -8.028  
+#>  Mean   : -8.146  
+#>  3rd Qu.: -7.721  
+#>  Max.   : -7.239  
+#>        V1               V2                  V3                  V4         
+#>  Min.   :0.1532   Min.   :0.0001293   Min.   :0.0000524   Min.   :0.02145  
+#>  1st Qu.:0.7983   1st Qu.:0.2783313   1st Qu.:0.1413772   1st Qu.:0.10898  
+#>  Median :0.8922   Median :0.4191844   Median :0.2789495   Median :0.13486  
+#>  Mean   :0.8582   Mean   :0.4345782   Mean   :0.3323606   Mean   :0.13954  
+#>  3rd Qu.:0.9537   3rd Qu.:0.5785409   3rd Qu.:0.4779362   3rd Qu.:0.16707  
+#>  Max.   :1.0000   Max.   :0.9989193   Max.   :0.9999911   Max.   :0.34484  
 #>        V5         
-#>  Min.   :-17.714  
-#>  1st Qu.: -8.185  
-#>  Median : -7.759  
-#>  Mean   : -7.887  
-#>  3rd Qu.: -7.453  
-#>  Max.   : -6.979  
-#>        V1                V2                V3                 V4         
-#>  Min.   :0.02013   Min.   :0.09462   Min.   :0.001363   Min.   :0.02796  
-#>  1st Qu.:0.66826   1st Qu.:0.75962   1st Qu.:0.431286   1st Qu.:0.10154  
-#>  Median :0.80737   Median :0.87060   Median :0.588016   Median :0.12879  
-#>  Mean   :0.77365   Mean   :0.83551   Mean   :0.581040   Mean   :0.13140  
-#>  3rd Qu.:0.91063   3rd Qu.:0.94250   3rd Qu.:0.740201   3rd Qu.:0.15698  
-#>  Max.   :0.99997   Max.   :0.99997   Max.   :0.999796   Max.   :0.35379  
+#>  Min.   :-13.118  
+#>  1st Qu.: -8.451  
+#>  Median : -8.048  
+#>  Mean   : -8.162  
+#>  3rd Qu.: -7.737  
+#>  Max.   : -7.244  
+#>        V1               V2                  V3                  V4         
+#>  Min.   :0.1052   Min.   :0.0001035   Min.   :0.0000776   Min.   :0.02318  
+#>  1st Qu.:0.8000   1st Qu.:0.2761990   1st Qu.:0.1404796   1st Qu.:0.10928  
+#>  Median :0.8977   Median :0.4203094   Median :0.2843305   Median :0.13604  
+#>  Mean   :0.8617   Mean   :0.4340512   Mean   :0.3330388   Mean   :0.13881  
+#>  3rd Qu.:0.9547   3rd Qu.:0.5769578   3rd Qu.:0.4775278   3rd Qu.:0.16429  
+#>  Max.   :1.0000   Max.   :0.9997298   Max.   :0.9995603   Max.   :0.38932  
 #>        V5         
-#>  Min.   :-12.807  
-#>  1st Qu.: -8.173  
-#>  Median : -7.758  
-#>  Mean   : -7.883  
-#>  3rd Qu.: -7.458  
-#>  Max.   : -6.972  
-#>        V1                V2               V3                  V4         
-#>  Min.   :0.05784   Min.   :0.1464   Min.   :0.0006188   Min.   :0.02212  
-#>  1st Qu.:0.65974   1st Qu.:0.7686   1st Qu.:0.4360143   1st Qu.:0.10171  
-#>  Median :0.79969   Median :0.8752   Median :0.5911433   Median :0.12858  
-#>  Mean   :0.76814   Mean   :0.8418   Mean   :0.5852267   Mean   :0.13204  
-#>  3rd Qu.:0.90621   3rd Qu.:0.9473   3rd Qu.:0.7445760   3rd Qu.:0.15728  
-#>  Max.   :0.99996   Max.   :1.0000   Max.   :0.9998063   Max.   :0.33629  
+#>  Min.   :-12.863  
+#>  1st Qu.: -8.438  
+#>  Median : -8.027  
+#>  Mean   : -8.145  
+#>  3rd Qu.: -7.719  
+#>  Max.   : -7.252  
+#>        V1                V2                  V3                  V4         
+#>  Min.   :0.02904   Min.   :0.0000646   Min.   :0.0000999   Min.   :0.02482  
+#>  1st Qu.:0.79975   1st Qu.:0.2736313   1st Qu.:0.1406076   1st Qu.:0.10819  
+#>  Median :0.89715   Median :0.4232942   Median :0.2785298   Median :0.13557  
+#>  Mean   :0.85960   Mean   :0.4362567   Mean   :0.3292357   Mean   :0.13939  
+#>  3rd Qu.:0.95584   3rd Qu.:0.5824931   3rd Qu.:0.4696677   3rd Qu.:0.16695  
+#>  Max.   :1.00000   Max.   :0.9993357   Max.   :0.9994623   Max.   :0.34937  
 #>        V5         
-#>  Min.   :-12.383  
-#>  1st Qu.: -8.173  
-#>  Median : -7.761  
-#>  Mean   : -7.880  
-#>  3rd Qu.: -7.453  
-#>  Max.   : -6.980  
+#>  Min.   :-13.040  
+#>  1st Qu.: -8.450  
+#>  Median : -8.035  
+#>  Mean   : -8.157  
+#>  3rd Qu.: -7.727  
+#>  Max.   : -7.237  
 #> Potential scale reduction factors:
 #> 
 #>      Point est. Upper C.I.
@@ -184,62 +184,62 @@ bcbn()
 #> [1] 0
 #> [1] "chain: 4"
 #> [1] 0
-#>        V1                  V2                V3                 V4         
-#>  Min.   :0.0004549   Min.   :0.02496   Min.   :0.003726   Min.   :0.02906  
-#>  1st Qu.:0.6678211   1st Qu.:0.76538   1st Qu.:0.439366   1st Qu.:0.10397  
-#>  Median :0.7968230   Median :0.87450   Median :0.595538   Median :0.12979  
-#>  Mean   :0.7681791   Mean   :0.83799   Mean   :0.587078   Mean   :0.13264  
-#>  3rd Qu.:0.8997379   3rd Qu.:0.94537   3rd Qu.:0.744427   3rd Qu.:0.15874  
-#>  Max.   :0.9999542   Max.   :0.99999   Max.   :0.999981   Max.   :0.31917  
+#>        V1               V2                  V3                  V4         
+#>  Min.   :0.1871   Min.   :0.0003938   Min.   :0.0000255   Min.   :0.02774  
+#>  1st Qu.:0.8045   1st Qu.:0.2770992   1st Qu.:0.1395726   1st Qu.:0.10836  
+#>  Median :0.8972   Median :0.4233658   Median :0.2787450   Median :0.13564  
+#>  Mean   :0.8632   Mean   :0.4356416   Mean   :0.3277964   Mean   :0.13978  
+#>  3rd Qu.:0.9574   3rd Qu.:0.5806498   3rd Qu.:0.4730893   3rd Qu.:0.16647  
+#>  Max.   :1.0000   Max.   :0.9999167   Max.   :0.9999967   Max.   :0.34668  
 #>        V5         
-#>  Min.   :-12.907  
-#>  1st Qu.: -8.147  
-#>  Median : -7.734  
-#>  Mean   : -7.861  
-#>  3rd Qu.: -7.445  
-#>  Max.   : -6.977  
-#>        V1                V2                V3                 V4         
-#>  Min.   :0.02725   Min.   :0.09019   Min.   :0.002087   Min.   :0.02721  
-#>  1st Qu.:0.67057   1st Qu.:0.76377   1st Qu.:0.433980   1st Qu.:0.10216  
-#>  Median :0.80489   Median :0.87300   Median :0.589834   Median :0.12737  
-#>  Mean   :0.77276   Mean   :0.83794   Mean   :0.585187   Mean   :0.13264  
-#>  3rd Qu.:0.90768   3rd Qu.:0.94623   3rd Qu.:0.744392   3rd Qu.:0.15690  
-#>  Max.   :0.99996   Max.   :0.99998   Max.   :0.999769   Max.   :0.33502  
+#>  Min.   :-12.057  
+#>  1st Qu.: -8.423  
+#>  Median : -8.019  
+#>  Mean   : -8.142  
+#>  3rd Qu.: -7.725  
+#>  Max.   : -7.241  
+#>        V1               V2                  V3                  V4        
+#>  Min.   :0.1786   Min.   :0.0000179   Min.   :0.0000041   Min.   :0.0201  
+#>  1st Qu.:0.7986   1st Qu.:0.2763707   1st Qu.:0.1425656   1st Qu.:0.1091  
+#>  Median :0.8938   Median :0.4242553   Median :0.2809401   Median :0.1368  
+#>  Mean   :0.8590   Mean   :0.4353905   Mean   :0.3325938   Mean   :0.1395  
+#>  3rd Qu.:0.9558   3rd Qu.:0.5792342   3rd Qu.:0.4820772   3rd Qu.:0.1662  
+#>  Max.   :1.0000   Max.   :0.9977905   Max.   :0.9999921   Max.   :0.3395  
 #>        V5         
-#>  Min.   :-12.395  
-#>  1st Qu.: -8.171  
-#>  Median : -7.752  
-#>  Mean   : -7.879  
-#>  3rd Qu.: -7.454  
-#>  Max.   : -6.974  
-#>        V1                 V2                V3                 V4         
-#>  Min.   :0.001597   Min.   :0.01512   Min.   :0.001117   Min.   :0.02424  
-#>  1st Qu.:0.664525   1st Qu.:0.76598   1st Qu.:0.439307   1st Qu.:0.10092  
-#>  Median :0.796754   Median :0.87326   Median :0.589886   Median :0.12759  
-#>  Mean   :0.770036   Mean   :0.83755   Mean   :0.586562   Mean   :0.13138  
-#>  3rd Qu.:0.906064   3rd Qu.:0.94577   3rd Qu.:0.743802   3rd Qu.:0.15740  
-#>  Max.   :0.999990   Max.   :0.99998   Max.   :0.999969   Max.   :0.33868  
+#>  Min.   :-12.501  
+#>  1st Qu.: -8.459  
+#>  Median : -8.034  
+#>  Mean   : -8.156  
+#>  3rd Qu.: -7.730  
+#>  Max.   : -7.241  
+#>        V1               V2                  V3                  V4         
+#>  Min.   :0.1825   Min.   :0.0001759   Min.   :0.0000481   Min.   :0.03735  
+#>  1st Qu.:0.8006   1st Qu.:0.2777662   1st Qu.:0.1411597   1st Qu.:0.11001  
+#>  Median :0.8965   Median :0.4237951   Median :0.2794866   Median :0.13662  
+#>  Mean   :0.8619   Mean   :0.4354211   Mean   :0.3310284   Mean   :0.13960  
+#>  3rd Qu.:0.9580   3rd Qu.:0.5782369   3rd Qu.:0.4786070   3rd Qu.:0.16490  
+#>  Max.   :1.0000   Max.   :0.9999084   Max.   :0.9996902   Max.   :0.33790  
 #>        V5         
-#>  Min.   :-11.902  
-#>  1st Qu.: -8.164  
-#>  Median : -7.753  
-#>  Mean   : -7.876  
-#>  3rd Qu.: -7.453  
-#>  Max.   : -6.978  
-#>        V1                V2               V3                  V4         
-#>  Min.   :0.05311   Min.   :0.1489   Min.   :0.0002457   Min.   :0.01653  
-#>  1st Qu.:0.67016   1st Qu.:0.7648   1st Qu.:0.4336892   1st Qu.:0.10370  
-#>  Median :0.80202   Median :0.8742   Median :0.5918887   Median :0.12919  
-#>  Mean   :0.77249   Mean   :0.8397   Mean   :0.5842680   Mean   :0.13283  
-#>  3rd Qu.:0.90597   3rd Qu.:0.9470   3rd Qu.:0.7456341   3rd Qu.:0.15897  
-#>  Max.   :1.00000   Max.   :1.0000   Max.   :0.9998586   Max.   :0.35206  
+#>  Min.   :-12.469  
+#>  1st Qu.: -8.430  
+#>  Median : -8.019  
+#>  Mean   : -8.141  
+#>  3rd Qu.: -7.724  
+#>  Max.   : -7.236  
+#>        V1               V2                  V3                  V4         
+#>  Min.   :0.1724   Min.   :0.0000759   Min.   :0.0000313   Min.   :0.02314  
+#>  1st Qu.:0.7997   1st Qu.:0.2750210   1st Qu.:0.1421681   1st Qu.:0.10771  
+#>  Median :0.8965   Median :0.4228841   Median :0.2835508   Median :0.13582  
+#>  Mean   :0.8621   Mean   :0.4346064   Mean   :0.3314963   Mean   :0.13926  
+#>  3rd Qu.:0.9550   3rd Qu.:0.5804758   3rd Qu.:0.4765703   3rd Qu.:0.16623  
+#>  Max.   :1.0000   Max.   :0.9998170   Max.   :0.9999930   Max.   :0.32601  
 #>        V5         
-#>  Min.   :-12.984  
-#>  1st Qu.: -8.157  
-#>  Median : -7.749  
-#>  Mean   : -7.868  
-#>  3rd Qu.: -7.452  
-#>  Max.   : -6.980  
+#>  Min.   :-12.704  
+#>  1st Qu.: -8.435  
+#>  Median : -8.027  
+#>  Mean   : -8.143  
+#>  3rd Qu.: -7.725  
+#>  Max.   : -7.233  
 #> Potential scale reduction factors:
 #> 
 #>      Point est. Upper C.I.
@@ -252,10 +252,10 @@ bcbn()
 #> Multivariate psrf
 #> 
 #> 1
-#>         [,1]    [,2]    [,3]
-#> [1,] 0.00000 0.12418 0.33958
-#> [2,] 0.26901 0.00000 0.42452
-#> [3,] 0.04919 0.02925 0.00000
+#>         [,1]   [,2]    [,3]
+#> [1,] 0.00000 0.2351 0.44870
+#> [2,] 0.00150 0.0000 0.53604
+#> [3,] 0.00011 0.0930 0.00000
 ```
 
 ## CT-CBN

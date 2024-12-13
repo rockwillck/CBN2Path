@@ -37,7 +37,7 @@ devtools::install_github("rockwillck/CBN2Path")
 `CBN2Path` provides an interface to CT-CBN, H-CBN, and B-CBN:
 
 
-# CT-CBN:
+### CT-CBN:
 
 ``` r
 library(CBN2Path)
@@ -73,7 +73,7 @@ ctcbn(bc)
 #>     0.3212656     0.3178370     0.3777232     0.5241736     0.4419216
 ```
 
-# H-CBN:
+### H-CBN:
 
 ``` r
 hcbn(bc)
@@ -101,7 +101,7 @@ hcbn(bc)
 #> [11,] 0.441899
 ```
 
-# BCBN:
+### BCBN:
 
 ``` r
 bcbn()

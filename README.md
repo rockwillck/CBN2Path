@@ -13,25 +13,20 @@ William Choi-Kim and Sayed-Rzgar Hosseini
 
 
 
-## Dependencies
+## Installation
 
-`gsl` can be installed using:
+Before installing the package make sure that you have installed `gsl` as follows:
 
 ``` bash
 brew install gsl
 ```
-
-If `gsl` was installed using any method other Homebrew, uninstall `gsl`
+Note that if `gsl` was installed using any method other Homebrew, uninstall `gsl`
 before reinstalling using Homebrew.
+Furthermore, note that if Homebrew is not installed, follow the instructions at <https://brew.sh> to install.
+Finally, make sure to restart R before proceeding.
 
-If Homebrew is not installed, follow the instructions at
-<https://brew.sh> to install.
 
-Make sure to restart R before proceeding.
-
-## Installation
-
-You can install the development version of `CBN2Path` like so:
+Then you can install the development version of `CBN2Path` like so:
 
 ``` r
 devtools::install_github("rockwillck/CBN2Path")

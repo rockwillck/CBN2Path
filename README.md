@@ -6,8 +6,12 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of CBN2Path is to provide an R interface to the CBN family of
-functions developed at ETH-Zurich.
+## Authors:
+William Choi-Kim and Sayed-Rzgar Hosseini
+
+## Abstract:
+
+
 
 ## Dependencies
 

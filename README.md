@@ -6,36 +6,38 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of CBN2Path is to provide an R interface to the CBN family of
-functions developed at ETH-Zurich.
+## Authors:
+William Choi-Kim and Sayed-Rzgar Hosseini
 
-## Dependencies
+## Abstract:
 
-`gsl` can be installed using:
+
+
+## Installation
+
+Before installing the package make sure that you have installed `gsl` as follows:
 
 ``` bash
 brew install gsl
 ```
-
-If `gsl` was installed using any method other Homebrew, uninstall `gsl`
+Note that if `gsl` was installed using any method other Homebrew, uninstall `gsl`
 before reinstalling using Homebrew.
+Furthermore, note that if Homebrew is not installed, follow the instructions at <https://brew.sh> to install.
+Finally, make sure to restart R before proceeding.
 
-If Homebrew is not installed, follow the instructions at
-<https://brew.sh> to install.
 
-Make sure to restart R before proceeding.
-
-## Installation
-
-You can install the development version of `CBN2Path` like so:
+Then you can install the development version of `CBN2Path` like so:
 
 ``` r
 devtools::install_github("rockwillck/CBN2Path")
 ```
 
-## Example
+## Examples
 
 `CBN2Path` provides an interface to CT-CBN, H-CBN, and B-CBN:
+
+
+### CT-CBN:
 
 ``` r
 library(CBN2Path)
@@ -71,6 +73,8 @@ ctcbn(bc)
 #>     0.3212656     0.3178370     0.3777232     0.5241736     0.4419216
 ```
 
+### H-CBN:
+
 ``` r
 hcbn(bc)
 #> $poset
@@ -96,6 +100,8 @@ hcbn(bc)
 #> [10,] 0.524145
 #> [11,] 0.441899
 ```
+
+### BCBN:
 
 ``` r
 bcbn()

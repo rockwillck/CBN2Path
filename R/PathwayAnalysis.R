@@ -284,7 +284,7 @@ PathProb_BCBN<-function(MAT){
 
 
 
-#' Title
+#' Jensen_Shannon_Divergence
 #'
 #' @param Prob1 The first (discrete) probability distribution (vector)
 #' @param Prob2 The second (discrete) probability distribution (vector)

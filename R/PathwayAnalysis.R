@@ -116,7 +116,7 @@ permutations<-function (n, r, v = 1:n, set = TRUE, repeats.allowed = FALSE)
 
 
 
-#' generate_matrix_genotypes: Generates a binary matrix of a given length
+#' generate_matrix_genotypes
 #'
 #' @param g genotype length
 #'
@@ -153,7 +153,7 @@ generate_matrix_genotypes<-function(g)
 
 
 
-#' Pathway_Feasibility: determines the feasibility of a set of genotypes according to a given DAG of restrictions.
+#' Pathway_Feasibility
 #'
 #' @param genotypes the full set of potential binary genotypes of a given length.
 #' @param DAG matrix representing the DAG of restrictions.
@@ -252,7 +252,7 @@ PathProb_CBN<-function(DAG,LAMBDA,x){
 
 
 
-#' PathProb_BCBN
+#' PathProb_BCBN: quantifies pathway probabilities using the output of B-CBN 
 #'
 #' @param MAT transition probability matrix returned by B-CBN model
 #'
@@ -284,6 +284,26 @@ PathProb_BCBN<-function(MAT){
 
 
 
+#' Title
+#'
+#' @param Prob1 The first (discrete) probability distribution (vector)
+#' @param Prob2 The second (discrete) probability distribution (vector)
+#'
+#' @return Jensen Shannon Divergence between the two (discrete) probability distributions
+#' @export
+#'
+#' @examples
+Jensen_Shannon_Divergence<-function(Prob1,Prob2){
+  #Prob1: the first probability distribution
+  #Prob2: the second probability distribution
+  D<-0
+  for (i in 1:length(Prob1)){
+    if (Prob1[i]>0){D<-D+Prob1[i]*log2(Prob1[i]/(0.5*Prob1[i]+0.5*Prob2[i]))}
+    if (Prob2[i]>0){D<-D+Prob2[i]*log2(Prob2[i]/(0.5*Prob1[i]+0.5*Prob2[i]))}
+  }
+  Dv<-(D/2)
+  return(Dv)
+}
 
 
 #' Predictability

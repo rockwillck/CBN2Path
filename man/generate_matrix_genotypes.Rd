@@ -2,7 +2,7 @@
 % Please edit documentation in R/PathwayAnalysis.R
 \name{generate_matrix_genotypes}
 \alias{generate_matrix_genotypes}
-\title{generate_matrix_genotypes: Generates a binary matrix of a given length}
+\title{generate_matrix_genotypes}
 \usage{
 generate_matrix_genotypes(g)
 }
@@ -13,5 +13,5 @@ generate_matrix_genotypes(g)
 a genotype matrix with ncol=g and nrow=2^g
 }
 \description{
-generate_matrix_genotypes: Generates a binary matrix of a given length
+generate_matrix_genotypes
 }

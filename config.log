@@ -30,8 +30,8 @@ Kernel configured for up to 12 processors.
 Processor type: arm64e (ARM64E)
 Processors active: 0 1 2 3 4 5 6 7 8 9 10 11
 Primary memory available: 18.00 gigabytes
-Default processor set: 733 tasks, 4380 threads, 12 processors
-Load average: 3.07, Mach factor: 8.92
+Default processor set: 598 tasks, 4390 threads, 12 processors
+Load average: 2.92, Mach factor: 9.06
 /bin/machine           = unknown
 /usr/bin/oslevel       = unknown
 /bin/universe          = unknown
@@ -51,6 +51,7 @@ PATH: /Applications/quarto/bin/
 PATH: /Library/TeX/texbin/
 PATH: /usr/texbin/
 PATH: /Applications/RStudio.app/Contents/Resources/app/quarto/bin/
+PATH: /Applications/RStudio.app/Contents/Resources/app/bin/postback/
 PATH: /Applications/RStudio.app/Contents/Resources/app/bin/postback/
 
 
@@ -86,27 +87,27 @@ clang: error: unknown argument '-version'; did you mean '--version'?
 clang: error: no input files
 configure:2609: $? = 1
 configure:2629: checking whether the C compiler works
-configure:2651: clang -arch arm64 -falign-functions=64 -Wall -g -O2 -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always -I/opt/R/arm64/include -L/opt/R/arm64/lib conftest.c  >&5
+configure:2651: clang -arch arm64 -falign-functions=64 -Wall -g -O2 -I/opt/R/arm64/include -L/opt/R/arm64/lib conftest.c  >&5
 configure:2655: $? = 0
 configure:2705: result: yes
 configure:2708: checking for C compiler default output file name
 configure:2710: result: a.out
 configure:2716: checking for suffix of executables
-configure:2723: clang -arch arm64 -o conftest -falign-functions=64 -Wall -g -O2 -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always -I/opt/R/arm64/include -L/opt/R/arm64/lib conftest.c  >&5
+configure:2723: clang -arch arm64 -o conftest -falign-functions=64 -Wall -g -O2 -I/opt/R/arm64/include -L/opt/R/arm64/lib conftest.c  >&5
 configure:2727: $? = 0
 configure:2750: result: 
 configure:2772: checking whether we are cross compiling
-configure:2780: clang -arch arm64 -o conftest -falign-functions=64 -Wall -g -O2 -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always -I/opt/R/arm64/include -L/opt/R/arm64/lib conftest.c  >&5
+configure:2780: clang -arch arm64 -o conftest -falign-functions=64 -Wall -g -O2 -I/opt/R/arm64/include -L/opt/R/arm64/lib conftest.c  >&5
 configure:2784: $? = 0
 configure:2791: ./conftest
 configure:2795: $? = 0
 configure:2810: result: no
 configure:2815: checking for suffix of object files
-configure:2838: clang -arch arm64 -c -falign-functions=64 -Wall -g -O2 -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always -I/opt/R/arm64/include conftest.c >&5
+configure:2838: clang -arch arm64 -c -falign-functions=64 -Wall -g -O2 -I/opt/R/arm64/include conftest.c >&5
 configure:2842: $? = 0
 configure:2864: result: o
 configure:2868: checking whether the compiler supports GNU C
-configure:2888: clang -arch arm64 -c -falign-functions=64 -Wall -g -O2 -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always -I/opt/R/arm64/include conftest.c >&5
+configure:2888: clang -arch arm64 -c -falign-functions=64 -Wall -g -O2 -I/opt/R/arm64/include conftest.c >&5
 configure:2888: $? = 0
 configure:2898: result: yes
 configure:2909: checking whether clang -arch arm64 accepts -g
@@ -114,23 +115,18 @@ configure:2930: clang -arch arm64 -c -g -I/opt/R/arm64/include conftest.c >&5
 configure:2930: $? = 0
 configure:2974: result: yes
 configure:2994: checking for clang -arch arm64 option to enable C11 features
-configure:3009: clang -arch arm64  -c -falign-functions=64 -Wall -g -O2 -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always -I/opt/R/arm64/include conftest.c >&5
-[1mconftest.c:23:14: [0m[0;1;35mwarning: [0m[1ma function definition without a prototype is deprecated in all versions of C and is not supported in C2x [-Wdeprecated-non-prototype][0m
-   23 | static char *e (p, i)[0m
-      | [0;1;32m             ^
-[0m1 warning generated.
+configure:3009: clang -arch arm64  -c -falign-functions=64 -Wall -g -O2 -I/opt/R/arm64/include conftest.c >&5
+conftest.c:23:14: warning: a function definition without a prototype is deprecated in all versions of C and is not supported in C2x [-Wdeprecated-non-prototype]
+   23 | static char *e (p, i)
+      |              ^
+1 warning generated.
 configure:3009: $? = 0
 configure:3027: result: none needed
 configure:3154: checking for gsl-config
 configure:3177: found /opt/homebrew/bin/gsl-config
 configure:3189: result: /opt/homebrew/bin/gsl-config
 configure:3207: checking if GSL version >= 2.5
-configure:3236: clang -arch arm64 -o conftest -falign-functions=64 -Wall -g -O2 -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always -I/opt/homebrew/Cellar/gsl/2.8/include -I/opt/R/arm64/include -L/opt/R/arm64/lib conftest.c  >&5
-[1mconftest.c:14:9: [0m[0;1;35mwarning: [0m[1ma function declaration without a prototype is deprecated in all versions of C [-Wstrict-prototypes][0m
-   14 | int main() {[0m
-      | [0;1;32m        ^
-[0m      | [0;32m         void
-[0m1 warning generated.
+configure:3236: clang -arch arm64 -o conftest -falign-functions=64 -Wall -g -O2 -I/opt/homebrew/Cellar/gsl/2.8/include -I/opt/R/arm64/include -L/opt/R/arm64/lib conftest.c  >&5
 configure:3236: $? = 0
 configure:3236: ./conftest
 configure:3236: $? = 0
@@ -162,7 +158,7 @@ ac_cv_c_compiler_gnu=yes
 ac_cv_env_CC_set=set
 ac_cv_env_CC_value='clang -arch arm64'
 ac_cv_env_CFLAGS_set=set
-ac_cv_env_CFLAGS_value='-falign-functions=64 -Wall -g -O2 -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always'
+ac_cv_env_CFLAGS_value='-falign-functions=64 -Wall -g -O2'
 ac_cv_env_CPPFLAGS_set=set
 ac_cv_env_CPPFLAGS_value=-I/opt/R/arm64/include
 ac_cv_env_LDFLAGS_set=set
@@ -187,7 +183,7 @@ ac_cv_prog_cc_stdc=
 ## ----------------- ##
 
 CC='clang -arch arm64'
-CFLAGS='-falign-functions=64 -Wall -g -O2 -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always -I/opt/homebrew/Cellar/gsl/2.8/include'
+CFLAGS='-falign-functions=64 -Wall -g -O2 -I/opt/homebrew/Cellar/gsl/2.8/include'
 CPPFLAGS='-I/opt/R/arm64/include'
 DEFS='-DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_URL=\"\"'
 ECHO_C='\c'

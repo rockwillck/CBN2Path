@@ -2,7 +2,7 @@
 % Please edit documentation in R/PathwayAnalysis.R
 \name{Pathway_Feasibility}
 \alias{Pathway_Feasibility}
-\title{Pathway_Feasibility: determines the feasibility of a set of genotypes according to a given DAG of restrictions.}
+\title{Pathway_Feasibility}
 \usage{
 Pathway_Feasibility(genotypes, DAG, x)
 }
@@ -17,5 +17,5 @@ Pathway_Feasibility(genotypes, DAG, x)
 a binary vector, which indicates feasibility or infeasibility of a set of pathways
 }
 \description{
-Pathway_Feasibility: determines the feasibility of a set of genotypes according to a given DAG of restrictions.
+Pathway_Feasibility
 }

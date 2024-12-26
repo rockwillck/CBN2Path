@@ -31,11 +31,13 @@ ctcbn_single <- function(dataset,
                   num_em_runs = 1,
                   output_stem = tempfile("output"))
 {
+  posetPath = dataset$getPoset()
+  secondPath = dataset$getSecond(num_drawn_samples)
   x = .Call(
     "ctcbn_",
     output_stem,
-    dataset$getPoset(),
-    dataset$getSecond(num_drawn_samples),
+    posetPath,
+    secondPath,
     as.integer(bootstrap_mode),
     as.integer(bootstrap_samples),
     as.integer(random_seed),
@@ -51,22 +53,34 @@ ctcbn_single <- function(dataset,
   outFiles = (filter_strings_by_start(list.files(outDir), splitted[[length(splitted)]]))
   
   outputList = list()
-  for (file in outFiles) {
-    file = paste(c(outDir, file), collapse = "/")
-    if (endsWith(file, ".poset")) {
-      outputList$poset = read_poset(substring(file, 1, nchar(file) - 6))
+  for (f in outFiles) {
+    f = paste(c(outDir, f), collapse = "/")
+    if (endsWith(f, ".poset")) {
+      outputList$poset = read_poset(substring(f, 1, nchar(f) - 6))
     }
-    if (endsWith(file, ".pat")) {
-      outputList$pattern = read_pattern(substring(file, 1, nchar(file) - 4))
+    if (endsWith(f, ".pat")) {
+      outputList$pattern = read_pattern(substring(f, 1, nchar(f) - 4))
     }
-    if (endsWith(file, ".lambda")) {
-      outputList$lambda = read_lambda(substring(file, 1, nchar(file) - 7))
+    if (endsWith(f, ".lambda")) {
+      outputList$lambda = read_lambda(substring(f, 1, nchar(f) - 7))
     }
+    file.remove(f)
   }
   r = as.numeric(unlist(strsplit(x, " ")))
   labels = c(c("Poset", "Eps", "Alpha", "Loglike", "lambda_s"), paste0("lambda_", seq(1, length(r) - 5)))
   names(r) = labels
   outputList$row = r
+  
+  if (file.exists(paste(posetPath,"poset",sep="."))) {
+    file.remove(paste(posetPath,"poset",sep="."))
+  }
+  if (file.exists(paste(secondPath,"lambda",sep="."))) {
+    file.remove(paste(secondPath,"lambda",sep="."))
+  }
+  if (file.exists(paste(secondPath,"pat",sep="."))) {
+    file.remove(paste(secondPath,"pat",sep="."))
+  }
+  
   return(outputList)
 }
 

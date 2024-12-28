@@ -187,7 +187,7 @@ Pathway_Feasibility<-function(genotypes,DAG,x){
 #' PathProb_CBN: quantifies pathway probabilities using the output of CT-CBN or H-CBN 
 #'
 #' @param DAG matrix representing the DAG of restrictions.
-#' @param LAMBDA the lambda values, which are produced by the CBN model. Note that LAMBDA is a column vector of size x+1 and the first row always equals 1.
+#' @param LAMBDA the lambda values, which are produced by the CBN model.
 #' @param x the number of mutations considered.
 #'
 #' @return vector of probabilities assigned to a set of pathways
@@ -238,15 +238,15 @@ PathProb_CBN<-function(DAG,LAMBDA,x){
         SN2[kaka]<-allowed_set[FINAL_index]
       }
       SNN<-SN[which(SN2==1)]# THE EXIT SET: the set of (allowed) genotypes with one additional mutation than the current genotype
-      T<-sum(LAMBDA[(SNN+1),1]);# sum of the lambdas of the exit set [The denominator of the equation (10) in the main text]
+      T<-sum(LAMBDA[(SNN+1)]);# sum of the lambdas of the exit set [The denominator of the equation (10) in the main text]
       ###################################################
-      S<-LAMBDA[(indx_lambda+1),1]# the lambda of the (j1-th mutation) [The numerator of the equation (10) in the main text]
+      S<-LAMBDA[(indx_lambda+1)]# the lambda of the (j1-th mutation) [The numerator of the equation (10) in the main text]
       TEMP1<-TEMP1*(S/T)# The multiplication in the equation (10) in the main text
     }
     if (flag==0){TEMP1<-0}# If the pathway is infeasible, its probability will be zero.
     Prob[i1]<-TEMP1 #pathway probability
   }
-  
+  Prob<-as.numeric(Prob)
   return(Prob)
 }
 
@@ -277,7 +277,7 @@ PathProb_BCBN<-function(MAT){
   }
   ### Step3: Normalizing pathway probabilities
   TOT<-sum(Prob,na.rm=TRUE)
-  Prob<-Prob/TOT
+  Prob<-as.numeric((Prob/TOT))
   ###
   return(Prob)
 }

@@ -153,17 +153,17 @@ generate_matrix_genotypes<-function(g)
 
 
 
-#' Pathway_Feasibility
+#' Genotype_Feasibility
 #'
 #' @param genotypes the full set of potential binary genotypes of a given length.
 #' @param DAG matrix representing the DAG of restrictions.
 #' @param x the number of mutations considered.
 #'
-#' @return a binary vector, which indicates feasibility or infeasibility of a set of pathways
+#' @return a binary vector, which indicates feasibility or infeasibility of a set of genotypes
 #' @export
 #'
 #' @examples
-Pathway_Feasibility<-function(genotypes,DAG,x){
+Genotype_Feasibility<-function(genotypes,DAG,x){
   vec<-matrix(1,nrow=(2^x),ncol=1)
   D<-dim(DAG)[1]
   if (D>0){
@@ -202,7 +202,7 @@ PathProb_CBN<-function(DAG,LAMBDA,x){
   for (k in 1:(2^x)){for (j in 1:x){indx[k,1]=indx[k,1]+2^(j-1)*genotypes[k,j]}}
   
   ### Step2: Allowed genotypes according to the DAG of restrictions (DAG)
-  allowed_set<-Pathway_Feasibility(genotypes,DAG,x)
+  allowed_set<-Genotype_Feasibility(genotypes,DAG,x)
   
   ### Step3: Pathway Probabilities
   PERM<-permutations(x,x)## all x! possible permutations (mutational pathways)
@@ -283,6 +283,35 @@ PathProb_BCBN<-function(MAT){
 }
 
 
+#' Pathway_Feasibility
+#'
+#' @param DAG matrix representing the DAG of restrictions.
+#' @param x the number of mutations considered.
+#'
+#' @return a binary vector, which indicates feasibility or infeasibility of a set of pathways
+#' @export
+#'
+#' @examples
+Pathway_Feasibility<-function(DAG,x){
+  PERM<-permutations(x,x)### all x! possible permutations (mutational pathways)
+  P<-dim(PERM)[1]
+  D<-dim(DAG)[1]
+  vec<-numeric(P)+1
+  if (D>0){
+    for (i in 1:P){
+     for (j in 1:D){
+       a1<-DAG[j,1]
+       a2<-DAG[j,2]
+       b1<-which(PERM[i,]==a1)
+       b2<-which(PERM[i,]==a2)
+       if (b2<b1){vec[i]<-0}
+     } 
+    }
+  }
+  return(vec)
+}
+  
+
 
 #' Jensen_Shannon_Divergence
 #'
@@ -298,8 +327,8 @@ Jensen_Shannon_Divergence<-function(Prob1,Prob2){
   #Prob2: the second probability distribution
   D<-0
   for (i in 1:length(Prob1)){
-    if (Prob1[i]>0){D<-D+Prob1[i]*log2(Prob1[i]/(0.5*Prob1[i]+0.5*Prob2[i]))}
-    if (Prob2[i]>0){D<-D+Prob2[i]*log2(Prob2[i]/(0.5*Prob1[i]+0.5*Prob2[i]))}
+    if (sum(Prob1[i],na.rm=TRUE)>0){D<-D+Prob1[i]*log2(Prob1[i]/(0.5*Prob1[i]+0.5*Prob2[i]))}
+    if (sum(Prob2[i],na.rm=TRUE)>0){D<-D+Prob2[i]*log2(Prob2[i]/(0.5*Prob1[i]+0.5*Prob2[i]))}
   }
   Dv<-(D/2)
   return(Dv)

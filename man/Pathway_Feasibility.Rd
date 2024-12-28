@@ -4,11 +4,9 @@
 \alias{Pathway_Feasibility}
 \title{Pathway_Feasibility}
 \usage{
-Pathway_Feasibility(genotypes, DAG, x)
+Pathway_Feasibility(DAG, x)
 }
 \arguments{
-\item{genotypes}{the full set of potential binary genotypes of a given length.}
-
 \item{DAG}{matrix representing the DAG of restrictions.}
 
 \item{x}{the number of mutations considered.}

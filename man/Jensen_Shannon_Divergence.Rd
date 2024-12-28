@@ -2,7 +2,7 @@
 % Please edit documentation in R/PathwayAnalysis.R
 \name{Jensen_Shannon_Divergence}
 \alias{Jensen_Shannon_Divergence}
-\title{Title}
+\title{Jensen_Shannon_Divergence}
 \usage{
 Jensen_Shannon_Divergence(Prob1, Prob2)
 }
@@ -15,5 +15,5 @@ Jensen_Shannon_Divergence(Prob1, Prob2)
 Jensen Shannon Divergence between the two (discrete) probability distributions
 }
 \description{
-Title
+Jensen_Shannon_Divergence
 }

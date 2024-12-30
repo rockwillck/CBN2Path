@@ -81,10 +81,11 @@ SEXP ctcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP mb, SEXP bs, SEXP rs, SEXP sr, SE
   int BM = INTEGER(mb)[0]; // bootstrap mode
   int c = 0;
   char* output;
-
-  // no epsilon provided from R
+  
+  // // no epsilon provided from R
   if (eps >= 1.0) {
     e_flag = 0;
+    eps = 0.0;
   } else {
     e_flag = 1;
   }
@@ -131,10 +132,10 @@ SEXP ctcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP mb, SEXP bs, SEXP rs, SEXP sr, SE
   read_poset(filestem1, &M);
 
   // precompute binary expansions
-  precompute_binary(M.n + 1);
+  precompute_binary(M.n+1);
 
   M.lin_ext = get_int_array(M.n);             // a linear extension of the poset
-  double *lambda = get_double_array(M.n + 1); // Exp rates
+  double *lambda = get_double_array(M.n+1); // Exp rates
   lambda[0] = S;
 
 
@@ -147,7 +148,7 @@ SEXP ctcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP mb, SEXP bs, SEXP rs, SEXP sr, SE
   for (k = 0; k < N; k++)
     free(pat[k]);
   free(pat);
-
+  
     if (eps >= 0.0) // fixed epsilon
     {
       int b;

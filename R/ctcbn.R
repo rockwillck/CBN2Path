@@ -8,7 +8,6 @@
 #' @param epsilon If between 0 and 1, the fraction of violations allowed per edge. If negative, the interval 0 to 0.5 will be sampled equidistantly with N points.
 #' @param num_drawn_samples If > 0, the number of samples to draw from the model. If zero (default), the model will be learned from data.
 #' @param num_em_runs Number of em runs.
-#' @param output_stem File to output to (defaults to a tempfile).
 #'
 #' @return A list of output data.
 #' @export
@@ -28,9 +27,9 @@ ctcbn_single <- function(dataset,
                   sampling_rate = 1.0,
                   epsilon = 2,
                   num_drawn_samples = 0,
-                  num_em_runs = 1,
-                  output_stem = tempfile("output"))
+                  num_em_runs = 1)
 {
+  output_stem = tempfile("output")
   posetPath = dataset$getPoset()
   secondPath = dataset$getSecond(num_drawn_samples)
   x = .Call(
@@ -64,22 +63,22 @@ ctcbn_single <- function(dataset,
     if (endsWith(f, ".lambda")) {
       outputList$lambda = read_lambda(substring(f, 1, nchar(f) - 7))
     }
-    file.remove(f)
+    # file.remove(f)
   }
   r = as.numeric(unlist(strsplit(x, " ")))
   labels = c(c("Poset", "Eps", "Alpha", "Loglike", "lambda_s"), paste0("lambda_", seq(1, length(r) - 5)))
   names(r) = labels
   outputList$row = r
   
-  if (file.exists(paste(posetPath,"poset",sep="."))) {
-    file.remove(paste(posetPath,"poset",sep="."))
-  }
-  if (file.exists(paste(secondPath,"lambda",sep="."))) {
-    file.remove(paste(secondPath,"lambda",sep="."))
-  }
-  if (file.exists(paste(secondPath,"pat",sep="."))) {
-    file.remove(paste(secondPath,"pat",sep="."))
-  }
+  # if (file.exists(paste(posetPath,"poset",sep="."))) {
+  #   file.remove(paste(posetPath,"poset",sep="."))
+  # }
+  # if (file.exists(paste(secondPath,"lambda",sep="."))) {
+  #   file.remove(paste(secondPath,"lambda",sep="."))
+  # }
+  # if (file.exists(paste(secondPath,"pat",sep="."))) {
+  #   file.remove(paste(secondPath,"pat",sep="."))
+  # }
   
   return(outputList)
 }
@@ -94,7 +93,6 @@ ctcbn_single <- function(dataset,
 #' @param epsilon If between 0 and 1, the fraction of violations allowed per edge. If negative, the interval 0 to 0.5 will be sampled equidistantly with N points.
 #' @param num_drawn_samples If > 0, the number of samples to draw from the model. If zero (default), the model will be learned from data.
 #' @param num_em_runs Number of em runs.
-#' @param output_stems Files to output to (defaults to tempfiles).
 #' @param n_cores Maximum number of threads to use to parallelize.
 #'
 #' @return A matrix of results.
@@ -117,20 +115,16 @@ ctcbn <- function(datasets,
                     epsilon = 2,
                     num_drawn_samples = 0,
                     num_em_runs = 1,
-                    output_stems = NULL,
                     n_cores = 1) {
-  
   if (length(datasets) < n_cores) {
     message(paste("Number of datasets was less than number of cores. Using number of datasets (", length(datasets), ") as thread count.", sep = ""))
   }
   registerDoMC(cores=min(length(datasets), n_cores))
   
   if (inherits(datasets, "Spock")) {
-    return(ctcbn_single(datasets, bootstrap_mode, bootstrap_samples, random_seed, sampling_rate, epsilon, num_drawn_samples, num_em_runs, ifelse(is.null(output_stems), tempfile("output"), output_stems[[1]])))
+    return(ctcbn_single(datasets, bootstrap_mode, bootstrap_samples, random_seed, sampling_rate, epsilon, num_drawn_samples, num_em_runs))
   }
-  if (is.null(output_stems)) {
-    output_stems = replicate(length(datasets), tempfile("output"))
-  }
+  output_stems = replicate(length(datasets), tempfile("output"))
   rowLength = -1
   done = 0
   outMatrixBuf = vector("list", length(datasets))

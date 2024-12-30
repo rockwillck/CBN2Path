@@ -12,8 +12,7 @@ ctcbn_single(
   sampling_rate = 1,
   epsilon = 2,
   num_drawn_samples = 0,
-  num_em_runs = 1,
-  output_stem = tempfile("output")
+  num_em_runs = 1
 )
 }
 \arguments{
@@ -32,8 +31,6 @@ ctcbn_single(
 \item{num_drawn_samples}{If > 0, the number of samples to draw from the model. If zero (default), the model will be learned from data.}
 
 \item{num_em_runs}{Number of em runs.}
-
-\item{output_stem}{File to output to (defaults to a tempfile).}
 }
 \value{
 A list of output data.

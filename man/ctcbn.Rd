@@ -13,7 +13,6 @@ ctcbn(
   epsilon = 2,
   num_drawn_samples = 0,
   num_em_runs = 1,
-  output_stems = NULL,
   n_cores = 1
 )
 }
@@ -33,8 +32,6 @@ ctcbn(
 \item{num_drawn_samples}{If > 0, the number of samples to draw from the model. If zero (default), the model will be learned from data.}
 
 \item{num_em_runs}{Number of em runs.}
-
-\item{output_stems}{Files to output to (defaults to tempfiles).}
 
 \item{n_cores}{Maximum number of threads to use to parallelize.}
 }

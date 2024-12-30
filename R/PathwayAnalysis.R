@@ -116,7 +116,7 @@ permutations<-function (n, r, v = 1:n, set = TRUE, repeats.allowed = FALSE)
 
 
 
-#' generate_matrix_genotypes: Generates a binary matrix of a given length
+#' generate_matrix_genotypes
 #'
 #' @param g genotype length
 #'
@@ -153,17 +153,17 @@ generate_matrix_genotypes<-function(g)
 
 
 
-#' Pathway_Feasibility: determines the feasibility of a set of genotypes according to a given DAG of restrictions.
+#' Genotype_Feasibility
 #'
 #' @param genotypes the full set of potential binary genotypes of a given length.
 #' @param DAG matrix representing the DAG of restrictions.
 #' @param x the number of mutations considered.
 #'
-#' @return a binary vector, which indicates feasibility or infeasibility of a set of pathways
+#' @return a binary vector, which indicates feasibility or infeasibility of a set of genotypes
 #' @export
 #'
 #' @examples
-Pathway_Feasibility<-function(genotypes,DAG,x){
+Genotype_Feasibility<-function(genotypes,DAG,x){
   vec<-matrix(1,nrow=(2^x),ncol=1)
   D<-dim(DAG)[1]
   if (D>0){
@@ -187,7 +187,7 @@ Pathway_Feasibility<-function(genotypes,DAG,x){
 #' PathProb_CBN: quantifies pathway probabilities using the output of CT-CBN or H-CBN 
 #'
 #' @param DAG matrix representing the DAG of restrictions.
-#' @param LAMBDA the lambda values, which are produced by the CBN model. Note that LAMBDA is a column vector of size x+1 and the first row always equals 1.
+#' @param LAMBDA the lambda values, which are produced by the CBN model.
 #' @param x the number of mutations considered.
 #'
 #' @return vector of probabilities assigned to a set of pathways
@@ -202,7 +202,7 @@ PathProb_CBN<-function(DAG,LAMBDA,x){
   for (k in 1:(2^x)){for (j in 1:x){indx[k,1]=indx[k,1]+2^(j-1)*genotypes[k,j]}}
   
   ### Step2: Allowed genotypes according to the DAG of restrictions (DAG)
-  allowed_set<-Pathway_Feasibility(genotypes,DAG,x)
+  allowed_set<-Genotype_Feasibility(genotypes,DAG,x)
   
   ### Step3: Pathway Probabilities
   PERM<-permutations(x,x)## all x! possible permutations (mutational pathways)
@@ -238,21 +238,21 @@ PathProb_CBN<-function(DAG,LAMBDA,x){
         SN2[kaka]<-allowed_set[FINAL_index]
       }
       SNN<-SN[which(SN2==1)]# THE EXIT SET: the set of (allowed) genotypes with one additional mutation than the current genotype
-      T<-sum(LAMBDA[(SNN+1),1]);# sum of the lambdas of the exit set [The denominator of the equation (10) in the main text]
+      T<-sum(LAMBDA[(SNN+1)]);# sum of the lambdas of the exit set [The denominator of the equation (10) in the main text]
       ###################################################
-      S<-LAMBDA[(indx_lambda+1),1]# the lambda of the (j1-th mutation) [The numerator of the equation (10) in the main text]
+      S<-LAMBDA[(indx_lambda+1)]# the lambda of the (j1-th mutation) [The numerator of the equation (10) in the main text]
       TEMP1<-TEMP1*(S/T)# The multiplication in the equation (10) in the main text
     }
     if (flag==0){TEMP1<-0}# If the pathway is infeasible, its probability will be zero.
     Prob[i1]<-TEMP1 #pathway probability
   }
-  
+  Prob<-as.numeric(Prob)
   return(Prob)
 }
 
 
 
-#' PathProb_BCBN
+#' PathProb_BCBN: quantifies pathway probabilities using the output of B-CBN 
 #'
 #' @param MAT transition probability matrix returned by B-CBN model
 #'
@@ -277,13 +277,62 @@ PathProb_BCBN<-function(MAT){
   }
   ### Step3: Normalizing pathway probabilities
   TOT<-sum(Prob,na.rm=TRUE)
-  Prob<-Prob/TOT
+  Prob<-as.numeric((Prob/TOT))
   ###
   return(Prob)
 }
 
 
+#' Pathway_Feasibility
+#'
+#' @param DAG matrix representing the DAG of restrictions.
+#' @param x the number of mutations considered.
+#'
+#' @return a binary vector, which indicates feasibility or infeasibility of a set of pathways
+#' @export
+#'
+#' @examples
+Pathway_Feasibility<-function(DAG,x){
+  PERM<-permutations(x,x)### all x! possible permutations (mutational pathways)
+  P<-dim(PERM)[1]
+  D<-dim(DAG)[1]
+  vec<-numeric(P)+1
+  if (D>0){
+    for (i in 1:P){
+     for (j in 1:D){
+       a1<-DAG[j,1]
+       a2<-DAG[j,2]
+       b1<-which(PERM[i,]==a1)
+       b2<-which(PERM[i,]==a2)
+       if (b2<b1){vec[i]<-0}
+     } 
+    }
+  }
+  return(vec)
+}
+  
 
+
+#' Jensen_Shannon_Divergence
+#'
+#' @param Prob1 The first (discrete) probability distribution (vector)
+#' @param Prob2 The second (discrete) probability distribution (vector)
+#'
+#' @return Jensen Shannon Divergence between the two (discrete) probability distributions
+#' @export
+#'
+#' @examples
+Jensen_Shannon_Divergence<-function(Prob1,Prob2){
+  #Prob1: the first probability distribution
+  #Prob2: the second probability distribution
+  D<-0
+  for (i in 1:length(Prob1)){
+    if (sum(Prob1[i],na.rm=TRUE)>0){D<-D+Prob1[i]*log2(Prob1[i]/(0.5*Prob1[i]+0.5*Prob2[i]))}
+    if (sum(Prob2[i],na.rm=TRUE)>0){D<-D+Prob2[i]*log2(Prob2[i]/(0.5*Prob1[i]+0.5*Prob2[i]))}
+  }
+  Dv<-(D/2)
+  return(Dv)
+}
 
 
 #' Predictability

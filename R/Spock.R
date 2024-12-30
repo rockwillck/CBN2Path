@@ -35,8 +35,8 @@ Spock = R6::R6Class("Spock", list(
   #' @return File path to tempfile.
   getPoset = function() {
     output = ""
-    if (ncol(self$poset) > 0) {
-      for (i in 1:(ncol(self$poset)-1)) {
+    if (ncol(self$poset) == 2) {
+      for (i in 1:nrow(self$poset)) {
         output = paste(output, paste(self$poset[i, 1], self$poset[i, 2]), sep = "")
         output = paste(output, "\n")
       }

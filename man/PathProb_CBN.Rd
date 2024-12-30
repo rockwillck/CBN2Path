@@ -9,7 +9,7 @@ PathProb_CBN(DAG, LAMBDA, x)
 \arguments{
 \item{DAG}{matrix representing the DAG of restrictions.}
 
-\item{LAMBDA}{the lambda values, which are produced by the CBN model. Note that LAMBDA is a column vector of size x+1 and the first row always equals 1.}
+\item{LAMBDA}{the lambda values, which are produced by the CBN model.}
 
 \item{x}{the number of mutations considered.}
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/PathwayAnalysis.R
 \name{PathProb_BCBN}
 \alias{PathProb_BCBN}
-\title{PathProb_BCBN}
+\title{PathProb_BCBN: quantifies pathway probabilities using the output of B-CBN}
 \usage{
 PathProb_BCBN(MAT)
 }
@@ -13,5 +13,5 @@ PathProb_BCBN(MAT)
 vector of probabilities assigned to a set of pathways
 }
 \description{
-PathProb_BCBN
+PathProb_BCBN: quantifies pathway probabilities using the output of B-CBN
 }

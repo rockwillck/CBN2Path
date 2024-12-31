@@ -9,7 +9,7 @@
 Spock = R6::R6Class("Spock", list(
   
   #' @field poset Poset matrix.
-  poset = matrix(),
+  poset = NULL,
   #' @field numMutations Number of mutations.
   numMutations = 0,
   #' @field genotypeMatrix Genotype matrix.
@@ -17,27 +17,40 @@ Spock = R6::R6Class("Spock", list(
   
   #' @description
   #' Create a new Spock object.
-  #' @param poset Poset matrix.
+  #' @param poset Poset matrix or list of poset matrices.
   #' @param numMutations Number of mutations.
   #' @param genotypeMatrix Genotype matrix.
   #' @return A new `Spock` object.
   initialize = function (poset, numMutations, genotypeMatrix) {
-    stopifnot(is.matrix(poset))
+    stopifnot(is.matrix(poset) || is.list(poset))
     stopifnot(is.numeric(numMutations))
     stopifnot(is.matrix(genotypeMatrix))
-    self$poset = poset
+    if (is.matrix(poset)) {
+      self$poset = list(poset)
+    } else {
+      self$poset = poset
+    }
     self$numMutations = numMutations
     self$genotypeMatrix = genotypeMatrix
   },
   
   #' @description
+  #' Get the number of posets.
+  #' @return Number of posets.
+  getSize = function() {
+    return(length(self$poset))
+  },
+  
+  #' @description
   #' Write poset data to a tempfile.
+  #' @param index Index of poset.
   #' @return File path to tempfile.
-  getPoset = function() {
+  getPoset = function(index=1) {
     output = ""
-    if (ncol(self$poset) == 2) {
-      for (i in 1:nrow(self$poset)) {
-        output = paste(output, paste(self$poset[i, 1], self$poset[i, 2]), sep = "")
+    pos = self$poset[[index]]
+    if (ncol(pos) == 2) {
+      for (i in 1:nrow(pos)) {
+        output = paste(output, paste(pos[i, 1], pos[i, 2]), sep = "")
         output = paste(output, "\n")
       }
     }

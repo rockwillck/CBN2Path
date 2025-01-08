@@ -20,43 +20,49 @@
 hcbn <- function(datasetObj,
                  anneal = FALSE,
                  temp = 0,
-                 annealing_steps = 0,
-                 outputStem = tempfile("output"))
+                 annealing_steps = 0)
 {
-  posetPath = datasetObj$getPoset()
+  outputStem = tempfile("output")
   secondPath = datasetObj$getSecond(0)
-  x = .Call(
-    "hcbn_",
-    outputStem,
-    posetPath,
-    secondPath,
-    as.integer(anneal),
-    as.double(temp),
-    as.integer(annealing_steps)
-  )
+  outputs = list()
+  for (i in 1:datasetObj$getSize()) {
+    posetPath = datasetObj$getPoset(i)
+    
+    x = .Call(
+      "hcbn_",
+      outputStem,
+      posetPath,
+      secondPath,
+      as.integer(anneal),
+      as.double(temp),
+      as.integer(annealing_steps)
+    )
   
-  splitted = unlist(strsplit(x, "/"))
+    splitted = unlist(strsplit(x, "/"))
+    
+    outDir = paste(splitted[1:(length(splitted) - 1)], collapse = "/")
+    outFiles = (filter_strings_by_start(list.files(outDir), splitted[[length(splitted)]]))
   
-  outDir = paste(splitted[1:(length(splitted) - 1)], collapse = "/")
-  outFiles = (filter_strings_by_start(list.files(outDir), splitted[[length(splitted)]]))
-  
-  outputList = list()
-  for (f in outFiles) {
-    f = paste(c(outDir, f), collapse = "/")
-    if (endsWith(f, ".poset")) {
-      outputList$poset = read_poset(substring(f, 1, nchar(f) - 6))
+    outputList = list()
+    for (f in outFiles) {
+      f = paste(c(outDir, f), collapse = "/")
+      if (endsWith(f, ".poset")) {
+        outputList$poset = read_poset(substring(f, 1, nchar(f) - 6))
+      }
+      if (endsWith(f, ".pat")) {
+        outputList$pattern = read_pattern(substring(f, 1, nchar(f) - 4))
+      }
+      if (endsWith(f, ".lambda")) {
+        outputList$lambda = read_lambda(substring(f, 1, nchar(f) - 7))
+      }
+      file.remove(f)
     }
-    if (endsWith(f, ".pat")) {
-      outputList$pattern = read_pattern(substring(f, 1, nchar(f) - 4))
-    }
-    if (endsWith(f, ".lambda")) {
-      outputList$lambda = read_lambda(substring(f, 1, nchar(f) - 7))
-    }
-    file.remove(f)
-  }
   
-  if (file.exists(paste(posetPath,"poset",sep="."))) {
-    file.remove(paste(posetPath,"poset",sep="."))
+    if (file.exists(paste(posetPath,"poset",sep="."))) {
+      file.remove(paste(posetPath,"poset",sep="."))
+    }
+    
+    outputs = append(outputs, list(outputList))
   }
   if (file.exists(paste(secondPath,"lambda",sep="."))) {
     file.remove(paste(secondPath,"lambda",sep="."))
@@ -65,5 +71,5 @@ hcbn <- function(datasetObj,
     file.remove(paste(secondPath,"pat",sep="."))
   }
   
-  return(outputList)
+  return(outputs)
 }

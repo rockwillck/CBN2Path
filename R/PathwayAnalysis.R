@@ -268,9 +268,11 @@ PathProb_BCBN<-function(MAT,x){
   Prob<-numeric(dim(PERM)[1])## pathway probabilities
   for (i in 1:dim(PERM)[1]){
     vec<-PERM[i,]
-    TEMP<-(MAT[1,(vec[1]+1)]+(10^-6))/(sum(MAT[2:5,(vec[1]+1)])+(3*10^-6))
+    Normlz<-(sum(MAT[2:5,(vec[1]+1)])+(3*10^-6))
+    TEMP<-(MAT[1,(vec[1]+1)]+(10^-6))/Normlz
     for (j in 1:(x-1)){
-      TEMP<-TEMP*(MAT[(vec[j]+1),(vec[(j+1)]+1)]+(10^-6))/(sum(MAT[setdiff(2:5,(vec[j]+1)),(vec[1]+1)])+(3*10^-6));
+      Normlz<-(sum(MAT[setdiff(2:5,(vec[j]+1)),(vec[1]+1)])+(3*10^-6))
+      TEMP<-TEMP*(MAT[(vec[j]+1),(vec[(j+1)]+1)]+(10^-6))/Normlz;
     }
     Prob[i]<-TEMP
   }

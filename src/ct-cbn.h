@@ -2465,8 +2465,8 @@ int compare_violation_pairs (const void *A, const void *B)
   int* b = *(int**) B;
 
   // random tie breaking:
-  double da = (double) a[2] + rand();
-  double db = (double) b[2] + rand();
+  double da = (double) a[2] + (double) rand() / (double) RAND_MAX;
+  double db = (double) b[2] + (double) rand() / (double) RAND_MAX;
 
   return (da - db);
 }
@@ -2641,7 +2641,6 @@ void compatibility(data* D, int N_u, model* M)
 
 char* select_poset(int k, double eps, model* M, double* lambda, data* D, int N_u, int R, int mode, int print)
 {
-
   double loglik = 0.0;
   double alpha;  // mixing parameter, fraction of compatible genotypes
 
@@ -2729,7 +2728,7 @@ double try_edge(model* M, model* M2, data* D, int N_u, double* lambda, double* e
 
   /* Draw n^2 random numbers */
   for (i=0;i<n*n;i++)
-    R5[i] = rand();
+    R5[i] = (double) rand() / (double) RAND_MAX;
 
   /* Sort to generate integers */
   for (i=0;i<n*n;i++)
@@ -2919,7 +2918,7 @@ double try_edge(model* M, model* M2, data* D, int N_u, double* lambda, double* e
     if (alpha_all[R1-1][R2-1] < alpha)
     {
       boltz = exp( (alpha_all[R1-1][R2-1] - alpha ) / 0.05 );
-      R3 = rand();
+      R3 = (double) rand() / (double) RAND_MAX;
       if (R3 > boltz)
         reject = 1;
     }
@@ -2997,7 +2996,7 @@ double try_edge(model* M, model* M2, data* D, int N_u, double* lambda, double* e
       else // Accept decreasing Loglik with Boltzmann weight
       {
         boltz = exp( (loglik_new - loglik ) / T );
-        R3 = rand();
+        R3 = (double) rand() / (double) RAND_MAX;
         // printf(" e^{-dL/T}=%f\tR=%f\n", boltz, R3);
         if ( R3 < boltz )
         {

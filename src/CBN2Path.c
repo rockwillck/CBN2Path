@@ -69,6 +69,7 @@ SEXP ctcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP mb, SEXP bs, SEXP rs, SEXP sr, SE
   double eps = REAL(epsilon)[0];                         // e
   int R = INTEGER(emr)[0];                                // # of EM runs
   double S = REAL(sr)[0];                           // sampling rate \lambda_s
+  // unsigned int seed = (unsigned) time(NULL);  // r, random seed
   unsigned int seed = (unsigned) INTEGER(rs)[0]; // r, random seed
   int verbose = 0;
   int N_draw = INTEGER(nd)[0]; // # of samples to draw
@@ -83,7 +84,7 @@ SEXP ctcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP mb, SEXP bs, SEXP rs, SEXP sr, SE
   char* output;
   
   // // no epsilon provided from R
-  if (eps >= 1.0) {
+  if (eps > 1.0) {
     e_flag = 0;
     eps = 0.0;
   } else {
@@ -116,10 +117,12 @@ SEXP ctcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP mb, SEXP bs, SEXP rs, SEXP sr, SE
   }
   else
   {
-    if (e_flag)
+    if (e_flag) {
       mode = LEARN_BOTH;
-    else
+    }
+    else {
       mode = LEARN_PARAM;
+    }
   }
 
   srand(seed);
@@ -130,7 +133,7 @@ SEXP ctcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP mb, SEXP bs, SEXP rs, SEXP sr, SE
 
   model M;
   read_poset(filestem1, &M);
-
+  
   // precompute binary expansions
   precompute_binary(M.n+1);
 
@@ -143,11 +146,11 @@ SEXP ctcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP mb, SEXP bs, SEXP rs, SEXP sr, SE
   {
     int N, N_u;
     int **pat = read_patterns(filestem2, &N, M.n);
-  int *pat_idx = get_int_array(N);
-  data *D = make_data_set(pat, N, M.n, &N_u, pat_idx);
-  for (k = 0; k < N; k++)
-    free(pat[k]);
-  free(pat);
+    int *pat_idx = get_int_array(N);
+    data *D = make_data_set(pat, N, M.n, &N_u, pat_idx);
+    for (k = 0; k < N; k++)
+      free(pat[k]);
+    free(pat);
   
     if (eps >= 0.0) // fixed epsilon
     {
@@ -163,7 +166,7 @@ SEXP ctcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP mb, SEXP bs, SEXP rs, SEXP sr, SE
       // bootstrap runs:
       double *p_orig = get_double_array(N_u); // frequencies of original data
       for (k = 0; k < N_u; k++)
-        p_orig[k] = (double)D[k].count;
+        p_orig[k] = (double) D[k].count;
 
       int **bootstrap_count = get_int_matrix(M.n + 1, M.n + 1);       // all relations
       int **bootstrap_cover_count = get_int_matrix(M.n + 1, M.n + 1); // cover relations only

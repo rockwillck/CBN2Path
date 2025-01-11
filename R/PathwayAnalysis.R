@@ -1,5 +1,5 @@
 
-
+##############################################################################################################
 #' combinations
 #'
 #' @param n total number of elements in the set
@@ -263,7 +263,7 @@ PathProb_CBN<-function(DAG,LAMBDA,x){
 PathProb_BCBN<-function(MAT,x){
   ### Step1: Enumerating all potential pathways
   PERM<-permutations(x,x)## all x! possible permutations (mutational pathways)
-
+  
   ### Step2: Quantifying pathway probabilities
   Prob<-numeric(dim(PERM)[1])## pathway probabilities
   for (i in 1:dim(PERM)[1]){
@@ -298,18 +298,18 @@ Pathway_Feasibility<-function(DAG,x){
   vec<-numeric(P)+1
   if (D>0){
     for (i in 1:P){
-     for (j in 1:D){
-       a1<-DAG[j,1]
-       a2<-DAG[j,2]
-       b1<-which(PERM[i,]==a1)
-       b2<-which(PERM[i,]==a2)
-       if (b2<b1){vec[i]<-0}
-     } 
+      for (j in 1:D){
+        a1<-DAG[j,1]
+        a2<-DAG[j,2]
+        b1<-which(PERM[i,]==a1)
+        b2<-which(PERM[i,]==a2)
+        if (b2<b1){vec[i]<-0}
+      } 
     }
   }
   return(vec)
 }
-  
+
 
 
 #' Jensen_Shannon_Divergence
@@ -353,14 +353,19 @@ Predictability<-function(Prob,x){
   Pred=1-(TOT/log(factorial(x)))## computing the predictability
   return(Pred)
 }
-  
 
 
 
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
+
 
 
 

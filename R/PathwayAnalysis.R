@@ -260,18 +260,17 @@ PathProb_CBN<-function(DAG,LAMBDA,x){
 #' @export
 #'
 #' @examples
-PathProb_BCBN<-function(MAT){
+PathProb_BCBN<-function(MAT,x){
   ### Step1: Enumerating all potential pathways
-  x<-dim(MAT)[1]  
   PERM<-permutations(x,x)## all x! possible permutations (mutational pathways)
 
   ### Step2: Quantifying pathway probabilities
   Prob<-numeric(dim(PERM)[1])## pathway probabilities
   for (i in 1:dim(PERM)[1]){
-    TEMP<-1
     vec<-PERM[i,]
+    TEMP<-(MAT[1,(vec[1]+1)]+(10^-6))/(sum(MAT[2:5,(vec[1]+1)])+(3*10^-6))
     for (j in 1:(x-1)){
-      TEMP<-TEMP*MAT[vec[j],vec[(j+1)]];
+      TEMP<-TEMP*(MAT[(vec[j]+1),(vec[(j+1)]+1)]+(10^-6))/(sum(MAT[setdiff(2:5,(vec[j]+1)),(vec[1]+1)])+(3*10^-6));
     }
     Prob[i]<-TEMP
   }
@@ -329,6 +328,8 @@ Jensen_Shannon_Divergence<-function(Prob1,Prob2){
   for (i in 1:length(Prob1)){
     if (sum(Prob1[i],na.rm=TRUE)>0){D<-D+Prob1[i]*log2(Prob1[i]/(0.5*Prob1[i]+0.5*Prob2[i]))}
     if (sum(Prob2[i],na.rm=TRUE)>0){D<-D+Prob2[i]*log2(Prob2[i]/(0.5*Prob1[i]+0.5*Prob2[i]))}
+    #if (Prob1[i]>0){D<-D+Prob1[i]*log2(Prob1[i]/(0.5*Prob1[i]+0.5*Prob2[i]))}
+    #if (Prob2[i]>0){D<-D+Prob2[i]*log2(Prob2[i]/(0.5*Prob1[i]+0.5*Prob2[i]))}
   }
   Dv<-(D/2)
   return(Dv)

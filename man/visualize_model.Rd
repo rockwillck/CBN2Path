@@ -9,7 +9,7 @@ visualize_model(
   selectNodes = NULL,
   nGenes = 4,
   lowColor = "lightblue",
-  highColor = "pink"
+  highColor = "blue"
 )
 }
 \arguments{

@@ -36,7 +36,7 @@ toBin <- function(n, nG) {
 # 
 #' COLintensity<-c(0,rep(0.25,4),rep(0.5,6),rep(0.75,4),1)
 #' visualize_model(COLintensity)
-visualize_model <- function(fitness, selectNodes = NULL, nGenes = 4, lowColor = "lightblue", highColor = "pink") {
+visualize_model <- function(fitness, selectNodes = NULL, nGenes = 4, lowColor = "lightblue", highColor = "blue") {
   allStrings = lapply(0:(2^nGenes - 1), function(x) toBin(x, nGenes))
   
   count_ones <- function(s) sum(unlist(gregexpr("1", s)) > 0)

@@ -49,5 +49,5 @@ Genotypes<-c(
 "1111"
 )
 COLintensity<-c(0,rep(0.25,4),rep(0.5,6),rep(0.75,4),1)
-visualize(COLintensity)
+visualize_model(COLintensity)
 }

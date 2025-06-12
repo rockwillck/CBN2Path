@@ -114,6 +114,5 @@ visualize_model <- function(fitness, selectNodes = NULL, nGenes = 4, lowColor = 
       legend.title.align = 0.5,
       legend.title.position = "top"
     ) +
-    ggtitle("Fitness Landscape") +
-    theme(plot.title = element_text(hjust = 0.5))
+    ggtitle("Fitness Landscape")
 }

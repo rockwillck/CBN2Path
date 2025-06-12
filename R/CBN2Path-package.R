@@ -2,6 +2,8 @@
 "_PACKAGE"
 
 ## usethis namespace: start
+#' @importFrom ggraph aes
+#' @importFrom ggraph element_text
 #' @importFrom ggraph geom_edge_link
 #' @importFrom ggraph geom_node_point
 #' @importFrom ggraph geom_node_text

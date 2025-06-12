@@ -13,5 +13,8 @@ Imports:
     R6,
     rBCBN,
     foreach,
-    doMC
+    doMC,
+    ggraph,
+    tidygraph,
+    ggplot2
 Remotes: rockwillck/rBCBN

@@ -24,6 +24,7 @@ Use the read_ methods to feed data from files.
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-Spock-new}{\code{Spock$new()}}
+\item \href{#method-Spock-getSize}{\code{Spock$getSize()}}
 \item \href{#method-Spock-getPoset}{\code{Spock$getPoset()}}
 \item \href{#method-Spock-getSecond}{\code{Spock$getSecond()}}
 \item \href{#method-Spock-getPattern}{\code{Spock$getPattern()}}
@@ -43,7 +44,7 @@ Create a new Spock object.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{poset}}{Poset matrix.}
+\item{\code{poset}}{Poset matrix or list of poset matrices.}
 
 \item{\code{numMutations}}{Number of mutations.}
 
@@ -56,14 +57,34 @@ A new \code{Spock} object.
 }
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Spock-getSize"></a>}}
+\if{latex}{\out{\hypertarget{method-Spock-getSize}{}}}
+\subsection{Method \code{getSize()}}{
+Get the number of posets.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Spock$getSize()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+Number of posets.
+}
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Spock-getPoset"></a>}}
 \if{latex}{\out{\hypertarget{method-Spock-getPoset}{}}}
 \subsection{Method \code{getPoset()}}{
 Write poset data to a tempfile.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Spock$getPoset()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Spock$getPoset(index = 1)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{index}}{Index of poset.}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 File path to tempfile.
 }

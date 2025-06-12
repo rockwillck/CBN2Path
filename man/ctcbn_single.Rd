@@ -8,7 +8,7 @@ ctcbn_single(
   dataset,
   bootstrap_mode = FALSE,
   bootstrap_samples = 0,
-  random_seed = 0,
+  random_seed = 1,
   sampling_rate = 1,
   epsilon = 2,
   num_drawn_samples = 0,

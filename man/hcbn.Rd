@@ -4,13 +4,7 @@
 \alias{hcbn}
 \title{H-CBN}
 \usage{
-hcbn(
-  datasetObj,
-  anneal = FALSE,
-  temp = 0,
-  annealing_steps = 0,
-  outputStem = tempfile("output")
-)
+hcbn(datasetObj, anneal = FALSE, temp = 0, annealing_steps = 0)
 }
 \arguments{
 \item{datasetObj}{\code{Spock} object with poset and pattern/lambda data.}

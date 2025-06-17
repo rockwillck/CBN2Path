@@ -16,5 +16,8 @@ Imports:
     doMC,
     ggraph,
     tidygraph,
-    ggplot2
+    ggplot2,
+    patchwork,
+    cowplot,
+    magrittr
 Remotes: rockwillck/rBCBN

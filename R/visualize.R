@@ -33,14 +33,21 @@ toBin <- function(n, nG) {
 #' "0111",
 #' "1111"
 #' )
-# 
+#
 #' COLintensity<-c(0,rep(0.25,4),rep(0.5,6),rep(0.75,4),1)
 #' visualize_fitness_landscape(COLintensity)
-visualize_fitness_landscape <- function(fitness, selectNodes = NULL, nGenes = 4, lowColor = "lightblue", highColor = "blue") {
-  allStrings = lapply(0:(2^nGenes - 1), function(x) toBin(x, nGenes))
+visualize_fitness_landscape <- function(fitness,
+                                        selectNodes = NULL,
+                                        nGenes = 4,
+                                        lowColor = "lightblue",
+                                        highColor = "blue") {
+  allStrings = lapply(0:(2 ^ nGenes - 1), function(x)
+    toBin(x, nGenes))
   
-  count_ones = function(s) sum(unlist(gregexpr("1", s)) > 0)
-  getColumn = function(num) rev(allStrings[sapply(allStrings, count_ones) == num])
+  count_ones = function(s)
+    sum(unlist(gregexpr("1", s)) > 0)
+  getColumn = function(num)
+    rev(allStrings[sapply(allStrings, count_ones) == num])
   columns = lapply(0:nGenes, getColumn)
   
   # Construct edges
@@ -49,7 +56,9 @@ visualize_fitness_landscape <- function(fitness, selectNodes = NULL, nGenes = 4,
     for (j in (i + 1):length(allStrings)) {
       node1 = allStrings[[i]]
       node2 = allStrings[[j]]
-      if (sum(strsplit(node1, NULL)[[1]] != strsplit(node2, NULL)[[1]]) == 1 & ((node1 %in% selectNodes & node2 %in% selectNodes) || is.null(selectNodes))) {
+      if (sum(strsplit(node1, NULL)[[1]] != strsplit(node2, NULL)[[1]]) == 1 &
+          ((node1 %in% selectNodes &
+            node2 %in% selectNodes) || is.null(selectNodes))) {
         edges = append(edges, list(c(node1, node2)))
       }
     }
@@ -97,16 +106,32 @@ visualize_fitness_landscape <- function(fitness, selectNodes = NULL, nGenes = 4,
   edge_df = do.call(rbind, edges)
   colnames(edge_df) = c("from", "to")
   edge_df = as.data.frame(edge_df, stringsAsFactors = FALSE)
-
+  
   # Create tidygraph object
-  g_tbl = tbl_graph(nodes = layout_df, edges = edge_df, directed = FALSE)
+  g_tbl = tbl_graph(nodes = layout_df,
+                    edges = edge_df,
+                    directed = FALSE)
   
   # Plot with ggraph
-  ggraph(g_tbl, layout = "manual", x = x, y = y) +
+  ggraph(g_tbl,
+         layout = "manual",
+         x = x,
+         y = y) +
     geom_edge_link(color = "black") +
-    geom_node_point(aes(fill = fitness), shape = 21, size = 12, stroke = 0.3, color="black") +
+    geom_node_point(
+      aes(fill = fitness),
+      shape = 21,
+      size = 12,
+      stroke = 0.3,
+      color = "black"
+    ) +
     geom_node_text(aes(label = name), size = 3) +
-    scale_fill_gradient(low = lowColor, high = highColor, na.value = "white", name = "Fitness") +
+    scale_fill_gradient(
+      low = lowColor,
+      high = highColor,
+      na.value = "white",
+      name = "Fitness"
+    ) +
     theme_void() +
     theme(
       plot.title = element_text(hjust = 0.5),
@@ -121,26 +146,38 @@ visualize_fitness_landscape <- function(fitness, selectNodes = NULL, nGenes = 4,
 #' @param poset Poset object to visualize
 #' @param nodeColor Color of nodes in resulting graph
 #'
-#' @return Plot (gg object) visualization of CBN model 
+#' @return Plot (gg object) visualization of CBN model
 #' @export
 #'
 #' @examples
 #' poset = read_poset(get_examples()[1])
 #' visualize_cbn_model(poset)
 visualize_cbn_model <- function(poset, nodeColor = "darkgreen") {
-  nodes = data.frame(name=sort(unlist(unique(as.list(poset[[2]])))))
+  nodes = data.frame(name = sort(unlist(unique(as.list(
+    poset[[2]]
+  )))))
   edges = as.data.frame(poset[[2]])
   colnames(edges) = c("from", "to")
   
-  g_tbl = tbl_graph(nodes = nodes, edges = edges, directed = TRUE)
+  g_tbl = tbl_graph(nodes = nodes,
+                    edges = edges,
+                    directed = TRUE)
   ggraph(g_tbl) +
-    geom_edge_link(colour = "black", arrow = arrow(length = unit(2, 'mm')), end_cap = circle(3, 'mm')) + 
-    geom_node_point(fill = nodeColor, shape = 21, size = 6, stroke = 0.3, color="black") + 
+    geom_edge_link(
+      colour = "black",
+      arrow = arrow(length = unit(2, 'mm')),
+      end_cap = circle(3, 'mm')
+    ) +
+    geom_node_point(
+      fill = nodeColor,
+      shape = 21,
+      size = 6,
+      stroke = 0.3,
+      color = "black"
+    ) +
     geom_node_text(aes(label = name), color = "white", size = 3) +
     theme_void() +
-    theme(
-      plot.title = element_text(hjust = 0.5)
-    ) +
+    theme(plot.title = element_text(hjust = 0.5)) +
     ggtitle("CBN Model")
 }
 
@@ -169,21 +206,58 @@ generate_gg_text <- function(text, bg) {
 }
 
 generate_geom_node_point <- function(gra, fill, color, name) {
-  gra +
+  node_names = gra %>%
+    activate(nodes) %>%
+    pull(name)
+  if (length(fill) > 1) {
+    color = c(NA, rep(color, length(fill)), NA)
+    strokes = c(NA, rep(0.3, length(fill)), NA)
+    fill = c(NA, fill, NA)
+  }
+  variable_cap_size(gra, rep(2, length(node_names))) +
     geom_node_point(
       fill = fill,
       shape = 21,
       size = 6,
-      stroke = 0.3
+      stroke = strokes
     ) +
     geom_node_text(aes(label = name), color = color, size = 3)
 }
 
 generate_geom_node_text <- function(gra, color, name) {
-  gra + geom_node_text(aes(label = name),
-                       color = color,
-                       size = 3,
-                       family = "serif")
+  node_names = gra %>%
+    activate(nodes) %>%
+    pull(name)
+  if (length(color) > 1) {
+    color = c(NA, color, NA)
+  }
+  variable_cap_size(gra, nchar(node_names)) +
+    geom_node_text(aes(label = name), color = color, size = 3)
+}
+
+variable_cap_size <- function(g_tbl, node_sizes) {
+  g_tbl = g_tbl %>%
+    activate(edges) %>%
+    mutate(cap_size = 1:gsize(g_tbl))
+  
+  graph = ggraph(g_tbl,
+                 layout = "manual",
+                 x = x,
+                 y = y) + theme_void()
+  
+  for (i in 2:(gsize(g_tbl) - 1)) {
+    filter_expr = call2("==", sym("cap_size"), i)
+    
+    graph = graph + geom_edge_link(
+      aes(filter = !!filter_expr),
+      colour = "black",
+      arrow = arrow(length = unit(2, 'mm')),
+      end_cap = circle(node_sizes[[i + 1]] + 2, 'mm'),
+      start_cap = circle(node_sizes[[i]] + 2, 'mm')
+    )
+  }
+  
+  graph
 }
 
 #' Visualize Pathway Probabilities
@@ -199,9 +273,9 @@ generate_geom_node_text <- function(gra, color, name) {
 #'
 #' @examples
 #' visualize_probabilities(c(0.05, 0.03, 0.12, 0.04, 0.02, 0, 0.05, 0.04, 0.05, 0.06, 0.04, 0.02, 0.03, 0.02, 0.05, 0.03, 0.01, 0.09, 0.06, 0.04, 0, 0.08, 0.05, 0.02))
-#' 
+#'
 #' visualize_probabilities(c(0.05, 0.03, 0.12, 0.04, 0.02, 0, 0.05, 0.04, 0.05, 0.06, 0.04, 0.02, 0.03, 0.02, 0.05, 0.03, 0.01, 0.09, 0.06, 0.04, 0, 0.08, 0.05, 0.02), geneNames = c("AAAA", "BBBB", "CCCC", "DDDD"))
-#' 
+#'
 #' mat = matrix(c(0.1, 0.3, 0, 0.2, 0.4, 0, 0.2, 0.2, 0.1, 0, 0.2, 0.3), ncol = 2)
 #' visualize_probabilities(mat, columnTitles = c("Pi[i]", "Pathways", "Model1", "Model2"))
 visualize_probabilities <- function(probabilities,
@@ -227,26 +301,32 @@ visualize_probabilities <- function(probabilities,
   if (numCol == 1) {
     perms = perms[order(probabilities, decreasing = TRUE), ]
     labels = labels[order(probabilities, decreasing = TRUE)]
-    probabilities = matrix(sort(probabilities, decreasing = TRUE), ncol =
-                             1)
+    probabilities = matrix(sort(probabilities, decreasing = TRUE), ncol = 1)
   }
   
-  generate_row <- function(row) {
+  generate_row <- function(row, padding = FALSE) {
     row = unlist(lapply(row, function(x) {
       geneNames[[x]]
     }))
-    nodes = data.frame(name = row,
-                       x = 1:length(row),
-                       y = rep(0, length(row)))
+    if (padding) {
+      row = c(" " , row, " ")
+      nodes = data.frame(
+        name = row,
+        x = c(0, 0.1:(length(row) - 2), length(row) - 2.8),
+        y = rep(0, length(row))
+      )
+    } else {
+      nodes = data.frame(
+        name = row,
+        x = 1:length(row),
+        y = rep(0, length(row))
+      )
+    }
     edges = data.frame(from = row[-length(row)], to = row[-1])
     
-    g_tbl = tbl_graph(nodes = nodes,
-                      edges = edges,
-                      directed = TRUE)
-    ggraph(g_tbl,
-           layout = "manual",
-           x = x,
-           y = y)
+    tbl_graph(nodes = nodes,
+              edges = edges,
+              directed = TRUE)
   }
   
   elements = vector("list", (factorial(pathway_length) + 1) * (2 + numCol))
@@ -266,14 +346,7 @@ visualize_probabilities <- function(probabilities,
     
     elements[[(i) * (2 + numCol) + 1]] = generate_gg_text(labels[[i]], bg_col)
     
-    gra = generate_row(perms[i, ]) +
-      geom_edge_link(
-        colour = "black",
-        arrow = arrow(length = unit(2, 'mm')),
-        end_cap = circle(6, 'mm'),
-        start_cap = circle(6, 'mm')
-      ) +
-      theme_void()
+    gra = generate_row(perms[i, ], TRUE)
     
     if (all(unlist(lapply(as.list(geneNames), function(x) {
       nchar(x) == 1
@@ -310,7 +383,8 @@ visualize_probabilities <- function(probabilities,
   
   out = wrap_plots(elements,
                    ncol = 2 + numCol,
-                   widths = c(0.5, 3 * length(pathway_length), rep(1, numCol)))
+                   widths = c(3, sum(nchar(gra$data$name)) + length(gra$data$name) *
+                                4 + 1, rep(4, numCol)))
   
   if (is.null(outputFile)) {
     plot(out)
@@ -318,8 +392,9 @@ visualize_probabilities <- function(probabilities,
     ggsave(
       outputFile,
       out,
-      width = 300 * (1 + 3 * length(pathway_length) + numCol),
-      height = 25 * length(perms),
+      width = 40 * (3 + sum(nchar(gra$data$name)) + length(gra$data$name) *
+                      4 + 1 + 4 * numCol),
+      height = 33 * length(perms),
       limitsize = FALSE,
       units = "px"
     )

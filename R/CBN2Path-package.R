@@ -21,8 +21,14 @@
 #' @importFrom ggraph geom_node_point
 #' @importFrom ggraph geom_node_text
 #' @importFrom ggraph ggraph
+#' @importFrom igraph gsize
 #' @importFrom magrittr %>%
 #' @importFrom patchwork wrap_plots
+#' @importFrom rlang call2
+#' @importFrom rlang sym
+#' @importFrom tidygraph activate
+#' @importFrom tidygraph mutate
+#' @importFrom tidygraph pull
 #' @importFrom tidygraph tbl_graph
 ## usethis namespace: end
 NULL

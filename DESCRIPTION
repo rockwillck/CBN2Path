@@ -19,5 +19,7 @@ Imports:
     ggplot2,
     patchwork,
     cowplot,
-    magrittr
+    magrittr,
+    igraph,
+    rlang
 Remotes: rockwillck/rBCBN

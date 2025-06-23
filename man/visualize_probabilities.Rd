@@ -9,7 +9,7 @@ visualize_probabilities(
   outputFile = NULL,
   geneNames = as.character(1:inverse_factorial(length(probabilities))),
   geneColors = rainbow(length(geneNames), v = 0.5),
-  columnTitles = NULL
+  columnTitles = FALSE
 )
 }
 \arguments{
@@ -21,7 +21,7 @@ visualize_probabilities(
 
 \item{geneColors}{Gene colors}
 
-\item{columnTitles}{Column titles; if NULL, no heading is rendered}
+\item{columnTitles}{Include column titles}
 }
 \value{
 Plot or file name
@@ -35,5 +35,5 @@ visualize_probabilities(c(0.05, 0.03, 0.12, 0.04, 0.02, 0, 0.05, 0.04, 0.05, 0.0
 visualize_probabilities(c(0.05, 0.03, 0.12, 0.04, 0.02, 0, 0.05, 0.04, 0.05, 0.06, 0.04, 0.02, 0.03, 0.02, 0.05, 0.03, 0.01, 0.09, 0.06, 0.04, 0, 0.08, 0.05, 0.02), geneNames = c("AAAA", "BBBB", "CCCC", "DDDD"))
 
 mat = matrix(c(0.1, 0.3, 0, 0.2, 0.4, 0, 0.2, 0.2, 0.1, 0, 0.2, 0.3), ncol = 2)
-visualize_probabilities(mat, columnTitles = c("Pi[i]", "Pathways", "Model1", "Model2"))
+visualize_probabilities(mat, columnTitles = TRUE)
 }

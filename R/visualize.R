@@ -266,7 +266,7 @@ variable_cap_size <- function(g_tbl, node_sizes) {
 #' @param outputFile File to output to; if none provided, a plot will be returned
 #' @param geneNames Gene names; if single character, rendered in circles
 #' @param geneColors Gene colors
-#' @param columnTitles Column titles; if NULL, no heading is rendered
+#' @param columnTitles Include column titles
 #'
 #' @return Plot or file name
 #' @export
@@ -277,12 +277,12 @@ variable_cap_size <- function(g_tbl, node_sizes) {
 #' visualize_probabilities(c(0.05, 0.03, 0.12, 0.04, 0.02, 0, 0.05, 0.04, 0.05, 0.06, 0.04, 0.02, 0.03, 0.02, 0.05, 0.03, 0.01, 0.09, 0.06, 0.04, 0, 0.08, 0.05, 0.02), geneNames = c("AAAA", "BBBB", "CCCC", "DDDD"))
 #'
 #' mat = matrix(c(0.1, 0.3, 0, 0.2, 0.4, 0, 0.2, 0.2, 0.1, 0, 0.2, 0.3), ncol = 2)
-#' visualize_probabilities(mat, columnTitles = c("Pi[i]", "Pathways", "Model1", "Model2"))
+#' visualize_probabilities(mat, columnTitles = TRUE)
 visualize_probabilities <- function(probabilities,
                                     outputFile = NULL,
                                     geneNames = as.character(1:inverse_factorial(length(probabilities))),
                                     geneColors = rainbow(length(geneNames), v = 0.5),
-                                    columnTitles = NULL) {
+                                    columnTitles = FALSE) {
   numCol = 1
   if (!is.matrix(probabilities)) {
     probabilities = matrix(probabilities, ncol = 1)
@@ -300,7 +300,7 @@ visualize_probabilities <- function(probabilities,
   labels = sprintf("Pi[%d]", 1:length(probabilities))
   if (numCol == 1) {
     perms = perms[order(probabilities, decreasing = TRUE), ]
-    labels = labels[order(probabilities, decreasing = TRUE)]
+    # labels = labels[order(probabilities, decreasing = TRUE)]
     probabilities = matrix(sort(probabilities, decreasing = TRUE), ncol = 1)
   }
   
@@ -331,10 +331,12 @@ visualize_probabilities <- function(probabilities,
   
   elements = vector("list", (factorial(pathway_length) + 1) * (2 + numCol))
   
-  if (!is.null(columnTitles)) {
-    for (i in 1:length(columnTitles)) {
-      elements[[i]] = generate_gg_text(columnTitles[[i]], "lightgray")
+  if (columnTitles) {
+    elements[[1]] = generate_gg_text("Pi[i]", "lightgray")
+    for (i in 1:numCol) {
+      elements[[2+i]] = generate_gg_text(sprintf("P[%d](pi)", i), "lightgray")
     }
+    elements[[2]] = generate_gg_text("Pathways", "lightgray")
   }
   
   for (i in 1:factorial(pathway_length)) {
@@ -377,7 +379,7 @@ visualize_probabilities <- function(probabilities,
     }
   }
   
-  if (is.null(columnTitles)) {
+  if (!columnTitles) {
     elements = elements[-(1:(2 + numCol))]
   }
   

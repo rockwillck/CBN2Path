@@ -213,6 +213,9 @@ generate_geom_node_point <- function(gra, fill, color, name) {
     color = c(NA, rep(color, length(fill)), NA)
     strokes = c(NA, rep(0.3, length(fill)), NA)
     fill = c(NA, fill, NA)
+  } else {
+    strokes = c(NA, rep(0.3, length(node_names) - 2), NA)
+    fill = c(NA, rep(fill, length(node_names) - 2), NA)
   }
   variable_cap_size(gra, rep(2, length(node_names))) +
     geom_node_point(
@@ -385,7 +388,7 @@ visualize_probabilities <- function(probabilities,
   
   out = wrap_plots(elements,
                    ncol = 2 + numCol,
-                   widths = c(3, (sum(nchar(gra$data$name)) + length(gra$data$name) * 4)/1.5, rep(4, numCol)))
+                   widths = c(3, sum(nchar(gra$data$name)) + length(gra$data$name)*1.8, rep(4, numCol)))
   
   if (is.null(outputFile)) {
     plot(out)
@@ -393,7 +396,7 @@ visualize_probabilities <- function(probabilities,
     ggsave(
       outputFile,
       out,
-      width = 40 * (3 + (sum(nchar(gra$data$name)) + length(gra$data$name) * 4)/1.5 + 4 * numCol),
+      width = 40 * (3 + sum(nchar(gra$data$name)) + length(gra$data$name)*1.8 + 4 * numCol),
       height = 33 * length(perms),
       limitsize = FALSE,
       units = "px"

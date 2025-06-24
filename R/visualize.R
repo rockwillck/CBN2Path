@@ -282,7 +282,7 @@ visualize_probabilities <- function(probabilities,
                                     outputFile = NULL,
                                     geneNames = as.character(1:inverse_factorial(length(probabilities))),
                                     geneColors = rainbow(length(geneNames), v = 0.5),
-                                    columnTitles = FALSE) {
+                                    columnTitles = TRUE) {
   numCol = 1
   if (!is.matrix(probabilities)) {
     probabilities = matrix(probabilities, ncol = 1)
@@ -332,9 +332,9 @@ visualize_probabilities <- function(probabilities,
   elements = vector("list", (factorial(pathway_length) + 1) * (2 + numCol))
   
   if (columnTitles) {
-    elements[[1]] = generate_gg_text("Pi[i]", "lightgray")
+    elements[[1]] = generate_gg_text("pi", "lightgray")
     for (i in 1:numCol) {
-      elements[[2+i]] = generate_gg_text(sprintf("P[%d](pi)", i), "lightgray")
+      elements[[2+i]] = generate_gg_text("P(pi)", "lightgray")
     }
     elements[[2]] = generate_gg_text("Pathways", "lightgray")
   }
@@ -385,8 +385,7 @@ visualize_probabilities <- function(probabilities,
   
   out = wrap_plots(elements,
                    ncol = 2 + numCol,
-                   widths = c(3, sum(nchar(gra$data$name)) + length(gra$data$name) *
-                                4 + 1, rep(4, numCol)))
+                   widths = c(3, (sum(nchar(gra$data$name)) + length(gra$data$name) * 4)/1.5, rep(4, numCol)))
   
   if (is.null(outputFile)) {
     plot(out)
@@ -394,8 +393,7 @@ visualize_probabilities <- function(probabilities,
     ggsave(
       outputFile,
       out,
-      width = 40 * (3 + sum(nchar(gra$data$name)) + length(gra$data$name) *
-                      4 + 1 + 4 * numCol),
+      width = 40 * (3 + (sum(nchar(gra$data$name)) + length(gra$data$name) * 4)/1.5 + 4 * numCol),
       height = 33 * length(perms),
       limitsize = FALSE,
       units = "px"

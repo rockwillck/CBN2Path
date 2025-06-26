@@ -165,8 +165,8 @@ visualize_cbn_model <- function(poset, nodeColor = "darkgreen") {
   ggraph(g_tbl) +
     geom_edge_link(
       colour = "black",
-      arrow = arrow(length = unit(2, 'mm')),
-      end_cap = circle(3, 'mm')
+      arrow = arrow(length = unit(5, 'pt')),
+      end_cap = circle(8, 'pt')
     ) +
     geom_node_point(
       fill = nodeColor,
@@ -217,7 +217,7 @@ generate_geom_node_point <- function(gra, fill, color, name) {
     strokes = c(NA, rep(0.3, length(node_names) - 2), NA)
     fill = c(NA, rep(fill, length(node_names) - 2), NA)
   }
-  variable_cap_size(gra, rep(2, length(node_names))) +
+  variable_cap_size(gra, rep(4, length(node_names))) +
     geom_node_point(
       fill = fill,
       shape = 21,
@@ -234,7 +234,7 @@ generate_geom_node_text <- function(gra, color, name) {
   if (length(color) > 1) {
     color = c(NA, color, NA)
   }
-  variable_cap_size(gra, nchar(node_names)) +
+  variable_cap_size(gra, rep(max(nchar(node_names))*3, length(node_names))) +
     geom_node_text(aes(label = name), color = color, size = 3)
 }
 
@@ -254,13 +254,17 @@ variable_cap_size <- function(g_tbl, node_sizes) {
     graph = graph + geom_edge_link(
       aes(filter = !!filter_expr),
       colour = "black",
-      arrow = arrow(length = unit(2, 'mm')),
-      end_cap = circle(node_sizes[[i + 1]] + 2, 'mm'),
-      start_cap = circle(node_sizes[[i]] + 2, 'mm')
+      arrow = arrow(length = unit(5, 'pt')),
+      end_cap = circle(node_sizes[[i + 1]] + 5, 'pt'),
+      start_cap = circle(node_sizes[[i]] + 5, 'pt')
     )
   }
   
   graph
+}
+
+pt_to_mm <- function(pts) {
+  pts / 2.83465
 }
 
 #' Visualize Pathway Probabilities
@@ -311,11 +315,20 @@ visualize_probabilities <- function(probabilities,
     row = unlist(lapply(row, function(x) {
       geneNames[[x]]
     }))
+    width_middle = length(row)
     if (padding) {
       row = c(" " , row, " ")
+      x_coord = c(0, 15)
+      for (i in 1:(length(row) - 3)) {
+        current_x = x_coord[[i + 1]]
+        diff = max(nchar(row))*3 + 10 + 20
+        x_coord = c(x_coord, current_x + diff)
+      }
+      x_coord = c(x_coord, x_coord[[length(row) - 1]] + 15)
+      width_middle = x_coord[[length(x_coord) - 1]]
       nodes = data.frame(
         name = row,
-        x = c(0, 0.1:(length(row) - 2), length(row) - 2.8),
+        x = x_coord,
         y = rep(0, length(row))
       )
     } else {
@@ -327,9 +340,9 @@ visualize_probabilities <- function(probabilities,
     }
     edges = data.frame(from = row[-length(row)], to = row[-1])
     
-    tbl_graph(nodes = nodes,
+    list(tbl_graph(nodes = nodes,
               edges = edges,
-              directed = TRUE)
+              directed = TRUE), width_middle)
   }
   
   elements = vector("list", (factorial(pathway_length) + 1) * (2 + numCol))
@@ -351,7 +364,9 @@ visualize_probabilities <- function(probabilities,
     
     elements[[(i) * (2 + numCol) + 1]] = generate_gg_text(labels[[i]], bg_col)
     
-    gra = generate_row(perms[i, ], TRUE)
+    gen_row = generate_row(perms[i, ], TRUE)
+    gra = gen_row[[1]]
+    width_middle = gen_row[[2]]
     
     if (all(unlist(lapply(as.list(geneNames), function(x) {
       nchar(x) == 1
@@ -388,7 +403,7 @@ visualize_probabilities <- function(probabilities,
   
   out = wrap_plots(elements,
                    ncol = 2 + numCol,
-                   widths = c(3, sum(nchar(gra$data$name)) + length(gra$data$name)*1.8, rep(4, numCol)))
+                   widths = c(24, width_middle*2, rep(32, numCol)))
   
   if (is.null(outputFile)) {
     plot(out)
@@ -396,10 +411,10 @@ visualize_probabilities <- function(probabilities,
     ggsave(
       outputFile,
       out,
-      width = 40 * (3 + sum(nchar(gra$data$name)) + length(gra$data$name)*1.8 + 4 * numCol),
-      height = 33 * length(perms),
+      width = pt_to_mm(24 + width_middle*2 + 32 * numCol),
+      height = 5 * length(perms),
       limitsize = FALSE,
-      units = "px"
+      units = "mm"
     )
     return(outputFile)
   }

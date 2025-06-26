@@ -197,15 +197,15 @@ inverse_factorial <- function(n) {
   return(k - 1)
 }
 
-generate_gg_text <- function(text, bg) {
+generate_gg_text <- function(text, bg, color="black") {
   data.frame(label = text, x = 0, y = 0) %>%
     ggplot(aes(x, y, label = label)) +
-    geom_text(parse = TRUE, family = "serif") +
+    geom_text(parse = TRUE, family = "serif", color=color) +
     theme_void() +
     theme(panel.background = element_rect(fill = bg))
 }
 
-generate_geom_node_point <- function(gra, fill, color, name) {
+generate_geom_node_point <- function(gra, fill, color, name, arrowColor = "black") {
   node_names = gra %>%
     activate(nodes) %>%
     pull(name)
@@ -217,7 +217,7 @@ generate_geom_node_point <- function(gra, fill, color, name) {
     strokes = c(NA, rep(0.3, length(node_names) - 2), NA)
     fill = c(NA, rep(fill, length(node_names) - 2), NA)
   }
-  variable_cap_size(gra, rep(4, length(node_names))) +
+  variable_cap_size(gra, rep(4, length(node_names)), arrowColor) +
     geom_node_point(
       fill = fill,
       shape = 21,
@@ -227,18 +227,18 @@ generate_geom_node_point <- function(gra, fill, color, name) {
     geom_node_text(aes(label = name), color = color, size = 3)
 }
 
-generate_geom_node_text <- function(gra, color, name) {
+generate_geom_node_text <- function(gra, color, name, arrowColor) {
   node_names = gra %>%
     activate(nodes) %>%
     pull(name)
   if (length(color) > 1) {
     color = c(NA, color, NA)
   }
-  variable_cap_size(gra, rep(max(nchar(node_names))*3, length(node_names))) +
+  variable_cap_size(gra, rep(max(nchar(node_names))*3, length(node_names)), arrowColor) +
     geom_node_text(aes(label = name), color = color, size = 3)
 }
 
-variable_cap_size <- function(g_tbl, node_sizes) {
+variable_cap_size <- function(g_tbl, node_sizes, arrowColor) {
   g_tbl = g_tbl %>%
     activate(edges) %>%
     mutate(cap_size = 1:gsize(g_tbl))
@@ -253,7 +253,7 @@ variable_cap_size <- function(g_tbl, node_sizes) {
     
     graph = graph + geom_edge_link(
       aes(filter = !!filter_expr),
-      colour = "black",
+      colour = arrowColor,
       arrow = arrow(length = unit(5, 'pt')),
       end_cap = circle(node_sizes[[i + 1]] + 5, 'pt'),
       start_cap = circle(node_sizes[[i]] + 5, 'pt')
@@ -362,7 +362,11 @@ visualize_probabilities <- function(probabilities,
       bg_col = "white"
     }
     
-    elements[[(i) * (2 + numCol) + 1]] = generate_gg_text(labels[[i]], bg_col)
+    textColor = "black"
+    if (probabilities[[i]] == 0 & numCol == 1) {
+      textColor = "lightgray"
+    }
+    elements[[(i) * (2 + numCol) + 1]] = generate_gg_text(labels[[i]], bg_col, textColor)
     
     gen_row = generate_row(perms[i, ], TRUE)
     gra = gen_row[[1]]
@@ -372,19 +376,19 @@ visualize_probabilities <- function(probabilities,
       nchar(x) == 1
     })))) {
       if (numCol == 1 & probabilities[[i]] == 0) {
-        gra = generate_geom_node_point(gra, "white", "black", name)
+        gra = generate_geom_node_point(gra, "white", "black", name, textColor)
       } else {
         gra = generate_geom_node_point(gra, unlist(lapply(perms[i, ], function(x) {
           geneColors[[x]]
-        })), "white", name)
+        })), "white", name, textColor)
       }
     } else {
       if (probabilities[[i]] == 0) {
-        gra = generate_geom_node_text(gra, "gray", name)
+        gra = generate_geom_node_text(gra, "gray", name, textColor)
       } else {
         gra = generate_geom_node_text(gra, unlist(lapply(perms[i, ], function(x) {
           geneColors[[x]]
-        })), name)
+        })), name, textColor)
       }
       
     }
@@ -393,7 +397,7 @@ visualize_probabilities <- function(probabilities,
       theme(panel.background = element_rect(fill = bg_col))
     
     for (colI in 1:numCol) {
-      elements[[(i) * (2 + numCol) + 2 + colI]] = generate_gg_text(sprintf("%.2f", probabilities[i, colI]), bg_col)
+      elements[[(i) * (2 + numCol) + 2 + colI]] = generate_gg_text(sprintf("%.2f", probabilities[i, colI]), bg_col, textColor)
     }
   }
   
@@ -412,7 +416,7 @@ visualize_probabilities <- function(probabilities,
       outputFile,
       out,
       width = pt_to_mm(24 + width_middle*2 + 32 * numCol),
-      height = 5 * length(perms),
+      height = 2 * length(perms),
       limitsize = FALSE,
       units = "mm"
     )

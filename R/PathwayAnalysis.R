@@ -180,7 +180,60 @@ Genotype_Feasibility<-function(genotypes,DAG,x){
 
 
 
+#' Pathway_Feasibility
+#'
+#' @param DAG matrix representing the DAG of restrictions.
+#' @param x the number of mutations considered.
+#'
+#' @return a binary vector, which indicates feasibility or infeasibility of a set of pathways
+#' @export
+#'
+#' @examples
+Pathway_Feasibility<-function(DAG,x){
+  PERM<-permutations(x,x)### all x! possible permutations (mutational pathways)
+  P<-dim(PERM)[1]
+  D<-dim(DAG)[1]
+  vec<-numeric(P)+1
+  if (D>0){
+    for (i in 1:P){
+      for (j in 1:D){
+        a1<-DAG[j,1]
+        a2<-DAG[j,2]
+        b1<-which(PERM[i,]==a1)
+        b2<-which(PERM[i,]==a2)
+        if (b2<b1){vec[i]<-0}
+      } 
+    }
+  }
+  return(vec)
+}
 
+
+
+
+#' Pathway_Genotype_Compatiblility
+#'
+#' @param Pathway a vector representing the given pathway.
+#' @param Genotype a binary vector representing the given genotype.
+#'
+#' @return returns 1 (if the given genotype is compatible with the given pathway), and 0 otherwise
+#' @export
+#'
+#' @examples
+Pathway_Genotype_Compatiblility<-function(Pathway,Genotype){
+  C<-1 #by default compatible unless:
+  for (i in 1:(length(Pathway)-1)){
+    P<-Pathway[i]
+    if (Genotype[P]==0){
+      for (j in (i+1):length(Pathway)){
+        Q<-Pathway[j]
+        if (Genotype[Q]==1){C<-0;break;}
+      }
+    }
+    if (C==0){break;}
+  }    
+  return(C)
+}
 
 
 
@@ -251,66 +304,283 @@ PathProb_CBN<-function(DAG,LAMBDA,x){
 }
 
 
-
-#' PathProb_BCBN: quantifies pathway probabilities using the output of B-CBN 
+#' PathProb_Quartet_CTCBN
 #'
-#' @param MAT transition probability matrix returned by B-CBN model
+#' @param gMat The n by 4 binary genotype matrix representing a given quartet for a sample of n genotypes.
 #'
-#' @return vector of probabilities assigned to a set of pathways
+#' @return The probability distribution (returned by the CT-CBN model), which is represented as a vector of length 24.
 #' @export
 #'
 #' @examples
-PathProb_BCBN<-function(MAT,x){
-  ### Step1: Enumerating all potential pathways
-  PERM<-permutations(x,x)## all x! possible permutations (mutational pathways)
+PathProb_Quartet_CTCBN<-function(gMat){
+  Posets<-readRDS(system.file("extdata","Posets.rds",package="CBN2Path"))
+  bc=Spock$new(
+    poset=Posets,
+    numMutations=4,
+    genotypeMatrix=cbind(1,gMat)
+  )
+  Results<-ctcbn(bc)
+  LogLik<-numeric(219)
+  for (i in 1:219){
+    LogLik[i]<-as.numeric(Results[[i]]$row[4])
+  }
+  INDX<-which.max(LogLik)
+  LAMBDA<-as.numeric(Results[[INDX]]$row[5:9])
   
-  ### Step2: Quantifying pathway probabilities
-  Prob<-numeric(dim(PERM)[1])## pathway probabilities
-  for (i in 1:dim(PERM)[1]){
-    vec<-PERM[i,]
-    Normlz<-(sum(MAT[2:5,(vec[1]+1)])+(3*10^-6))
-    TEMP<-(MAT[1,(vec[1]+1)]+(10^-6))/Normlz
-    for (j in 1:(x-1)){
-      Normlz<-(sum(MAT[setdiff(2:5,(vec[j]+1)),(vec[1]+1)])+(3*10^-6))
-      TEMP<-TEMP*(MAT[(vec[j]+1),(vec[(j+1)]+1)]+(10^-6))/Normlz;
-    }
-    Prob[i]<-TEMP
-  }
-  ### Step3: Normalizing pathway probabilities
-  TOT<-sum(Prob,na.rm=TRUE)
-  Prob<-as.numeric((Prob/TOT))
-  ###
-  return(Prob)
+  if (INDX==1){DAG<-matrix(0,0,0)}
+  else {DAG<-Posets[[INDX]]}
+  PathProb<-PathProb_CBN(DAG,LAMBDA,4)
+  return(PathProb)
 }
 
+# PathProb_Quartet_HCBN<-function(gMat){
+#   Posets<-readRDS(system.file("extdata","Posets.rds",package="CBN2Path"))
+#   bc=Spock$new(
+#     poset=Posets,
+#     numMutations=4,
+#     genotypeMatrix=cbind(1,gMat)
+#   )
+#   Results<-hcbn(bc)
+#   LogLik<-numeric(219)
+#   for (i in 1:219){
+#     LogLik[i]<-as.numeric(Results[[i]]$row[4])
+#   }
+#   INDX<-which.max(LogLik)
+#   LAMBDA<-as.numeric(Results[[INDX]]$row[5:9])
+#   
+#   if (INDX==1){DAG<-matrix(0,0,0)}
+#   else {DAG<-Posets[[INDX]]}
+#   PathProb<-PathProb_CBN(DAG,LAMBDA,4)
+#   return(PathProb)
+# }
 
-#' Pathway_Feasibility
+#' wR
 #'
-#' @param DAG matrix representing the DAG of restrictions.
-#' @param x the number of mutations considered.
+#' @param vec The likelihood vector corresponding to a given set of posets 
 #'
-#' @return a binary vector, which indicates feasibility or infeasibility of a set of pathways
+#' @return The poset weight vector determined using the reciprocal ranking method
 #' @export
 #'
 #' @examples
-Pathway_Feasibility<-function(DAG,x){
-  PERM<-permutations(x,x)### all x! possible permutations (mutational pathways)
-  P<-dim(PERM)[1]
-  D<-dim(DAG)[1]
-  vec<-numeric(P)+1
-  if (D>0){
-    for (i in 1:P){
-      for (j in 1:D){
-        a1<-DAG[j,1]
-        a2<-DAG[j,2]
-        b1<-which(PERM[i,]==a1)
-        b2<-which(PERM[i,]==a2)
-        if (b2<b1){vec[i]<-0}
-      } 
+wR<-function(vec){
+  w<-numeric(length(vec))
+  for (i in 1:length(vec)){
+    temp<-sort(vec,index.return=TRUE,decreasing=TRUE)$ix
+    w[i]<-1/(which(temp==i))
+  }
+  w<-w/sum(w)
+  return(w)
+}
+
+#' Path_Edge_Mapper
+#'
+#' @param x number of mutations to consider 
+#'
+#' @return Pathway to edge compatibility matrix, each element of which indicates whether a given edge is included in the transitive closure of a given pathway (1) or not (0).
+#' @export
+#'
+#' @examples
+Path_Edge_Mapper<-function(x){
+  PATH<-permutations(x,x)
+  EDGE<-permutations(x,2)
+  P<-dim(PATH)[1]
+  E<-dim(EDGE)[1]
+  PEmap<-matrix(0,P,E)
+  for (i in 1:P){
+    for (j in 1:E){
+      x1<-which(PATH[i,]==EDGE[j,1])
+      x2<-which(PATH[i,]==EDGE[j,2])
+      if (x1<x2){PEmap[i,j]<-1}
     }
   }
-  return(vec)
+  return(PEmap)
 }
+
+
+#' EdgeMarginalized
+#'
+#' @param PathProb The pathway probabilities returned in the step 3 of the R-CBN algorithm
+#' @param x 
+#'
+#' @return returns the marginal probability of all the potential edges
+#' @export
+#'
+#' @examples
+EdgeMarginalized<-function(PathProb,x){
+  PEmap<-Path_Edge_Mapper(x)
+  D<-dim(PEmap)[2]
+  EdgeProb<-numeric(D)
+  for (i in 1:D){
+    INDX<-which(PEmap[,i]==1)
+    EdgeProb[i]<-sum(PathProb[INDX])
+  }
+  return(EdgeProb)
+}
+
+
+#' WW
+#'
+#' @param EdgeProb Marginal edge probabilities
+#' @param PEmap Pathway-edge compatibility matrix
+#'
+#' @return  The pathway weights (step 4 of the R-CBN algorithm)
+#' @export
+#'
+#' @examples
+WW<-function(EdgeProb,PEmap){
+  D<-dim(PEmap)[1]
+  w<-numeric(D)
+  for (i in 1:D){
+    w[i]<-1
+    INDX<-which(PEmap[i,]==1)
+    for (j in INDX){
+      w[i]<-w[i]*EdgeProb[j]
+    }
+  }
+  w<-w/sum(w)
+  return(w)
+}
+
+
+
+#' Path_Normalization
+#'
+#' @param PathProb The pathway probabilities returned in the step 3 of the R-CBN algorithm
+#' @param x 
+#'
+#' @return  The updated pathway probabilities (the step 5 of the R-CBN algorithm)
+#' @export
+#'
+#' @examples
+Path_Normalization<-function(PathProb,x){
+  ### Step 4 of the R-CBN algorithm
+  PEmap<-Path_Edge_Mapper(x)
+  EdgeProb<-EdgeMarginalized(PathProb,x)
+  w<-WW(EdgeProb,PEmap)
+  ### Step 5 of the R-CBN algorithm
+  PathProbn<-((w*PathProb)/sum(w*PathProb)) #The normalized pathway probability 
+  return(PathProbn)
+}
+
+
+#' PathProb_Quartet_RCBN
+#'
+#' @param gMat The n by 4 binary genotype matrix representing a given quartet for a sample of n genotypes.
+#'
+#' @return The probability distribution (returned by the R-CBN model), which is represented as a vector of length 24
+#' @export
+#'
+#' @examples
+PathProb_Quartet_RCBN<-function(gMat){
+  ### Step 1: Constructing the P matrix
+  Posets<-readRDS(system.file("extdata","Posets.rds",package="CBN2Path"))
+  bc=Spock$new(
+    poset=Posets,
+    numMutations=4,
+    genotypeMatrix=cbind(1,gMat)
+  )
+  Results<-ctcbn(bc)
+  LogLik<-numeric(219)
+  P<-matrix(0,219,24)
+  for (i in 1:219){
+    LogLik[i]<-as.numeric(Results[[i]]$row[4])
+    LAMBDA<-as.numeric(Results[[i]]$row[5:9])
+    if (i==1){DAG<-matrix(0,0,0)}
+    else {DAG<-Posets[[i]]}
+    P[i,]<-PathProb_CBN(DAG,LAMBDA,4)
+  }
+  ### Step 2: Poset-Level weighting
+  w1<-wR(LogLik)
+  ### Step 3: Aggregating the Probability Distributions
+  PathProb1<-apply((w1*P),2,sum)/sum(w1) 
+  ### Step 4: Pathway-level weighting && Step 5: Updating the pathway probabilities
+  PathProb2<-Path_Normalization(PathProb1,4)
+  
+  return(PathProb2)
+}
+
+
+
+
+#' Base2Indexing
+#'
+#' @param mat A given poset represented by a binary matrix (in B-CBN)  
+#'
+#' @return #Poset weight vectors based on the frequency of occurence in the BCBN MCMC-sampling scheme.
+#' @export
+#'
+#' @examples
+Base2Indexing<-function(mat){
+  count<-0
+  num<-0
+  D<-dim(mat)[1]
+  for (i in 1:D){
+    for (j in 1:D){
+      count<-count+1
+      if (mat[i,j]==1){num<-num+2^count}
+    }
+  }
+  return(num)
+}
+
+
+#' PathProb_Quartet_BCBN
+#'
+#' @param gMat The n by 4 binary genotype matrix representing a given quartet for a sample of n genotypes.
+#'
+#' @return The probability distribution (returned by the B-CBN model), which is represented as a vector of length 24.
+#' @export
+#'
+#' @examples
+PathProb_Quartet_BCBN<-function(gMat){
+  
+  ### Step 1: Constructing the P matrix
+  genotypeMatrix=cbind(1,gMat)
+  Posets<-readRDS(system.file("extdata","Posets.rds",package="CBN2Path"))
+  Results<-ctcbn(bc)
+  P<-matrix(0,219,24)
+  for (i in 1:219){
+    LogLik[i]<-as.numeric(Results[[i]]$row[4])
+    LAMBDA<-as.numeric(Results[[i]]$row[5:9])
+    if (i==1){DAG<-matrix(0,0,0)}
+    else {DAG<-Posets[[i]]}
+    P[i,]<-PathProb_CBN(DAG,LAMBDA,4)
+  }
+  
+  
+  ### Step 2: Poset-Level weighting based on the MCMC sampling strategy in BCBN
+  Poset_Samples<-bcbn_mcmc(data = genotypeMatrix, n_samples = 25000, theta = 0, epsilon = 0.05, n_chains = 4,thin = 10, Max_L =1000, n_cores = 1)
+  
+  Poset_Index<-numeric(219)
+  for (i in 2:219){
+    d<-dim(Posets[[i]])[1]
+    temp_mat<-matrix(0,4,4)
+    for (j in 1:d){
+      X1<-Posets[[i]][j,1]
+      X2<-Posets[[i]][j,2]
+      temp_mat[X1,X2]<-1
+    }
+    Poset_Index[i]<-Base2Indexing(temp_mat)    
+  }
+  
+  wB<-numeric(219)
+  for (i in 1:100000){
+    Sample_Index<-Base2Indexing(Poset_Samples[[i]])
+    INDX<-which(Poset_Index==Sample_Index)
+    wB[INDX]<-wB[INDX]+1
+  }
+  
+  wB<-wB/sum(wB)
+  
+  
+  ### Step 3: Aggregating the Probability Distributions
+  PathProb<-apply((wB*P),2,sum)/sum(wB)
+  
+  
+  return(PathProb)
+}
+
+
 
 
 
@@ -328,10 +598,10 @@ Jensen_Shannon_Divergence<-function(Prob1,Prob2){
   #Prob2: the second probability distribution
   D<-0
   for (i in 1:length(Prob1)){
-    if (sum(Prob1[i],na.rm=TRUE)>0){D<-D+Prob1[i]*log2(Prob1[i]/(0.5*Prob1[i]+0.5*Prob2[i]))}
-    if (sum(Prob2[i],na.rm=TRUE)>0){D<-D+Prob2[i]*log2(Prob2[i]/(0.5*Prob1[i]+0.5*Prob2[i]))}
-    #if (Prob1[i]>0){D<-D+Prob1[i]*log2(Prob1[i]/(0.5*Prob1[i]+0.5*Prob2[i]))}
-    #if (Prob2[i]>0){D<-D+Prob2[i]*log2(Prob2[i]/(0.5*Prob1[i]+0.5*Prob2[i]))}
+    #if (sum(Prob1[i],na.rm=TRUE)>0){D<-D+Prob1[i]*log2(Prob1[i]/(0.5*Prob1[i]+0.5*Prob2[i]))}
+    #if (sum(Prob2[i],na.rm=TRUE)>0){D<-D+Prob2[i]*log2(Prob2[i]/(0.5*Prob1[i]+0.5*Prob2[i]))}
+    if (Prob1[i]>0){D<-D+Prob1[i]*log2(Prob1[i]/(0.5*Prob1[i]+0.5*Prob2[i]))}
+    if (Prob2[i]>0){D<-D+Prob2[i]*log2(Prob2[i]/(0.5*Prob1[i]+0.5*Prob2[i]))}
   }
   Dv<-(D/2)
   return(Dv)
@@ -355,11 +625,6 @@ Predictability<-function(Prob,x){
   Pred=1-(TOT/log(factorial(x)))## computing the predictability
   return(Pred)
 }
-
-
-
-
-
 
 
 

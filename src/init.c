@@ -74,7 +74,7 @@ extern SEXP hcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP s, SEXP temp, SEXP n);
 static const R_CallMethodDef CEntries[] = {
   // name                      pointer                            Num args
   {"ctcbn_"                   , (DL_FUNC) &ctcbn_                   , 10},
-  {"hcbn_"                    , (DL_FUNC) &hcbn_                    , 6},
+  {"hcbn_"                    , (DL_FUNC) &hcbn_                    , 8},
   {NULL                      , NULL                               , 0}   // Placeholder to indicate last one.
 };
 

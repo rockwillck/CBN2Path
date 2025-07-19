@@ -22,18 +22,18 @@ A matrix
 Generate Data
 }
 \examples{
-poset <- matrix(0,10,10)
+poset <- matrix(0, 10, 10)
 
-poset[1,2] <-1
-poset[2,3] <-1
-poset[3,4] <-1
-poset[5,4] <-1
-poset[6,7] <-1
-poset[8,9] <-1
-poset[8,10] <-1
-poset[6,9] <-1
+poset[1, 2] <- 1
+poset[2, 3] <- 1
+poset[3, 4] <- 1
+poset[5, 4] <- 1
+poset[6, 7] <- 1
+poset[8, 9] <- 1
+poset[8, 10] <- 1
+poset[6, 9] <- 1
 
-tr<-transitive_closure(poset)
+tr <- transitive_closure(poset)
 theta <- c(0.8, 0.7, 0.6, 0.7, 0.4, 0.25, 0.6, 0.75, 0.5, 0.2)
 eps <- 0.1
 N <- 400

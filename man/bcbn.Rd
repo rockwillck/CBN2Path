@@ -36,5 +36,8 @@ A matrix
 B-CBN
 }
 \examples{
+if (!require("rBCBN")) {
+    install.packages(CBN2Path::getBCBNinstall(), repos = NULL, type = "source")
+}
 bcbn()
 }

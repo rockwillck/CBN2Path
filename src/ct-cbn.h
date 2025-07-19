@@ -286,7 +286,7 @@ void write_patterns(char* filestem, int** pat, int N, int n)
   int i, j;
 
   char suffix[15] = ".sim.pat";
-  //char suffix[15] = ".pat";
+  // char suffix[15] = ".pat";
   char *filename = (char *) calloc(strlen(filestem) + strlen(suffix) + 1, sizeof(char));
   strcat(filename, filestem);
   strcat(filename, suffix);

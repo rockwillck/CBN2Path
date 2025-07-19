@@ -16,15 +16,15 @@ Poset matrix
 Transitive Closure
 }
 \examples{
-poset <- matrix(0,10,10)
+poset <- matrix(0, 10, 10)
 
-poset[1,2] <-1
-poset[2,3] <-1
-poset[3,4] <-1
-poset[5,4] <-1
-poset[6,7] <-1
-poset[8,9] <-1
-poset[8,10] <-1
-poset[6,9] <-1
+poset[1, 2] <- 1
+poset[2, 3] <- 1
+poset[3, 4] <- 1
+poset[5, 4] <- 1
+poset[6, 7] <- 1
+poset[8, 9] <- 1
+poset[8, 10] <- 1
+poset[6, 9] <- 1
 transitive_closure(poset)
 }

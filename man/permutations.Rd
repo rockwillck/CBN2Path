@@ -11,10 +11,6 @@ permutations(n, r, v = 1:n, set = TRUE, repeats.allowed = FALSE)
 
 \item{r}{subset size}
 
-\item{v}{}
-
-\item{set}{}
-
 \item{repeats.allowed}{}
 }
 \description{

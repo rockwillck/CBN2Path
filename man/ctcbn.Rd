@@ -6,7 +6,6 @@
 \usage{
 ctcbn(
   datasets,
-  bootstrap_mode = FALSE,
   bootstrap_samples = 0,
   random_seed = 1,
   sampling_rate = 1,
@@ -18,8 +17,6 @@ ctcbn(
 }
 \arguments{
 \item{datasets}{Vector of \code{Spock} objects with poset and pattern/lambda data or a \code{Spock} object (alias of ctcbn_single).}
-
-\item{bootstrap_mode}{Boolean representing bootstrapping mode.}
 
 \item{bootstrap_samples}{Number of bootstrap samples (requires \code{epsilon} > 0, \code{num_drawn_samples} = 0)}
 
@@ -42,11 +39,11 @@ A matrix of results.
 CT-CBN
 }
 \examples{
-example_path = get_examples()[1]
-bc = Spock$new(
-  poset = read_poset(example_path)$sets,
-  numMutations = read_poset(example_path)$mutations,
-  genotypeMatrix = read_pattern(example_path)
+example_path <- get_examples()[1]
+bc <- Spock$new(
+    poset = read_poset(example_path)$sets,
+    numMutations = read_poset(example_path)$mutations,
+    genotypeMatrix = read_pattern(example_path)
 )
 ctcbn(bc)
 ctcbn(c(bc, bc, bc))

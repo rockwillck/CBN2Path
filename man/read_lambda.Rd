@@ -16,6 +16,6 @@ A matrix.
 Read a .lambda file
 }
 \examples{
-bcPath = get_examples()[1]
+bcPath <- get_examples()[1]
 read_lambda(bcPath)
 }

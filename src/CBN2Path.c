@@ -101,6 +101,7 @@ SEXP ctcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP mb, SEXP bs, SEXP rs, SEXP sr, SE
 
   if (error_flag)
   {
+    return(char_to_sexp("Error: Bad parameter values!"));
     // fprintf(stderr, "Error: Bad parameter values!\n");
     // exit(1);
   }
@@ -228,8 +229,6 @@ SEXP ctcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP mb, SEXP bs, SEXP rs, SEXP sr, SE
     M.J_P = bfs_order_ideals(M.P, M.n + 1, &(M.m), M.lin_ext);
     parents(&M);
     children(&M);
-    if (verbose)
-      print_model(&M);
 
     int **pat_draw = get_int_matrix(N_draw, M.n + 1);
     double **t_draw = get_double_matrix(N_draw, M.n + 1);
@@ -237,6 +236,7 @@ SEXP ctcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP mb, SEXP bs, SEXP rs, SEXP sr, SE
     read_lambda(filestem2, lambda, M.n);
 
     draw_samples(M.P, lambda, M.lin_ext, M.n, pat_draw, t_draw, N_draw);
+     (ofilestem, pat_draw, N_draw, M.n);
     write_patterns(ofilestem, pat_draw, N_draw, M.n);
     write_times(ofilestem, t_draw, N_draw, M.n);
 
@@ -249,21 +249,25 @@ SEXP ctcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP mb, SEXP bs, SEXP rs, SEXP sr, SE
     free(t_draw);
 
     free_model(&M);
+    return char_to_sexp("haiii >_<");
   }
 
   free(lambda);
 
+  
+  
   return char_to_sexp(output);
 }
 
-SEXP hcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP s, SEXP temp, SEXP n)
+SEXP hcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP fs3, SEXP s, SEXP temp, SEXP n, SEXP repsilon)
 {
   const char *ofilestem = CHAR(STRING_ELT(ofs, 0));
   const char *filestem1 = CHAR(STRING_ELT(fs1, 0));
   const char *filestem2 = CHAR(STRING_ELT(fs2, 0));
+  const char *filestem3 = CHAR(STRING_ELT(fs3, 0));
   
   // defaults:
-  double eps = 0.0;  // e
+  double eps = REAL(repsilon)[0];  // e
   int R = 1;  // # of EM runs
   double S = 1.0;  // sampling rate \lambda_s
   // char *filestem = CHAR(STRING_ELT(fs, 0));
@@ -288,6 +292,15 @@ SEXP hcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP s, SEXP temp, SEXP n)
   int mode = LEARN_PARAM;
   double epsilon = 0.0;
   int c = 0;
+  char* rOutput;
+  
+  // // no epsilon provided from R
+  if (eps > 1.0) {
+    e_flag = 0;
+    eps = 0.0;
+  } else {
+    e_flag = 1;
+  }
   
   int n_temp = INTEGER(n)[0];
   if (n_temp > 0) {
@@ -330,10 +343,10 @@ SEXP hcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP s, SEXP temp, SEXP n)
         eps = MIN(eps, 1.0);
 
         /*  single run: */
-        select_poset(0, eps, &M, lambda, D, N_u, R, mode,0);
+        select_poset(0 /* poset value in output (k in select_poset) */, eps, &M, lambda, D, N_u, R, mode,1);
 
         if(eps > 0){
-          read_lambda(filestem2, lambda, M.n);
+          read_lambda(filestem3, lambda, M.n);
         }
 
         /* Compute variables */
@@ -373,12 +386,26 @@ SEXP hcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP s, SEXP temp, SEXP n)
 
           epsilon = 0.00001;
           total_loglik = EM_EM(&M, D, N_u, lambda, &epsilon);
-          print_double_array(lambda, M.n+1);
+          
+          char* buffer = (char*)malloc(512);
+          if (buffer == NULL) {
+            rOutput = "N";
+          } else {
+            snprintf(buffer, 512, "0.0 %f %g %g %s",  epsilon, alpha, total_loglik, print_double_array(lambda, M.n+1));
+            rOutput = buffer;
+          }
         }
         else{ //ie, given epsilon
           epsilon = eps;
           total_loglik = compute_total_loglik(&M, D, N_u, Prob, condprob, &epsilon);
-          print_double_array(lambda, M.n+1);
+
+          char* buffer = (char*)malloc(512);
+          if (buffer == NULL) {
+            rOutput = "N";
+          } else {
+            snprintf(buffer, 512, "0 %f %g %g %s",  epsilon, pow(1-epsilon,M.n), total_loglik, print_double_array(lambda, M.n+1));
+            rOutput = buffer;
+          }
         }
 
         /*Write output?*/
@@ -391,58 +418,6 @@ SEXP hcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP s, SEXP temp, SEXP n)
         if (p_flag){
           double* ProbY = compute_ProbY(&M, Prob, only_falsepos, epsilon);
           write_double_array(ofilestem, ".prY", ProbY, pow2(M.n));
-        }
-
-
-        /* GPS */
-        if(gps_flag)
-        {
-          //printf("\n+++GPS+++\n");
-
-          double* all_GPS = get_double_array(M.m);
-          double* cond_GPS = get_double_array(N_u);
-          double* loglik = get_double_array(N_u);
-
-          GPS(&M, D, N_u, lambda, epsilon, all_GPS, cond_GPS);
-          compute_loglik(&M, D, N_u, Prob, condprob, &epsilon, loglik);
-
-          int* ml_pat = get_int_array(N_u);
-          double** exp_pat = get_double_matrix(M.n,N_u);
-          compute_hidden_patterns(&M, D, N_u, lambda, epsilon, condprob, ml_pat, exp_pat);
-
-          // Write to file
-          write_gps(ofilestem, cond_GPS, N, pat_idx);
-
-          // Write MAP to file
-          char suffix[15] = ".map";
-          char *filename = (char *) calloc(strlen(ofilestem) + strlen(suffix) + 1, sizeof(char));
-          strcat(filename, ofilestem);
-          strcat(filename, suffix);
-
-          FILE *output;
-          if ( (output = fopen(filename, "w")) == NULL)
-          {
-            // fprintf(stderr, "Error:  Could not write to file %s\n", filename);
-            // exit(1);
-          }
-
-          for (k=0; k<N;k++)
-          {
-            c = pat_idx[k]; //Unique observation index
-            int ml_gen = M.J_P[ml_pat[c]]; //Lattice entry
-            for(i=0;i < M.n + 1;i++)
-              fprintf(output, "%i ", GENOTYPE[ml_gen][i]);
-            //printf(" %i ", hamdist(index_of(D[c].g, M.n+1), ml_gen));
-            //printf(" ");
-            //for(i=0; i < M.n; i++)
-            //	printf("%.5f ", exp_pat[i][c]);
-            //printf(" %.5f ", cond_GPS[c]);
-            //printf(" %.5f", all_GPS[ml_pat[c]]);
-            //printf(" %.5f\n", loglik[c]);
-            fprintf(output, "\n");
-
-          }
-          fclose(output);
         }
 
         /* Local search */
@@ -465,5 +440,5 @@ SEXP hcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP s, SEXP temp, SEXP n)
   }
   free(lambda);
   
-  return char_to_sexp(ofilestem);
+  return char_to_sexp(rOutput);
 }

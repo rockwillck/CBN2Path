@@ -17,6 +17,8 @@ Use the read_ methods to feed data from files.
 \item{\code{numMutations}}{Number of mutations.}
 
 \item{\code{genotypeMatrix}}{Genotype matrix.}
+
+\item{\code{lambda}}{Lambda list.}
 }
 \if{html}{\out{</div>}}
 }
@@ -38,7 +40,7 @@ Use the read_ methods to feed data from files.
 \subsection{Method \code{new()}}{
 Create a new Spock object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Spock$new(poset, numMutations, genotypeMatrix)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Spock$new(poset, numMutations, genotypeMatrix, lambda = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -49,6 +51,8 @@ Create a new Spock object.
 \item{\code{numMutations}}{Number of mutations.}
 
 \item{\code{genotypeMatrix}}{Genotype matrix.}
+
+\item{\code{lambda}}{Lambda list.}
 }
 \if{html}{\out{</div>}}
 }

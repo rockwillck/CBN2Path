@@ -30,24 +30,25 @@ Plot (gg object) visualization of fitness landscape
 Visualize Fitness Landscape
 }
 \examples{
-Genotypes<-c(
-"0000",
-"1000",
-"0100",
-"0010",
-"0001",
-"1100",
-"1010",
-"1001",
-"0110",
-"0101",
-"0011",
-"1110",
-"1101",
-"1011",
-"0111",
-"1111"
+Genotypes <- c(
+    "0000",
+    "1000",
+    "0100",
+    "0010",
+    "0001",
+    "1100",
+    "1010",
+    "1001",
+    "0110",
+    "0101",
+    "0011",
+    "1110",
+    "1101",
+    "1011",
+    "0111",
+    "1111"
 )
-COLintensity<-c(0,rep(0.25,4),rep(0.5,6),rep(0.75,4),1)
+#
+COLintensity <- c(0, rep(0.25, 4), rep(0.5, 6), rep(0.75, 4), 1)
 visualize_fitness_landscape(COLintensity)
 }

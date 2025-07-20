@@ -4,8 +4,8 @@
 #' @param n total number of elements in the set
 #' @param r subset size
 #' @param v 1:n
-#' @param set
-#' @param repeats.allowed
+#' @param set Logical flag indicating whether duplicates should be removed from the source vector v. Defaults to TRUE.
+#' @param repeats.allowed Logical flag indicating whether the constructed vectors may include duplicated values. Defaults to FALSE.
 #'
 #' @return a matrix with (n choose r) rows and r columns
 #' @export
@@ -73,10 +73,10 @@ combinations <- function(n, r, v = 1:n, set = TRUE, repeats.allowed = FALSE) {
 #' @param n total number of elements in the set
 #' @param r subset size
 #' @param v 1:n
-#' @param set
-#' @param repeats.allowed
+#' @param set Logical flag indicating whether duplicates should be removed from the source vector v. Defaults to TRUE.
+#' @param repeats.allowed Logical flag indicating whether the constructed vectors may include duplicated values. Defaults to FALSE.
 #'
-#' @return
+#' @return a matrix with (n!/(n-r)!) rows and r columns
 #' @export
 #'
 #' @examples

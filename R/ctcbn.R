@@ -120,7 +120,6 @@ ctcbn_single <- function(dataset,
 #'     genotypeMatrix = read_pattern(example_path)
 #' )
 #' ctcbn(bc)
-#' ctcbn(c(bc, bc, bc))
 ctcbn <- function(datasets,
                   bootstrap_samples = 0,
                   random_seed = 1,

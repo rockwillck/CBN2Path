@@ -17,3 +17,10 @@ returns 1 (if the given genotype is compatible with the given pathway), and 0 ot
 \description{
 Pathway_Genotype_Compatiblility
 }
+\examples{
+Geno1<-c(1,0,1,0)
+Geno2<-c(1,1,0,0)
+Path<-c(1,2,3,4)
+Pathway_Genotype_Compatiblility(Path,Geno1)
+Pathway_Genotype_Compatiblility(Path,Geno2)
+}

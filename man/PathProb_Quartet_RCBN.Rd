@@ -15,3 +15,8 @@ The probability distribution (returned by the R-CBN model), which is represented
 \description{
 PathProb_Quartet_RCBN
 }
+\examples{
+set.seed(100)
+gMat<-matrix(sample(c(0,1),800,replace = TRUE),200,4)
+PathR<-PathProb_Quartet_RCBN(gMat)
+}

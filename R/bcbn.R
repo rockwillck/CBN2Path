@@ -16,14 +16,14 @@
 #'     install.packages(CBN2Path::getBCBNinstall(), repos = NULL, type = "source")
 #' }
 #' bcbn()
-bcbn <- function(data = NULL, n_samples = 25000, theta = 0, epsilon = 0.05, n_chains = 4, thin = 10, n_cores = 1) {
+bcbn <- function(data = NULL, n_samples = 25000, theta = 0, epsilon = 0.05, n_chains = 4, thin = 10, Max_L =1000, n_cores = 1) {
     if (!require("rBCBN")) {
         stop("The bcbn function requires the rBCBN package. Install the package with:\n\n  install.packages(getBCBNinstall(), repos = NULL, type = \"source\")\n ")
     }
     if (is.null(data)) {
-        rBCBN::bcbn_mcmc(n_samples = n_samples, theta = theta, epsilon = epsilon, n_chains = n_chains, thin = thin, n_cores = n_cores)
+        rBCBN::bcbn_mcmc(n_samples = n_samples, theta = theta, epsilon = epsilon, n_chains = n_chains, thin = thin, Max_L = Max_L, n_cores = n_cores)
     } else {
-        rBCBN::bcbn_mcmc(data, n_samples, theta, epsilon, n_chains, thin, n_cores)
+        rBCBN::bcbn_mcmc(data, n_samples, theta, epsilon, n_chains, thin, Max_L, n_cores)
     }
 }
 
@@ -48,7 +48,7 @@ bcbn <- function(data = NULL, n_samples = 25000, theta = 0, epsilon = 0.05, n_ch
 
 #' transitive_closure(poset)
 transitive_closure <- function(poset) {
-    transitiveClosure(poset)
+  rBCBN::transitiveClosure(poset)
 }
 
 #' Generate Data
@@ -80,5 +80,5 @@ transitive_closure <- function(poset) {
 #'
 #' generate_data(tr, theta, eps, N)
 generate_data <- function(poset, thetas, eps, N) {
-    generateData(poset, thetas, eps, N)
+  rBCBN::generateData(poset, thetas, eps, N)
 }

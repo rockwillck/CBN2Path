@@ -19,3 +19,9 @@ a binary vector, which indicates feasibility or infeasibility of a set of genoty
 \description{
 Genotype_Feasibility
 }
+\examples{
+Geno4<-generate_matrix_genotypes(4)
+DAG<-matrix(c(4,4,4,1,2,3),3,2)
+x<-4
+GenoF4<-Genotype_Feasibility(Geno4,DAG,x)
+}

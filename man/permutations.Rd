@@ -11,8 +11,13 @@ permutations(n, r, v = 1:n, set = TRUE, repeats.allowed = FALSE)
 
 \item{r}{subset size}
 
+\item{v}{1:n}
+
 \item{repeats.allowed}{}
 }
 \description{
 permutations
+}
+\examples{
+PERM<-permutations(4,4)
 }

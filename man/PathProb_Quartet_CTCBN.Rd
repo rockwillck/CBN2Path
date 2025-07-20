@@ -15,3 +15,8 @@ The probability distribution (returned by the CT-CBN model), which is represente
 \description{
 PathProb_Quartet_CTCBN
 }
+\examples{
+set.seed(100)
+gMat<-matrix(sample(c(0,1),800,replace = TRUE),200,4)
+PathCT<-PathProb_Quartet_CTCBN(gMat)
+}

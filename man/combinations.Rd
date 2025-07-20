@@ -11,8 +11,16 @@ combinations(n, r, v = 1:n, set = TRUE, repeats.allowed = FALSE)
 
 \item{r}{subset size}
 
+\item{v}{1:n}
+
 \item{repeats.allowed}{}
+}
+\value{
+a matrix with (n choose r) rows and r columns
 }
 \description{
 combinations
+}
+\examples{
+COMB<-combinations(10,4)
 }

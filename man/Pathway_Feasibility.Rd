@@ -17,3 +17,8 @@ a binary vector, which indicates feasibility or infeasibility of a set of pathwa
 \description{
 Pathway_Feasibility
 }
+\examples{
+DAG<-matrix(c(4,4,4,1,2,3),3,2)
+x<-4
+PathF<-Pathway_Feasibility(DAG, x)
+}

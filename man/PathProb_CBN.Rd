@@ -14,8 +14,14 @@ PathProb_CBN(DAG, LAMBDA, x)
 \item{x}{the number of mutations considered.}
 }
 \value{
-vector of probabilities assigned to a set of pathways
+vector of probabilities assigned to all potential pathways of length x
 }
 \description{
 PathProb_CBN: quantifies pathway probabilities using the output of CT-CBN or H-CBN
+}
+\examples{
+DAG<-matrix(c(2,2,4,1,3,3),3,2)
+LAMBDA<-c(1,4,3,2.5,2)
+x<-4
+PathP<-PathProb_CBN(DAG, LAMBDA, x)
 }

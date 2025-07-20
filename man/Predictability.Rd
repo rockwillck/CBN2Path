@@ -17,3 +17,11 @@ Predictability
 \description{
 Predictability
 }
+\examples{
+set.seed(100)
+gMat<-matrix(sample(c(0,1),800,replace = TRUE),200,4)
+PathCT<-PathProb_Quartet_CTCBN(gMat)
+PathH<-PathProb_Quartet_HCBN(gMat)
+PredC<-Predictability(PathCT,4)
+PredH<-Predictability(PathH,4)
+}

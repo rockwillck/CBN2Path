@@ -11,6 +11,7 @@ bcbn(
   epsilon = 0.05,
   n_chains = 4,
   thin = 10,
+  Max_L = 1000,
   n_cores = 1
 )
 }

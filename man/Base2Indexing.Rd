@@ -15,3 +15,8 @@ Base2Indexing(mat)
 \description{
 Base2Indexing
 }
+\examples{
+set.seed(100)
+mat<-matrix(sample(c(0,1),16,replace=TRUE),4,4)
+Index<-Base2Indexing(mat)
+}

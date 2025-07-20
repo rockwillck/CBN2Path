@@ -15,3 +15,6 @@ Pathway to edge compatibility matrix, each element of which indicates whether a 
 \description{
 Path_Edge_Mapper
 }
+\examples{
+PEmap<-Path_Edge_Mapper(4)
+}

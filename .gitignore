@@ -11,3 +11,5 @@ src/*.so
 src/*.o
 config.log
 ..Rcheck
+config.status
+#config.log#

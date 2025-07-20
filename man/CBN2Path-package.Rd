@@ -27,7 +27,12 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: William Choi-Kim \email{william@williamck.com}
+\strong{Maintainer}: William Choi-Kim \email{william@williamck.com} (\href{https://orcid.org/0009-0000-3902-4745}{ORCID})
+
+Authors:
+\itemize{
+  \item Sayed-Rzgar Hosseini \email{rzgar.hosseini@indstate.edu} (\href{https://orcid.org/0000-0002-2308-6754}{ORCID})
+}
 
 }
 \keyword{internal}

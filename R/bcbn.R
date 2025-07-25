@@ -7,6 +7,7 @@
 #' @param n_chains N-Chains <def: 4>
 #' @param thin Thin <def: 10>
 #' @param n_cores Number of parallelized cores <def: 1>
+#' @param Max_L The maximum number of iteration <def: 1000>
 #'
 #' @return A matrix
 #' @export

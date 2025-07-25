@@ -655,7 +655,7 @@ Path_Edge_Mapper <- function(x) {
 #' EdgeMarginalized
 #'
 #' @param PathProb The pathway probabilities returned in the step 3 of the R-CBN algorithm
-#' @param x
+#' @param x        The number of mutations to consider
 #'
 #' @return returns the marginal probability of all the potential edges
 #' @export
@@ -713,7 +713,7 @@ Pathway_Weighting_RCBN <- function(EdgeProb, PEmap) {
 #' Path_Normalization
 #'
 #' @param PathProb The pathway probabilities returned in the step 3 of the R-CBN algorithm
-#' @param x
+#' @param x        The number of mutations to consider
 #'
 #' @return  The updated pathway probabilities (the step 5 of the R-CBN algorithm)
 #' @export

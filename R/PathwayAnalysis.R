@@ -276,6 +276,175 @@ Pathway_Genotype_Compatiblility <- function(Pathway, Genotype) {
     return(C)
 }
 
+#' Base2IndVec
+#'
+#' @param vec a binary genotype vector
+#'
+#' @return a number used for indexing a given genotype
+#' @export
+#'
+#' @examples
+#' vec<-c(0,1,0,1)
+#' Base2IndVec(vec)
+Base2IndVec<-function(vec){
+  TOT<-0
+  for (i in 1:length(vec)){
+    if (vec[i]==1){
+      TOT<-TOT+(2^i)
+    }
+  }
+  return(TOT)
+}
+
+
+
+#' Pathway_Compatibility_Quartet
+#'
+#' @param gMat The n by 4 binary genotype matrix representing a given quartet for a sample of n genotypes.
+#'
+#' @return The compatibility score, which is represented as a vector of length 24, each element of which corresponds to one of the 24 pathways of length 4. 
+#' @export
+#'
+#' @examples
+#' set.seed(100)
+#' gMat<-matrix(sample(c(0,1),800,replace = TRUE),200,4)
+#' Pathway_Compatibility_Quartet(gMat)
+Pathway_Compatibility_Quartet<-function(gMat){
+  ### Establishing the genotype frequency matrix
+  G<-generate_matrix_genotypes(4)
+  INDXs<-numeric(16)
+  for (i in 1:16){
+    INDXs[i]<-Base2IndVec(G[i,])
+  }
+  D<-dim(gMat)[1]
+  V<-numeric(16)
+  for (i in 1:D){
+    vec<-gMat[i,]
+    INDX<-Base2IndVec(vec)
+    g<-which(INDXs==INDX)
+    V[g]<-V[g]+1
+  }
+  V<-V/sum(V)
+  
+  ### Establishing the pathway-geotype compatibility matrix
+  PERM<-permutations(4,4)
+  M<-matrix(0,24,16)
+  for (i in 1:24){
+    for (j in 1:16){
+      M[i,j]<-Pathway_Genotype_Compatiblility(PERM[i,],G[j,])
+    }
+  }
+  
+  ### Calculating the pathway compatibility scores.
+  C<-as.numeric(M%*%V)
+  
+  return(C)
+}
+
+
+#' GenotypeMatrix_Mutator
+#'
+#' @param mat The genotype matrix including sampled genotypes, which need to be muatated.
+#' @param FP False positive rate
+#' @param FN False negative rate
+#'
+#' @return The mutated version of the genotype matrix
+#' @export
+#'
+#' @examples
+#' set.seed(100)
+#' gMat<-matrix(sample(c(0,1),800,replace = TRUE),200,4)
+#' gMat_mut<-GenotypeMatrix_Mutator(gMat,0.2,0.2)
+GenotypeMatrix_Mutator<-function(mat,FP,FN){
+
+  d<-dim(mat)[1]
+  AllP<-which(mat==1)
+  AllN<-which(mat==0)
+  Sample_FP<-AllN[sample(1:length(AllN),round(FP*length(AllN)))]
+  Sample_FN<-AllP[sample(1:length(AllP),round(FN*length(AllP)))]
+  
+  for (i in 1:length(Sample_FP)){
+    x<-Sample_FP[i]%%d
+    y<-ceiling(Sample_FP[i]/d)
+    mat[x,y]<-1
+  }
+  
+  for (i in 1:length(Sample_FN)){
+    x<-Sample_FN[i]%%d
+    y<-ceiling(Sample_FN[i]/d)
+    mat[x,y]<-0
+  }
+  
+  return(mat)
+}
+
+
+#' PathProb_SSWM
+#'
+#' @param FITNESS A vector of length 2^x, each element of which representing the fitness assigned to one of the 2^x genotypes.
+#' @param x The number of mutations considered.
+#'
+#' @return vector of probabilities assigned to all potential pathways of length x
+#' @export
+#'
+#' @examples
+#' F<-c(0,0.1,0.2,0.1,0.2,0.4,0.3,0.2,0.2,0.1,0,0.6,0.4,0.3,0.2,1)
+#' x<-4
+#' PathP<-PathProb_SSWM(F,x)
+PathProb_SSWM<-function(FITNESS,x){
+  
+  ### Step1: genotypes
+  genotypes=generate_matrix_genotypes(x)## generates the genotype space
+  indx<-matrix(0,nrow=2^x,ncol=1)## indexing the genotypes for easier retrival
+  for (k in 1:(2^x)){for (j in 1:x){indx[k,1]=indx[k,1]+2^(j-1)*genotypes[k,j]}}
+  
+  ### Step2: Pathway Probabilities
+  PERM<-permutations(x,x)## all x! possible permutations (mutational pathways)
+  Prob<-numeric(dim(PERM)[1])## pathway probabilities
+  
+  
+  TOT<-0 ##(the normalization factor)
+  for (i in 1:dim(PERM)[1]){# for each pathway
+    TEMP1=1;# temporarily stores the pathway probability [later needs to be normalized]
+    vec=PERM[i,]#pathway [specific permutation of the original vector]
+    GENO=matrix(0,nrow=(x+1),ncol=x)# vector of length (x+1) storing the genotypes associated with each step of the pathway
+    for (j in 1:x){for (k in (j+1):(x+1)){GENO[k,(vec[j])]=1}}
+    GENO_indx=matrix(0,nrow=(x+1),ncol=1)# storing the indices of the (x+1) genotypes in the genotype space.
+    for (j in 1:(x+1)){for (k in 1:x){GENO_indx[j,1]=GENO_indx[j,1]+2^(k-1)*GENO[j,k]}}
+    fitness=matrix(0,nrow=(x+1),ncol=1)# fitness vector for the (x+1) genotypes associated with the given pathway
+    for (j in 1:(x+1)){fitness[j]=FITNESS[which(indx==GENO_indx[j])]}# retrieving the fitness from the global fitness vector
+    flag=0;
+    for (j in 2:(x+1)){if (fitness[j]<fitness[(j-1)]){flag=1}}# if the fitness monotonically increases along the pathway, flag remains as 0, otherwise it will become 1 
+    if (flag==0){# if flag remains zero (i.e. pathway is accessible)
+      for (j in 1:x){
+        SN=which(GENO[j,]==0)# possible remaining mutations in the j-th step 
+        N=length(SN)
+        S=fitness[(j+1)]-fitness[j]# slective coefficient of the j-th step [the numerator of the equation (7) in the main text]
+        T=0;
+        for (k in 1:N){# checking the genotypes belonging to the exit set
+          ggeno=GENO[j,]
+          ggeno[(SN[k])]=1
+          ggeno_indx=0
+          for (l in 1:x){ggeno_indx=ggeno_indx+2^(l-1)*ggeno[l]}
+          fitness2=FITNESS[which(indx==ggeno_indx)]
+          S1=fitness2-fitness[j]
+          if (S1>0){T=T+S1}# sum of the selecive coefficient of the genotypes in the exit set [the denominator of the equation (7) in the main text]
+        }
+        TEMP1=TEMP1*(S/T)#the product in equation (7)
+      }
+      Prob[i]=TEMP1# probability of the i-th pathway
+    }
+  }
+  
+  GG=sum(Prob,na.rm=TRUE)#normalization factor (equation 8 in the main text)
+  Prob<-Prob/GG
+  Prob<-as.numeric(Prob)
+  Prob[which(is.na(Prob))]<-0
+  return(Prob)
+}
+
+
+
 
 
 #' PathProb_CBN: quantifies pathway probabilities using the output of CT-CBN or H-CBN
@@ -303,6 +472,7 @@ PathProb_CBN <- function(DAG, LAMBDA, x) {
     }
 
     ### Step2: Allowed genotypes according to the DAG of restrictions (DAG)
+    if (sum(is.na(DAG))>0){DAG<-matrix(0,0,0)}
     allowed_set <- Genotype_Feasibility(genotypes, DAG, x)
 
     ### Step3: Pathway Probabilities
@@ -724,8 +894,6 @@ Jensen_Shannon_Divergence <- function(Prob1, Prob2) {
     # Prob2: the second probability distribution
     D <- 0
     for (i in 1:length(Prob1)) {
-        # if (sum(Prob1[i],na.rm=TRUE)>0){D<-D+Prob1[i]*log2(Prob1[i]/(0.5*Prob1[i]+0.5*Prob2[i]))}
-        # if (sum(Prob2[i],na.rm=TRUE)>0){D<-D+Prob2[i]*log2(Prob2[i]/(0.5*Prob1[i]+0.5*Prob2[i]))}
         if (Prob1[i] > 0) {
             D <- D + Prob1[i] * log2(Prob1[i] / (0.5 * Prob1[i] + 0.5 * Prob2[i]))
         }
@@ -763,3 +931,4 @@ Predictability <- function(Prob, x) {
     Pred <- 1 - (TOT / log(factorial(x))) ## computing the predictability
     return(Pred)
 }
+

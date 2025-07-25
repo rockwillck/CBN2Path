@@ -39,7 +39,7 @@ toBin <- function(n, nG) {
 visualize_fitness_landscape <- function(fitness,
                                         selectNodes = NULL,
                                         nGenes = 4,
-                                        lowColor = "lightblue",
+                                        lowColor = "white",
                                         highColor = "blue") {
     allStrings <- lapply(0:(2^nGenes - 1), function(x) {
         toBin(x, nGenes)
@@ -159,10 +159,12 @@ visualize_fitness_landscape <- function(fitness,
 #' poset <- read_poset(get_examples()[1])
 #' visualize_cbn_model(poset)
 visualize_cbn_model <- function(poset, nodeColor = "darkgreen") {
+  if (dim(poset)[2]<2){print("This is an empty poset, so no need for visualization.")}
+  else {
     nodes <- data.frame(name = sort(unlist(unique(as.list(
-        poset[[2]]
+        poset
     )))))
-    edges <- as.data.frame(poset[[2]])
+    edges <- as.data.frame(poset)
     colnames(edges) <- c("from", "to")
 
     g_tbl <- tbl_graph(
@@ -173,20 +175,21 @@ visualize_cbn_model <- function(poset, nodeColor = "darkgreen") {
     ggraph(g_tbl) +
         geom_edge_link(
             colour = "black",
-            arrow = arrow(length = unit(5, "pt")),
-            end_cap = circle(8, "pt")
+            arrow = arrow(length = unit(16, "pt")),
+            end_cap = circle(12, "pt")
         ) +
         geom_node_point(
             fill = nodeColor,
             shape = 21,
-            size = 6,
+            size = 12,
             stroke = 0.3,
             color = "black"
         ) +
-        geom_node_text(aes(label = name), color = "white", size = 3) +
+        geom_node_text(aes(label = name), color = "white", size = 5) +
         theme_void() +
         theme(plot.title = element_text(hjust = 0.5)) +
         ggtitle("CBN Model")
+  }
 }
 
 inverse_factorial <- function(n) {

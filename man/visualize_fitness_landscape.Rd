@@ -8,7 +8,7 @@ visualize_fitness_landscape(
   fitness,
   selectNodes = NULL,
   nGenes = 4,
-  lowColor = "lightblue",
+  lowColor = "white",
   highColor = "blue"
 )
 }

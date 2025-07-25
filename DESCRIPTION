@@ -25,5 +25,5 @@ Imports:
 Suggests: 
     testthat (>= 3.0.0), BiocStyle, knitr, rmarkdown
 Config/testthat/edition: 3
-biocViews: Software, StatisticalMethod, GraphAndNetworks
+biocViews: Software, StatisticalMethod, GraphAndNetwork
 VignetteBuilder: knitr

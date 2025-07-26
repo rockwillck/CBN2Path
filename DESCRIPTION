@@ -34,3 +34,4 @@ Depends:
 Config/testthat/edition: 3
 biocViews: Software, StatisticalMethod, GraphAndNetwork, Bayesian
 VignetteBuilder: knitr
+SystemRequirements: GNU Scientific Library (GSL)

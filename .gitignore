@@ -17,3 +17,4 @@ config.status
 /Meta/
 CBN2Path.Rcheck/*
 CBN2Path_*.tar.gz
+CBN2Path.BiocCheck

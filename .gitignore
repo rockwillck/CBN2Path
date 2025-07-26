@@ -16,3 +16,4 @@ config.status
 /doc/
 /Meta/
 CBN2Path.Rcheck/*
+CBN2Path_*.tar.gz

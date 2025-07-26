@@ -392,9 +392,6 @@ flush(stderr()); flush(stdout())
 
 ### ** Examples
 
-if (!require("rBCBN")) {
-    install.packages(CBN2Path::getBCBNinstall(), repos = NULL, type = "source")
-}
 bcbn()
 
 
@@ -504,22 +501,6 @@ flush(stderr()); flush(stdout())
 ### ** Examples
 
 Geno4<-generate_matrix_genotypes(4)
-
-
-
-cleanEx()
-nameEx("getBCBNinstall")
-### * getBCBNinstall
-
-flush(stderr()); flush(stdout())
-
-### Name: getBCBNinstall
-### Title: Get BCBN .tgz path
-### Aliases: getBCBNinstall
-
-### ** Examples
-
-getBCBNinstall()
 
 
 
@@ -707,7 +688,7 @@ flush(stderr()); flush(stdout())
 ### ** Examples
 
 poset <- read_poset(get_examples()[1])
-visualize_cbn_model(poset)
+visualize_cbn_model(poset$sets)
 
 
 

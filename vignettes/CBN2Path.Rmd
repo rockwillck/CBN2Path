@@ -426,14 +426,6 @@ RhoR2
 
 ## The B-CBN method
 
-BCBN requires the auxillary package `rBCBN`. `rBCBN` is already shipped with `CBN2Path`, it just needs to be installed:
-```{r}
-if (!requireNamespace("rBCBN")) {
-  install.packages(getBCBNinstall(), repos = NULL, type = "source")
-}
-```
-
-
 The workflow for the B-CBN algorithm [4], which is implemented in the **PathProb_Quartet_BCBN** function, is also similar to that of R-CBN.
 
 The **PathProb_Quartet_BCBN** function also receives a four-column binary genotype matrix as the only input, and outputs the corresponding pathway probability distribution. Again, let's quantify the pathway probability distributions before and after the errors:

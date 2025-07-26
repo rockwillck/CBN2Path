@@ -75,21 +75,7 @@ Undefined global functions or variables:
 * checking compiled code ... OK
 * checking installed files from ‘inst/doc’ ... OK
 * checking files in ‘vignettes’ ... OK
-* checking examples ... ERROR
-Running examples in ‘CBN2Path-Ex.R’ failed
-The error most likely occurred in:
-
-> ### Name: visualize_cbn_model
-> ### Title: Visualize CBN Model
-> ### Aliases: visualize_cbn_model
-> 
-> ### ** Examples
-> 
-> poset <- read_poset(get_examples()[1])
-> visualize_cbn_model(poset)
-Error in if (dim(poset)[2] < 2) { : argument is of length zero
-Calls: visualize_cbn_model
-Execution halted
+* checking examples ... OK
 * checking for unstated dependencies in ‘tests’ ... OK
 * checking tests ... OK
   Running ‘testthat.R’
@@ -98,4 +84,4 @@ Execution halted
 * checking re-building of vignette outputs ... OK
 * checking PDF version of manual ... OK
 * DONE
-Status: 1 ERROR, 1 NOTE
+Status: 1 NOTE

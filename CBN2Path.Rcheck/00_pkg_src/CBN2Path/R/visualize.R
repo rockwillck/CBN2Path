@@ -157,7 +157,7 @@ visualize_fitness_landscape <- function(fitness,
 #'
 #' @examples
 #' poset <- read_poset(get_examples()[1])
-#' visualize_cbn_model(poset)
+#' visualize_cbn_model(poset$sets)
 visualize_cbn_model <- function(poset, nodeColor = "darkgreen") {
   if (dim(poset)[2]<2){print("This is an empty poset, so no need for visualization.")}
   else {

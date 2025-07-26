@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.7.11)  25 JUL 2025 18:48
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.7.11)  26 JUL 2025 00:31
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -289,7 +289,7 @@ File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
 ) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2025-06-09 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count315
-) (/private/var/folders/hj/8f_5wmq90sb729dg85rm3jpr0000gn/T/RtmpXdxGVl/Rd2pdf1475e2ec2411b/Rd2.aux)
+) (/private/var/folders/hj/8f_5wmq90sb729dg85rm3jpr0000gn/T/Rtmp4Johwf/Rd2pdf4d77793db963/Rd2.aux)
 \openout1 = `Rd2.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 8.
@@ -311,7 +311,7 @@ LaTeX Font Info:    ... okay on input line 8.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 8.
 LaTeX Font Info:    ... okay on input line 8.
 Package hyperref Info: Link coloring ON on input line 8.
- (/private/var/folders/hj/8f_5wmq90sb729dg85rm3jpr0000gn/T/RtmpXdxGVl/Rd2pdf1475e2ec2411b/Rd2.out) (/private/var/folders/hj/8f_5wmq90sb729dg85rm3jpr0000gn/T/RtmpXdxGVl/Rd2pdf1475e2ec2411b/Rd2.out)
+ (/private/var/folders/hj/8f_5wmq90sb729dg85rm3jpr0000gn/T/Rtmp4Johwf/Rd2pdf4d77793db963/Rd2.out) (/private/var/folders/hj/8f_5wmq90sb729dg85rm3jpr0000gn/T/Rtmp4Johwf/Rd2pdf4d77793db963/Rd2.out)
 \@outlinefile=\write4
 \openout4 = `Rd2.out'.
 
@@ -328,7 +328,7 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 LaTeX Font Info:    Trying to load font information for U+msb on input line 21.
  (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-) (/private/var/folders/hj/8f_5wmq90sb729dg85rm3jpr0000gn/T/RtmpXdxGVl/Rd2pdf1475e2ec2411b/Rd2.toc
+) (/private/var/folders/hj/8f_5wmq90sb729dg85rm3jpr0000gn/T/Rtmp4Johwf/Rd2pdf4d77793db963/Rd2.toc
 
 [1
 
@@ -337,14 +337,14 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 \tf@toc=\write5
 \openout5 = `Rd2.toc'.
 
-LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 56.
+LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 57.
  (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 )
 
 [2]
 LaTeX Font Info:    Font shape `T1/zi4/m/n' will be
-(Font)              scaled to size 9.0pt on input line 109.
+(Font)              scaled to size 9.0pt on input line 110.
 
 
 [3]
@@ -366,13 +366,13 @@ LaTeX Font Info:    Font shape `T1/zi4/m/n' will be
 [11]
 
 [12]
-
-[13]
-Overfull \hbox (18.51859pt too wide) in paragraph at lines 718--719
+Overfull \hbox (18.51859pt too wide) in paragraph at lines 673--674
 []\T1/ptm/m/n/10 These files are in-cluded in the pack-age un-der \T1/zi4/m/n/10 inst/extdata/ \T1/ptm/m/n/10 and can be ac-cessed us-ing [][][]\T1/zi4/m/n/10 system.file()[][][]
  []
 
 
+
+[13]
 
 [14]
 
@@ -387,20 +387,20 @@ Overfull \hbox (18.51859pt too wide) in paragraph at lines 718--719
 [19]
 
 [20]
+Overfull \hbox (18.51859pt too wide) in paragraph at lines 1055--1056
+[]\T1/ptm/m/n/10 These files are in-cluded in the pack-age un-der \T1/zi4/m/n/10 inst/extdata/ \T1/ptm/m/n/10 and can be ac-cessed us-ing [][][]\T1/zi4/m/n/10 system.file()[][][]
+ []
+
+
 
 [21]
-Overfull \hbox (18.51859pt too wide) in paragraph at lines 1100--1101
+Overfull \hbox (18.51859pt too wide) in paragraph at lines 1103--1104
 []\T1/ptm/m/n/10 These files are in-cluded in the pack-age un-der \T1/zi4/m/n/10 inst/extdata/ \T1/ptm/m/n/10 and can be ac-cessed us-ing [][][]\T1/zi4/m/n/10 system.file()[][][]
  []
 
 
 
 [22]
-Overfull \hbox (18.51859pt too wide) in paragraph at lines 1148--1149
-[]\T1/ptm/m/n/10 These files are in-cluded in the pack-age un-der \T1/zi4/m/n/10 inst/extdata/ \T1/ptm/m/n/10 and can be ac-cessed us-ing [][][]\T1/zi4/m/n/10 system.file()[][][]
- []
-
-
 
 [23]
 
@@ -415,33 +415,31 @@ Overfull \hbox (18.51859pt too wide) in paragraph at lines 1148--1149
 [28]
 
 [29]
-
-[30]
-Overfull \hbox (308.21034pt too wide) in paragraph at lines 1729--1729
+Overfull \hbox (308.21034pt too wide) in paragraph at lines 1684--1684
  []\T1/zi4/m/n/9 visualize_probabilities(c(0.05, 0.03, 0.12, 0.04, 0.02, 0, 0.05, 0.04, 0.05, 0.06, 0.04, 0.02, 0.03, 0.02, 0.05, 0.03, 0.01, 0.09, 0.06, 0.04, 0, 0.08, 0.05, 0.02)) 
  []
 
 
-Overfull \hbox (510.69194pt too wide) in paragraph at lines 1731--1731
+Overfull \hbox (510.69194pt too wide) in paragraph at lines 1686--1686
  []\T1/zi4/m/n/9 visualize_probabilities(c(0.05, 0.03, 0.12, 0.04, 0.02, 0, 0.05, 0.04, 0.05, 0.06, 0.04, 0.02, 0.03, 0.02, 0.05, 0.03, 0.01, 0.09, 0.06, 0.04, 0, 0.08, 0.05, 0.02), geneNames = c("AAAA", "BBBB", "CCCC", "DDDD"))[] 
  []
 
 No file Rd2.ind.
 
 
-[31] (/private/var/folders/hj/8f_5wmq90sb729dg85rm3jpr0000gn/T/RtmpXdxGVl/Rd2pdf1475e2ec2411b/Rd2.aux)
+[30] (/private/var/folders/hj/8f_5wmq90sb729dg85rm3jpr0000gn/T/Rtmp4Johwf/Rd2pdf4d77793db963/Rd2.aux)
  ***********
 LaTeX2e <2025-06-01> patch level 1
 L3 programming layer <2025-06-30>
  ***********
 Package rerunfilecheck Info: File `Rd2.out' has not changed.
-(rerunfilecheck)             Checksum: 93E0E2084BBA1F9A2B3631BAF6DE6AA3;6677.
+(rerunfilecheck)             Checksum: 2AD6D3CDFD2F3F268E9D69F908EC1EF1;6290.
  ) 
 Here is how much of TeX's memory you used:
- 10650 strings out of 469803
- 163893 string characters out of 5481936
- 564144 words of memory out of 5000000
- 38510 multiletter control sequences out of 15000+600000
+ 10632 strings out of 469803
+ 163593 string characters out of 5481936
+ 563144 words of memory out of 5000000
+ 38507 multiletter control sequences out of 15000+600000
  659090 words of font info for 79 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  92i,6n,95p,324b,769s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -449,10 +447,10 @@ Here is how much of TeX's memory you used:
 pdfTeX warning (dest): name{Rfn.system.file} has been referenced but does not exist, replaced by a fixed one
 
 </Users/williamchoi-kim/Library/TinyTeX/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb></Users/williamchoi-kim/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></Users/williamchoi-kim/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></Users/williamchoi-kim/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></Users/williamchoi-kim/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Rd2.pdf (31 pages, 132907 bytes).
+Output written on Rd2.pdf (30 pages, 130405 bytes).
 PDF statistics:
- 772 PDF objects out of 1000 (max. 8388607)
- 721 compressed objects within 8 object streams
- 347 named destinations out of 1000 (max. 500000)
- 369 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 738 PDF objects out of 1000 (max. 8388607)
+ 689 compressed objects within 7 object streams
+ 332 named destinations out of 1000 (max. 500000)
+ 345 words of extra memory for PDF output out of 10000 (max. 10000000)
 

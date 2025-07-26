@@ -5,7 +5,7 @@
 \title{B-CBN}
 \usage{
 bcbn(
-  data = NULL,
+  data = default_data(),
   n_samples = 25000,
   theta = 0,
   epsilon = 0.05,
@@ -39,8 +39,5 @@ A matrix
 B-CBN
 }
 \examples{
-if (!require("rBCBN")) {
-    install.packages(CBN2Path::getBCBNinstall(), repos = NULL, type = "source")
-}
 bcbn()
 }

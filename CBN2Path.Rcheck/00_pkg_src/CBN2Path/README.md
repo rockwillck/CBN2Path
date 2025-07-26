@@ -27,7 +27,7 @@ to facilitate the downstream pathway analysis and modeling. Evam-tools
 end. However, it partially serves this purpose, as it does not include
 the B-CBN model and the recently developed R-CBN algorithm, which
 focuses on the robust inference of cancer progression pathways \[5\].
-Importantly, oth B-CBN and R-CBN algorithms for pathway quantification
+Importantly, the B-CBN and R-CBN algorithms for pathway quantification
 require exhaustive consideration and weighting of all the potential
 dependency structures (posets) within mutational quartets. This entails
 re-implementation of the CBN models and adjustment of the downstream

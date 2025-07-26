@@ -22,9 +22,12 @@ Imports:
     magrittr,
     igraph,
     rlang,
-    grDevices
+    grDevices,
+    coda,
+    graphics,
+    stats
 Suggests: 
-    testthat (>= 3.0.0), BiocStyle, knitr, rmarkdown, rBCBN
+    testthat (>= 3.0.0), BiocStyle, knitr, rmarkdown
 Depends:
     R (>= 3.5.0)
 Config/testthat/edition: 3

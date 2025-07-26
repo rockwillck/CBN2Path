@@ -65,16 +65,23 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 extern SEXP ctcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP mb, SEXP bs, SEXP rs, SEXP sr, SEXP epsilon, SEXP nd, SEXP emr);
 extern SEXP hcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP s, SEXP temp, SEXP n);
-
+extern void sample_full_cbn(double *theta_in, int *nevents, double *epsilon_in, int * edges_in, int *number_samples, int *thinout, int *patdata,
+                            int *number_cases, double *theta_out, double *epsilon_out, int* edges_out, double* log_posterior_out );
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // .C      R_CMethodDef
 // .Call   R_CallMethodDef
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-static const R_CallMethodDef CEntries[] = {
+static const R_CallMethodDef CallEntries[] = {
   // name                      pointer                            Num args
   {"ctcbn_"                   , (DL_FUNC) &ctcbn_                   , 10},
   {"hcbn_"                    , (DL_FUNC) &hcbn_                    , 8},
+  {NULL                      , NULL                               , 0}   // Placeholder to indicate last one.
+};
+
+static const R_CMethodDef CEntries[] = {
+  // name                      pointer                            Num args
+  {"sample_full_cbn_"        , (DL_FUNC) &sample_full_cbn          , 12},
   {NULL                      , NULL                               , 0}   // Placeholder to indicate last one.
 };
 
@@ -87,8 +94,8 @@ static const R_CallMethodDef CEntries[] = {
 void R_init_CBN2Path(DllInfo *info) {
   R_registerRoutines(
     info,      // DllInfo
-    NULL,      // .C
-    CEntries,  // .Call
+    CEntries,      // .C
+    CallEntries,  // .Call
     NULL,      // Fortran
     NULL       // External
   );

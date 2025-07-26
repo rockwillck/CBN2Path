@@ -18,7 +18,7 @@ Document Class: book 2025/01/22 v1.4n Standard LaTeX document class
 For additional information on amsmath, use the `?' option.
 (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amstext.sty (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amsgen.sty)) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amsbsy.sty) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amsopn.sty)) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/amsfonts.sty) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/amssymb.sty) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/eucal.sty) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/base/fontenc.sty) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/psnfss/times.sty) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/inconsolata/zi4.sty `inconsolata-zi4' v1.12, 2019/05/17 Text macros for Inconsolata (msharpe) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/xkeyval/xkeyval.sty (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/generic/xkeyval/xkeyval.tex (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/generic/xkeyval/xkvutils.tex (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/generic/xkeyval/keyval.tex))))) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/graphics/color.sty (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/graphics-cfg/color.cfg) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/graphics-def/pdftex.def) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/graphics/mathcolor.ltx)) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/hyperref/hyperref.sty (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/generic/pdfescape/pdfescape.sty (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/generic/infwarerr/infwarerr.sty))) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/hycolor/hycolor.sty) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/hyperref/nameref.sty (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/refcount/refcount.sty) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/kvoptions/kvoptions.sty))) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/etoolbox/etoolbox.sty) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/generic/stringenc/stringenc.sty) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/hyperref/pd1enc.def) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/generic/intcalc/intcalc.sty) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/hyperref/puenc.def) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/generic/bitset/bitset.sty (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/hyperref/hpdftex.def (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty)))) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/base/makeidx.sty)
 Writing index file Rd2.idx
-(/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/psnfss/t1ptm.fd) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def) (/private/var/folders/hj/8f_5wmq90sb729dg85rm3jpr0000gn/T/RtmpXdxGVl/Rd2pdf1475e2ec2411b/Rd2.aux) (/private/var/folders/hj/8f_5wmq90sb729dg85rm3jpr0000gn/T/RtmpXdxGVl/Rd2pdf1475e2ec2411b/Rd2.out) (/private/var/folders/hj/8f_5wmq90sb729dg85rm3jpr0000gn/T/RtmpXdxGVl/Rd2pdf1475e2ec2411b/Rd2.out) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/inconsolata/t1zi4.fd) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd) (/private/var/folders/hj/8f_5wmq90sb729dg85rm3jpr0000gn/T/RtmpXdxGVl/Rd2pdf1475e2ec2411b/Rd2.toc
+(/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/psnfss/t1ptm.fd) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def) (/private/var/folders/hj/8f_5wmq90sb729dg85rm3jpr0000gn/T/Rtmp4Johwf/Rd2pdf4d77793db963/Rd2.aux) (/private/var/folders/hj/8f_5wmq90sb729dg85rm3jpr0000gn/T/Rtmp4Johwf/Rd2pdf4d77793db963/Rd2.out) (/private/var/folders/hj/8f_5wmq90sb729dg85rm3jpr0000gn/T/Rtmp4Johwf/Rd2pdf4d77793db963/Rd2.out) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/inconsolata/t1zi4.fd) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd) (/private/var/folders/hj/8f_5wmq90sb729dg85rm3jpr0000gn/T/Rtmp4Johwf/Rd2pdf4d77793db963/Rd2.toc
 [1{/Users/williamchoi-kim/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/fonts/enc/dvips/base/8r.enc}{/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/fonts/enc/dvips/inconsolata/i4-t1-0.enc}]) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/psnfss/ts1ptm.fd)
 [2]
 [3]
@@ -31,10 +31,10 @@ Writing index file Rd2.idx
 [10]
 [11]
 [12]
-[13]
-Overfull \hbox (18.51859pt too wide) in paragraph at lines 718--719
+Overfull \hbox (18.51859pt too wide) in paragraph at lines 673--674
 []\T1/ptm/m/n/10 These files are in-cluded in the pack-age un-der \T1/zi4/m/n/10 inst/extdata/ \T1/ptm/m/n/10 and can be ac-cessed us-ing [][][]\T1/zi4/m/n/10 system.file()[][][]
 
+[13]
 [14]
 [15]
 [16]
@@ -42,14 +42,14 @@ Overfull \hbox (18.51859pt too wide) in paragraph at lines 718--719
 [18]
 [19]
 [20]
+Overfull \hbox (18.51859pt too wide) in paragraph at lines 1055--1056
+[]\T1/ptm/m/n/10 These files are in-cluded in the pack-age un-der \T1/zi4/m/n/10 inst/extdata/ \T1/ptm/m/n/10 and can be ac-cessed us-ing [][][]\T1/zi4/m/n/10 system.file()[][][]
+
 [21]
-Overfull \hbox (18.51859pt too wide) in paragraph at lines 1100--1101
+Overfull \hbox (18.51859pt too wide) in paragraph at lines 1103--1104
 []\T1/ptm/m/n/10 These files are in-cluded in the pack-age un-der \T1/zi4/m/n/10 inst/extdata/ \T1/ptm/m/n/10 and can be ac-cessed us-ing [][][]\T1/zi4/m/n/10 system.file()[][][]
 
 [22]
-Overfull \hbox (18.51859pt too wide) in paragraph at lines 1148--1149
-[]\T1/ptm/m/n/10 These files are in-cluded in the pack-age un-der \T1/zi4/m/n/10 inst/extdata/ \T1/ptm/m/n/10 and can be ac-cessed us-ing [][][]\T1/zi4/m/n/10 system.file()[][][]
-
 [23]
 [24]
 [25]
@@ -57,19 +57,18 @@ Overfull \hbox (18.51859pt too wide) in paragraph at lines 1148--1149
 [27]
 [28]
 [29]
-[30]
-Overfull \hbox (308.21034pt too wide) in paragraph at lines 1729--1729
+Overfull \hbox (308.21034pt too wide) in paragraph at lines 1684--1684
  []\T1/zi4/m/n/9 visualize_probabilities(c(0.05, 0.03, 0.12, 0.04, 0.02, 0, 0.05, 0.04, 0.05, 0.06, 0.04, 0.02, 0.03, 0.02, 0.05, 0.03, 0.01, 0.09, 0.06, 0.04, 0, 0.08, 0.05, 0.02)) 
 
-Overfull \hbox (510.69194pt too wide) in paragraph at lines 1731--1731
+Overfull \hbox (510.69194pt too wide) in paragraph at lines 1686--1686
  []\T1/zi4/m/n/9 visualize_probabilities(c(0.05, 0.03, 0.12, 0.04, 0.02, 0, 0.05, 0.04, 0.05, 0.06, 0.04, 0.02, 0.03, 0.02, 0.05, 0.03, 0.01, 0.09, 0.06, 0.04, 0, 0.08, 0.05, 0.02), geneNames = c("AAAA", "BBBB", "CCCC", "DDDD"))[] 
 No file Rd2.ind.
 
-[31] (/private/var/folders/hj/8f_5wmq90sb729dg85rm3jpr0000gn/T/RtmpXdxGVl/Rd2pdf1475e2ec2411b/Rd2.aux) )
+[30] (/private/var/folders/hj/8f_5wmq90sb729dg85rm3jpr0000gn/T/Rtmp4Johwf/Rd2pdf4d77793db963/Rd2.aux) )
 (see the transcript file for additional information)
 pdfTeX warning (dest): name{Rfn.system.file} has been referenced but does not exist, replaced by a fixed one
 
-</Users/williamchoi-kim/Library/TinyTeX/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb></Users/williamchoi-kim/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></Users/williamchoi-kim/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></Users/williamchoi-kim/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb
+</Users/williamchoi-kim/Library/TinyTeX/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb></Users/williamchoi-kim/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></Users/williamchoi-kim/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></Users/williamchoi-kim/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></Users/w
 
 This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex)
  restricted \write18 enabled.
@@ -83,7 +82,7 @@ Document Class: book 2025/01/22 v1.4n Standard LaTeX document class
 For additional information on amsmath, use the `?' option.
 (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amstext.sty (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amsgen.sty)) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amsbsy.sty) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amsopn.sty)) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/amsfonts.sty) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/amssymb.sty) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/eucal.sty) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/base/fontenc.sty) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/psnfss/times.sty) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/inconsolata/zi4.sty `inconsolata-zi4' v1.12, 2019/05/17 Text macros for Inconsolata (msharpe) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/xkeyval/xkeyval.sty (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/generic/xkeyval/xkeyval.tex (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/generic/xkeyval/xkvutils.tex (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/generic/xkeyval/keyval.tex))))) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/graphics/color.sty (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/graphics-cfg/color.cfg) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/graphics-def/pdftex.def) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/graphics/mathcolor.ltx)) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/hyperref/hyperref.sty (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/generic/pdfescape/pdfescape.sty (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/generic/infwarerr/infwarerr.sty))) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/hycolor/hycolor.sty) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/hyperref/nameref.sty (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/refcount/refcount.sty) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/kvoptions/kvoptions.sty))) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/etoolbox/etoolbox.sty) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/generic/stringenc/stringenc.sty) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/hyperref/pd1enc.def) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/generic/intcalc/intcalc.sty) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/hyperref/puenc.def) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/generic/bitset/bitset.sty (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/hyperref/hpdftex.def (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty)))) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/base/makeidx.sty)
 Writing index file Rd2.idx
-(/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/psnfss/t1ptm.fd) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def) (/private/var/folders/hj/8f_5wmq90sb729dg85rm3jpr0000gn/T/RtmpXdxGVl/Rd2pdf1475e2ec2411b/Rd2.aux) (/private/var/folders/hj/8f_5wmq90sb729dg85rm3jpr0000gn/T/RtmpXdxGVl/Rd2pdf1475e2ec2411b/Rd2.out) (/private/var/folders/hj/8f_5wmq90sb729dg85rm3jpr0000gn/T/RtmpXdxGVl/Rd2pdf1475e2ec2411b/Rd2.out) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/inconsolata/t1zi4.fd) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd) (/private/var/folders/hj/8f_5wmq90sb729dg85rm3jpr0000gn/T/RtmpXdxGVl/Rd2pdf1475e2ec2411b/Rd2.toc
+(/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/psnfss/t1ptm.fd) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def) (/private/var/folders/hj/8f_5wmq90sb729dg85rm3jpr0000gn/T/Rtmp4Johwf/Rd2pdf4d77793db963/Rd2.aux) (/private/var/folders/hj/8f_5wmq90sb729dg85rm3jpr0000gn/T/Rtmp4Johwf/Rd2pdf4d77793db963/Rd2.out) (/private/var/folders/hj/8f_5wmq90sb729dg85rm3jpr0000gn/T/Rtmp4Johwf/Rd2pdf4d77793db963/Rd2.out) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/inconsolata/t1zi4.fd) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd) (/private/var/folders/hj/8f_5wmq90sb729dg85rm3jpr0000gn/T/Rtmp4Johwf/Rd2pdf4d77793db963/Rd2.toc
 [1{/Users/williamchoi-kim/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/fonts/enc/dvips/base/8r.enc}{/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/fonts/enc/dvips/inconsolata/i4-t1-0.enc}]) (/Users/williamchoi-kim/Library/TinyTeX/texmf-dist/tex/latex/psnfss/ts1ptm.fd)
 [2]
 [3]
@@ -96,10 +95,10 @@ Writing index file Rd2.idx
 [10]
 [11]
 [12]
-[13]
-Overfull \hbox (18.51859pt too wide) in paragraph at lines 718--719
+Overfull \hbox (18.51859pt too wide) in paragraph at lines 673--674
 []\T1/ptm/m/n/10 These files are in-cluded in the pack-age un-der \T1/zi4/m/n/10 inst/extdata/ \T1/ptm/m/n/10 and can be ac-cessed us-ing [][][]\T1/zi4/m/n/10 system.file()[][][]
 
+[13]
 [14]
 [15]
 [16]
@@ -107,14 +106,14 @@ Overfull \hbox (18.51859pt too wide) in paragraph at lines 718--719
 [18]
 [19]
 [20]
+Overfull \hbox (18.51859pt too wide) in paragraph at lines 1055--1056
+[]\T1/ptm/m/n/10 These files are in-cluded in the pack-age un-der \T1/zi4/m/n/10 inst/extdata/ \T1/ptm/m/n/10 and can be ac-cessed us-ing [][][]\T1/zi4/m/n/10 system.file()[][][]
+
 [21]
-Overfull \hbox (18.51859pt too wide) in paragraph at lines 1100--1101
+Overfull \hbox (18.51859pt too wide) in paragraph at lines 1103--1104
 []\T1/ptm/m/n/10 These files are in-cluded in the pack-age un-der \T1/zi4/m/n/10 inst/extdata/ \T1/ptm/m/n/10 and can be ac-cessed us-ing [][][]\T1/zi4/m/n/10 system.file()[][][]
 
 [22]
-Overfull \hbox (18.51859pt too wide) in paragraph at lines 1148--1149
-[]\T1/ptm/m/n/10 These files are in-cluded in the pack-age un-der \T1/zi4/m/n/10 inst/extdata/ \T1/ptm/m/n/10 and can be ac-cessed us-ing [][][]\T1/zi4/m/n/10 system.file()[][][]
-
 [23]
 [24]
 [25]
@@ -122,21 +121,20 @@ Overfull \hbox (18.51859pt too wide) in paragraph at lines 1148--1149
 [27]
 [28]
 [29]
-[30]
-Overfull \hbox (308.21034pt too wide) in paragraph at lines 1729--1729
+Overfull \hbox (308.21034pt too wide) in paragraph at lines 1684--1684
  []\T1/zi4/m/n/9 visualize_probabilities(c(0.05, 0.03, 0.12, 0.04, 0.02, 0, 0.05, 0.04, 0.05, 0.06, 0.04, 0.02, 0.03, 0.02, 0.05, 0.03, 0.01, 0.09, 0.06, 0.04, 0, 0.08, 0.05, 0.02)) 
 
-Overfull \hbox (510.69194pt too wide) in paragraph at lines 1731--1731
+Overfull \hbox (510.69194pt too wide) in paragraph at lines 1686--1686
  []\T1/zi4/m/n/9 visualize_probabilities(c(0.05, 0.03, 0.12, 0.04, 0.02, 0, 0.05, 0.04, 0.05, 0.06, 0.04, 0.02, 0.03, 0.02, 0.05, 0.03, 0.01, 0.09, 0.06, 0.04, 0, 0.08, 0.05, 0.02), geneNames = c("AAAA", "BBBB", "CCCC", "DDDD"))[] 
 No file Rd2.ind.
 
-[31] (/private/var/folders/hj/8f_5wmq90sb729dg85rm3jpr0000gn/T/RtmpXdxGVl/Rd2pdf1475e2ec2411b/Rd2.aux) )
+[30] (/private/var/folders/hj/8f_5wmq90sb729dg85rm3jpr0000gn/T/Rtmp4Johwf/Rd2pdf4d77793db963/Rd2.aux) )
 (see the transcript file for additional information)
 pdfTeX warning (dest): name{Rfn.system.file} has been referenced but does not exist, replaced by a fixed one
 
 </Users/williamchoi-kim/Library/TinyTeX/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb></Users/williamchoi-kim/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></Users/williamchoi-kim/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></Users/williamchoi-kim/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></Users/williamchoi-kim/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Rd2.pdf (31 pages, 132907 bytes).
+Output written on Rd2.pdf (30 pages, 130405 bytes).
 Transcript written on Rd2.log.
 Saving output to ‘CBN2Path-manual.pdf’ ...
 Done
-You may want to clean up by 'rm -Rf /var/folders/hj/8f_5wmq90sb729dg85rm3jpr0000gn/T//RtmpXdxGVl/Rd2pdf1475e2ec2411b'
+You may want to clean up by 'rm -Rf /var/folders/hj/8f_5wmq90sb729dg85rm3jpr0000gn/T//Rtmp4Johwf/Rd2pdf4d77793db963'

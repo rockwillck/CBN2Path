@@ -13,14 +13,15 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Imports: R6, foreach, doMC, ggraph, tidygraph, ggplot2, patchwork,
-        cowplot, magrittr, igraph, rlang, grDevices
-Suggests: testthat (>= 3.0.0), BiocStyle, knitr, rmarkdown, rBCBN
+        cowplot, magrittr, igraph, rlang, grDevices, coda, graphics,
+        stats
+Suggests: testthat (>= 3.0.0), BiocStyle, knitr, rmarkdown
 Depends: R (>= 3.5.0)
 Config/testthat/edition: 3
 biocViews: Software, StatisticalMethod, GraphAndNetwork
 VignetteBuilder: knitr
 NeedsCompilation: yes
-Packaged: 2025-07-25 23:42:15 UTC; williamchoi-kim
+Packaged: 2025-07-26 05:23:36 UTC; williamchoi-kim
 Author: William Choi-Kim [aut, cre] (<https://orcid.org/0009-0000-3902-4745>),
   Sayed-Rzgar Hosseini [aut] (<https://orcid.org/0000-0002-2308-6754>)
 Maintainer: William Choi-Kim <william@williamck.com>

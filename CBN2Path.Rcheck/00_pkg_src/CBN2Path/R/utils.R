@@ -180,3 +180,27 @@ pad_list <- function(list, length) {
         vec
     }
 }
+
+`getParents` <- function(poset, i){
+  allParents <- which(poset[, i] == 1)
+  sort(allParents)
+}
+
+`matrixPower` <- function (X, n){
+  ## unfortunately R doesn't have a matrix power function like MATLAB.
+  ## This function is taken from packages Biodem and is originally called mtx.exp.
+  if (n != round(n)) {
+    n <- round(n)
+    warning("rounding exponent `n' to", n)
+  }
+  phi <- diag(nrow = nrow(X))
+  pot <- X
+  while (n > 0) {
+    if (n%%2)
+      phi <- phi %*% pot
+    n <- n%/%2
+    pot <- pot %*% pot
+  }
+  return(phi)
+}
+

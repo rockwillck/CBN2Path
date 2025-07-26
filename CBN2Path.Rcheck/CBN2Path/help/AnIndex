@@ -2,7 +2,6 @@ CBN2Path-package	CBN2Path-package
 Base2Indexing	Base2Indexing
 Base2IndVec	Base2IndVec
 bcbn	bcbn
-checkBCBNVersion	checkBCBNVersion
 combinations	combinations
 ctcbn	ctcbn
 ctcbn_single	ctcbn_single
@@ -11,8 +10,6 @@ generate_data	generate_data
 generate_matrix_genotypes	generate_matrix_genotypes
 GenotypeMatrix_Mutator	GenotypeMatrix_Mutator
 Genotype_Feasibility	Genotype_Feasibility
-getBCBNinstall	getBCBNinstall
-getBCBNVersion	getBCBNVersion
 get_examples	get_examples
 hcbn	hcbn
 hcbn_single	hcbn_single

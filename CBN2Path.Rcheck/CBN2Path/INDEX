@@ -27,15 +27,12 @@ Poset_Weighting_RCBN    Poset_Weighting_RCBN
 Predictability          Predictability
 Spock                   Poset and pattern/lambda data
 bcbn                    B-CBN
-checkBCBNVersion        Check if installed BCBN is correct
 combinations            combinations
 ctcbn                   CT-CBN
 ctcbn_single            CT-CBN Single Batch
 generate_data           Generate Data
 generate_matrix_genotypes
                         generate_matrix_genotypes
-getBCBNVersion          Get needed BCBN version
-getBCBNinstall          Get BCBN .tgz path
 get_examples            Get paths to examples
 hcbn                    H-CBN
 hcbn_single             H-CBN Single Batch

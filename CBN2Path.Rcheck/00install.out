@@ -16,8 +16,118 @@ config.status: creating src/Makevars
 ** libs
 using C compiler: ‘Apple clang version 17.0.0 (clang-1700.0.13.5)’
 using SDK: ‘’
-clang -arch arm64 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I/opt/homebrew/Cellar/gsl/2.8/include -I.  -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2  -c CBN2Path.c -o CBN2Path.o
-In file included from CBN2Path.c:3:
+clang -arch arm64 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I/opt/homebrew/Cellar/gsl/2.8/include -I.  -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2  -c bcbn.c -o bcbn.o
+bcbn.c:433:7: warning: unused variable 'i' [-Wunused-variable]
+  433 |   int i;
+      |       ^
+bcbn.c:641:7: warning: unused variable 'i' [-Wunused-variable]
+  641 |   int i;
+      |       ^
+bcbn.c:1056:9: warning: unused variable 'j' [-Wunused-variable]
+ 1056 |   int i,j,c,k;
+      |         ^
+bcbn.c:1056:13: warning: unused variable 'k' [-Wunused-variable]
+ 1056 |   int i,j,c,k;
+      |             ^
+bcbn.c:1075:10: warning: variable 'p' set but not used [-Wunused-but-set-variable]
+ 1075 |   double p = 0;
+      |          ^
+bcbn.c:1281:15: warning: unused variable 'likelihood' [-Wunused-variable]
+ 1281 |   long double likelihood, likelihood_d;
+      |               ^~~~~~~~~~
+bcbn.c:1367:21: warning: unused variable 'var' [-Wunused-variable]
+ 1367 |   double alpha,beta,var,x;
+      |                     ^~~
+bcbn.c:1367:25: warning: variable 'x' set but not used [-Wunused-but-set-variable]
+ 1367 |   double alpha,beta,var,x;
+      |                         ^
+bcbn.c:1380:21: warning: unused variable 'var' [-Wunused-variable]
+ 1380 |   double alpha,beta,var,x;
+      |                     ^~~
+bcbn.c:1380:25: warning: variable 'x' set but not used [-Wunused-but-set-variable]
+ 1380 |   double alpha,beta,var,x;
+      |                         ^
+bcbn.c:1449:11: warning: unused variable 'k' [-Wunused-variable]
+ 1449 |   int i,j,k,N_compatible,N_all_comp;
+      |           ^
+bcbn.c:1550:11: warning: variable 'N_all_comp' set but not used [-Wunused-but-set-variable]
+ 1550 |   int i,j,N_all_comp,N_compatible,k;
+      |           ^
+bcbn.c:1550:22: warning: unused variable 'N_compatible' [-Wunused-variable]
+ 1550 |   int i,j,N_all_comp,N_compatible,k;
+      |                      ^~~~~~~~~~~~
+bcbn.c:1550:35: warning: unused variable 'k' [-Wunused-variable]
+ 1550 |   int i,j,N_all_comp,N_compatible,k;
+      |                                   ^
+bcbn.c:1675:10: warning: unused variable 'alpha' [-Wunused-variable]
+ 1675 |   double alpha,beta,var,x;
+      |          ^~~~~
+bcbn.c:1675:16: warning: unused variable 'beta' [-Wunused-variable]
+ 1675 |   double alpha,beta,var,x;
+      |                ^~~~
+bcbn.c:1675:21: warning: unused variable 'var' [-Wunused-variable]
+ 1675 |   double alpha,beta,var,x;
+      |                     ^~~
+bcbn.c:1675:25: warning: unused variable 'x' [-Wunused-variable]
+ 1675 |   double alpha,beta,var,x;
+      |                         ^
+bcbn.c:1755:11: warning: unused variable 'k' [-Wunused-variable]
+ 1755 |   int i,j,k,N_compatible,N_all_comp;
+      |           ^
+bcbn.c:1878:11: warning: unused variable 'k' [-Wunused-variable]
+ 1878 |   int i,j,k,N_compatible,N_all_comp;
+      |           ^
+bcbn.c:1878:13: warning: unused variable 'N_compatible' [-Wunused-variable]
+ 1878 |   int i,j,k,N_compatible,N_all_comp;
+      |             ^~~~~~~~~~~~
+bcbn.c:1878:26: warning: variable 'N_all_comp' set but not used [-Wunused-but-set-variable]
+ 1878 |   int i,j,k,N_compatible,N_all_comp;
+      |                          ^
+bcbn.c:1946:11: warning: unused variable 'k' [-Wunused-variable]
+ 1946 |   int i,j,k,N_compatible,N_all_comp;
+      |           ^
+bcbn.c:1946:13: warning: unused variable 'N_compatible' [-Wunused-variable]
+ 1946 |   int i,j,k,N_compatible,N_all_comp;
+      |             ^~~~~~~~~~~~
+bcbn.c:1946:26: warning: variable 'N_all_comp' set but not used [-Wunused-but-set-variable]
+ 1946 |   int i,j,k,N_compatible,N_all_comp;
+      |                          ^
+bcbn.c:1957:7: warning: unused variable 'c' [-Wunused-variable]
+ 1957 |   int c = 0;
+      |       ^
+bcbn.c:1997:11: warning: unused variable 'k' [-Wunused-variable]
+ 1997 |   int i,j,k,N_compatible,N_all_comp;
+      |           ^
+bcbn.c:1997:13: warning: unused variable 'N_compatible' [-Wunused-variable]
+ 1997 |   int i,j,k,N_compatible,N_all_comp;
+      |             ^~~~~~~~~~~~
+bcbn.c:1997:26: warning: variable 'N_all_comp' set but not used [-Wunused-but-set-variable]
+ 1997 |   int i,j,k,N_compatible,N_all_comp;
+      |                          ^
+bcbn.c:2008:7: warning: unused variable 'c' [-Wunused-variable]
+ 2008 |   int c = 0;
+      |       ^
+bcbn.c:2358:7: warning: unused variable 'i' [-Wunused-variable]
+ 2358 |   int i,j,k = 0;
+      |       ^
+bcbn.c:2358:9: warning: unused variable 'j' [-Wunused-variable]
+ 2358 |   int i,j,k = 0;
+      |         ^
+bcbn.c:2362:7: warning: unused variable 'accepted' [-Wunused-variable]
+ 2362 |   int accepted = 0;
+      |       ^~~~~~~~
+bcbn.c:2620:22: warning: unused variable 'MH_ratio' [-Wunused-variable]
+ 2620 |   long double alpha, MH_ratio;
+      |                      ^~~~~~~~
+bcbn.c:2630:7: warning: variable 'accepted' set but not used [-Wunused-but-set-variable]
+ 2630 |   int accepted = 0;
+      |       ^
+bcbn.c:2633:7: warning: variable 'n_edges' set but not used [-Wunused-but-set-variable]
+ 2633 |   int n_edges = 0;
+      |       ^
+36 warnings generated.
+clang -arch arm64 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I/opt/homebrew/Cellar/gsl/2.8/include -I.  -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2  -c ctcbn.c -o ctcbn.o
+In file included from ctcbn.c:3:
 ./ct-cbn.h:184:7: warning: unused variable 'j' [-Wunused-variable]
   184 |   int j;
       |       ^
@@ -30,46 +140,46 @@ In file included from CBN2Path.c:3:
 ./ct-cbn.h:3299:7: warning: variable 'mut_next' set but not used [-Wunused-but-set-variable]
  3299 |   int mut_next, index_next;
       |       ^
-CBN2Path.c:79:7: warning: unused variable 'verbose' [-Wunused-variable]
+ctcbn.c:79:7: warning: unused variable 'verbose' [-Wunused-variable]
    79 |   int verbose = 0;
       |       ^~~~~~~
-CBN2Path.c:84:7: warning: unused variable 'GPS' [-Wunused-variable]
+ctcbn.c:84:7: warning: unused variable 'GPS' [-Wunused-variable]
    84 |   int GPS = 0;
       |       ^~~
-CBN2Path.c:88:7: warning: unused variable 'c' [-Wunused-variable]
+ctcbn.c:88:7: warning: unused variable 'c' [-Wunused-variable]
    88 |   int c = 0;
       |       ^
-CBN2Path.c:285:7: warning: unused variable 'error_flag' [-Wunused-variable]
+ctcbn.c:285:7: warning: unused variable 'error_flag' [-Wunused-variable]
   285 |   int error_flag = 0;
       |       ^~~~~~~~~~
-CBN2Path.c:286:7: warning: unused variable 'f_flag' [-Wunused-variable]
+ctcbn.c:286:7: warning: unused variable 'f_flag' [-Wunused-variable]
   286 |   int f_flag = 0;
       |       ^~~~~~
-CBN2Path.c:287:7: warning: variable 'e_flag' set but not used [-Wunused-but-set-variable]
+ctcbn.c:287:7: warning: variable 'e_flag' set but not used [-Wunused-but-set-variable]
   287 |   int e_flag = 0;
       |       ^
-CBN2Path.c:288:7: warning: unused variable 'gps_flag' [-Wunused-variable]
+ctcbn.c:288:7: warning: unused variable 'gps_flag' [-Wunused-variable]
   288 |   int gps_flag = 0;
       |       ^~~~~~~~
-CBN2Path.c:289:7: warning: unused variable 'l_flag' [-Wunused-variable]
+ctcbn.c:289:7: warning: unused variable 'l_flag' [-Wunused-variable]
   289 |   int l_flag = 0;
       |       ^~~~~~
-CBN2Path.c:291:7: warning: unused variable 't_flag' [-Wunused-variable]
+ctcbn.c:291:7: warning: unused variable 't_flag' [-Wunused-variable]
   291 |   int t_flag = 1;
       |       ^~~~~~
-CBN2Path.c:296:10: warning: unused variable 'T' [-Wunused-variable]
+ctcbn.c:296:10: warning: unused variable 'T' [-Wunused-variable]
   296 |   double T = REAL(temp)[0];
       |          ^
-CBN2Path.c:297:7: warning: variable 'N_iter' set but not used [-Wunused-but-set-variable]
+ctcbn.c:297:7: warning: variable 'N_iter' set but not used [-Wunused-but-set-variable]
   297 |   int N_iter = 0;
       |       ^
-CBN2Path.c:302:7: warning: unused variable 'c' [-Wunused-variable]
+ctcbn.c:302:7: warning: unused variable 'c' [-Wunused-variable]
   302 |   int c = 0;
       |       ^
 16 warnings generated.
 clang -arch arm64 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I/opt/homebrew/Cellar/gsl/2.8/include -I.  -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2  -c init.c -o init.o
 clang -arch arm64 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I/opt/homebrew/Cellar/gsl/2.8/include -I.  -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2  -c queue.c -o queue.o
-clang -arch arm64 -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -L/Library/Frameworks/R.framework/Resources/lib -L/opt/R/arm64/lib -o CBN2Path.so CBN2Path.o init.o queue.o -L/opt/homebrew/Cellar/gsl/2.8/lib -lgsl -lgslcblas -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
+clang -arch arm64 -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -L/Library/Frameworks/R.framework/Resources/lib -L/opt/R/arm64/lib -o CBN2Path.so bcbn.o ctcbn.o init.o queue.o -L/opt/homebrew/Cellar/gsl/2.8/lib -lgsl -lgslcblas -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
 installing to /Users/williamchoi-kim/Desktop/CBN2Path/CBN2Path.Rcheck/00LOCK-CBN2Path/00new/CBN2Path/libs
 ** R
 ** inst

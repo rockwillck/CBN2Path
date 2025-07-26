@@ -473,7 +473,7 @@ If we can establish a fitness landscape by directly assigning fitness to all pot
 In case of 4 mutations, we will have 16 genotypes, so a fitness vector length of 16 is needed each element of which corresponds to a given genotype that can be determined by the **generate_matrix_genotypes** function. For example:
 
 ```{r}
-F<-c(0,0.1,0.2,0.1,0.2,0.4,0.3,0.2,0.2,0.1,0,0.6,0.4,0.3,0.2,1)
+fitnessVector<-c(0,0.1,0.2,0.1,0.2,0.4,0.3,0.2,0.2,0.1,0,0.6,0.4,0.3,0.2,1)
 G<-generate_matrix_genotypes(4)
 ```
 
@@ -482,13 +482,13 @@ The 7-th genotype in the G vector is "1 0 1 0" and its corresponding fitness is 
 The fitness landscape can be visualized as follows:
 
 ```{r}
-visualize_fitness_landscape(F)
+visualize_fitness_landscape(fitnessVector)
 ```
 
 The pathway probability distribution under the SSWM-based model can be quantified as:
 
 ```{r}
-Prob_W<-PathProb_SSWM(F,4)
+Prob_W<-PathProb_SSWM(fitnessVector,4)
 ```
 
 Moreover, the pathway probabilities can be visualized as:

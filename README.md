@@ -46,29 +46,37 @@ in the future.
 To install the `CBN2Path` R package, you first need to install the
 `gsl`:
 
-__install GSL with homebrew on Mac:__
-```bash
+**install GSL with homebrew on Mac:**
+
+``` bash
 brew install gsl
 ```
+
 Note that if `gsl` was installed using any method other Homebrew, you
 need to uninstall `gsl`, and then reinstall it using Homebrew (see
 <https://brew.sh> if you have not installed Homebrew yet).
 
-__install GSL on Linux:__
-```bash
+**install GSL on Linux:**
+
+``` bash
 sudo apt-get install libgsl-dev
 ```
 
-__on Linux, if the `ggraph` dependency fails, run__
-```bash
+**on Linux, if the `ggraph` dependency fails, run**
+
+``` bash
 sudo apt install libfontconfig1-dev
 ```
-which appears to fix a sysfonts issue. We're not sure why this is necessary.
 
-__on Windows, we suggest installing RTools (which includes a distribution of GSL):__
-Install it [here](https://cran.r-project.org/bin/windows/Rtools/)
+which appears to fix a sysfonts issue. We’re not sure why this is
+necessary.
 
-Make sure to restart R before proceeding.
+**on Windows, we suggest installing RTools (which includes a
+distribution of GSL):**
+
+Install it [here](https://cran.r-project.org/bin/windows/Rtools/).
+
+**Make sure to restart R before proceeding.**
 
 Then, you can install the development version of `CBN2Path`:
 

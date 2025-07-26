@@ -142,7 +142,7 @@ ctcbn <- function(datasets,
     outMatrixBuf <- vector("list", length(datasets))
     dataI <- 1
     rets <- foreach(dataI = 1:length(datasets)) %dopar% {
-        out <- ctcbn_single(datasets[[dataI]], bootstrap_mode, bootstrap_samples, random_seed, sampling_rate, epsilon, num_drawn_samples, num_em_runs)
+        out <- ctcbn_single(datasets[[dataI]], bootstrap_samples, random_seed, sampling_rate, epsilon, num_drawn_samples, num_em_runs)
         list(i = dataI, row = out)
     }
 

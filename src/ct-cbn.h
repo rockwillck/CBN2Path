@@ -10,7 +10,7 @@
 #include <gsl/gsl_multimin.h>
 
 #include "queue.h"
-
+#include "rand.h"
 
 #define DOUBLE_FORMAT "%.10g"
 #define EM_ACCURACY 1e-8
@@ -2465,8 +2465,8 @@ int compare_violation_pairs (const void *A, const void *B)
   int* b = *(int**) B;
 
   // random tie breaking:
-  double da = (double) a[2] + (double) rand() / (double) RAND_MAX;
-  double db = (double) b[2] + (double) rand() / (double) RAND_MAX;
+  double da = (double) a[2] + (double) pcg_rand() / (double) RAND_MAX;
+  double db = (double) b[2] + (double) pcg_rand() / (double) RAND_MAX;
 
   return (da - db);
 }
@@ -2728,7 +2728,7 @@ double try_edge(model* M, model* M2, data* D, int N_u, double* lambda, double* e
 
   /* Draw n^2 random numbers */
   for (i=0;i<n*n;i++)
-    R5[i] = (double) rand() / (double) RAND_MAX;
+    R5[i] = (double) pcg_rand() / (double) RAND_MAX;
 
   /* Sort to generate integers */
   for (i=0;i<n*n;i++)
@@ -2918,7 +2918,7 @@ double try_edge(model* M, model* M2, data* D, int N_u, double* lambda, double* e
     if (alpha_all[R1-1][R2-1] < alpha)
     {
       boltz = exp( (alpha_all[R1-1][R2-1] - alpha ) / 0.05 );
-      R3 = (double) rand() / (double) RAND_MAX;
+      R3 = (double) pcg_rand() / (double) RAND_MAX;
       if (R3 > boltz)
         reject = 1;
     }
@@ -2996,7 +2996,7 @@ double try_edge(model* M, model* M2, data* D, int N_u, double* lambda, double* e
       else // Accept decreasing Loglik with Boltzmann weight
       {
         boltz = exp( (loglik_new - loglik ) / T );
-        R3 = (double) rand() / (double) RAND_MAX;
+        R3 = (double) pcg_rand() / (double) RAND_MAX;
         // printf(" e^{-dL/T}=%f\tR=%f\n", boltz, R3);
         if ( R3 < boltz )
         {

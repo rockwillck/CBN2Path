@@ -18,14 +18,17 @@
 #' }
 #' bcbn()
 bcbn <- function(data = NULL, n_samples = 25000, theta = 0, epsilon = 0.05, n_chains = 4, thin = 10, Max_L =1000, n_cores = 1) {
-    if (!require("rBCBN")) {
-        stop("The bcbn function requires the rBCBN package. Install the package with:\n\n  install.packages(getBCBNinstall(), repos = NULL, type = \"source\")\n ")
-    }
-    if (is.null(data)) {
-        rBCBN::bcbn_mcmc(n_samples = n_samples, theta = theta, epsilon = epsilon, n_chains = n_chains, thin = thin, Max_L = Max_L, n_cores = n_cores)
-    } else {
-        rBCBN::bcbn_mcmc(data, n_samples, theta, epsilon, n_chains, thin, Max_L, n_cores)
-    }
+  if (!requireNamespace("rBCBN", quietly = TRUE)) {
+    stop("The bcbn function requires the rBCBN package. Install the package with:\n\n  install.packages(getBCBNinstall(), repos = NULL, type = \"source\")\n ")
+  }
+  if (!checkBCBNVersion()) {
+    stop(sprintf("You need version %s of rBCBN. Install the correct version with:\n\n  install.packages(getBCBNinstall(), repos = NULL, type = \"source\")\n ", getBCBNVersion()))
+  }
+  if (is.null(data)) {
+    rBCBN::bcbn_mcmc(n_samples = n_samples, theta = theta, epsilon = epsilon, n_chains = n_chains, thin = thin, Max_L = Max_L, n_cores = n_cores)
+  } else {
+    rBCBN::bcbn_mcmc(data, n_samples, theta, epsilon, n_chains, thin, Max_L, n_cores)
+  }
 }
 
 #' Transitive Closure
@@ -83,3 +86,4 @@ transitive_closure <- function(poset) {
 generate_data <- function(poset, thetas, eps, N) {
   rBCBN::generateData(poset, thetas, eps, N)
 }
+

@@ -6,6 +6,8 @@
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
 
+#include <stdint.h>
+
 // Function to convert char* to SEXP
 SEXP char_to_sexp(const char* input) {
     // Create a character vector of length 1
@@ -61,9 +63,12 @@ char* read_file(const char *filename) {
 
 SEXP ctcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP mb, SEXP bs, SEXP rs, SEXP sr, SEXP epsilon, SEXP nd, SEXP emr)
 {
-  const char *ofilestem = CHAR(STRING_ELT(ofs, 0));
-  const char *filestem1 = CHAR(STRING_ELT(fs1, 0));
-  const char *filestem2 = CHAR(STRING_ELT(fs2, 0));
+  const char *ofilestemRaw = CHAR(STRING_ELT(ofs, 0));
+  char *ofilestem = strdup(ofilestemRaw);
+  const char *filestem1Raw = CHAR(STRING_ELT(fs1, 0));
+  char *filestem1 = strdup(filestem1Raw);
+  const char *filestem2Raw = CHAR(STRING_ELT(fs2, 0));
+  char *filestem2 = strdup(filestem2Raw);
 
   // defaults:
   double eps = REAL(epsilon)[0];                         // e
@@ -126,7 +131,7 @@ SEXP ctcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP mb, SEXP bs, SEXP rs, SEXP sr, SE
     }
   }
 
-  srand(seed);
+  pcg_srand(seed);
   RNG = gsl_rng_alloc(gsl_rng_taus); // global variable
   gsl_rng_set(RNG, seed);            // seed rng
 
@@ -236,7 +241,6 @@ SEXP ctcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP mb, SEXP bs, SEXP rs, SEXP sr, SE
     read_lambda(filestem2, lambda, M.n);
 
     draw_samples(M.P, lambda, M.lin_ext, M.n, pat_draw, t_draw, N_draw);
-     (ofilestem, pat_draw, N_draw, M.n);
     write_patterns(ofilestem, pat_draw, N_draw, M.n);
     write_times(ofilestem, t_draw, N_draw, M.n);
 
@@ -261,10 +265,14 @@ SEXP ctcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP mb, SEXP bs, SEXP rs, SEXP sr, SE
 
 SEXP hcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP fs3, SEXP s, SEXP temp, SEXP n, SEXP repsilon)
 {
-  const char *ofilestem = CHAR(STRING_ELT(ofs, 0));
-  const char *filestem1 = CHAR(STRING_ELT(fs1, 0));
-  const char *filestem2 = CHAR(STRING_ELT(fs2, 0));
-  const char *filestem3 = CHAR(STRING_ELT(fs3, 0));
+  const char *ofilestemRaw = CHAR(STRING_ELT(ofs, 0));
+  char *ofilestem = strdup(ofilestemRaw);
+  const char *filestem1Raw = CHAR(STRING_ELT(fs1, 0));
+  char *filestem1 = strdup(filestem1Raw);
+  const char *filestem2Raw = CHAR(STRING_ELT(fs2, 0));
+  char *filestem2 = strdup(filestem2Raw);
+  const char *filestem3Raw = CHAR(STRING_ELT(fs3, 0));
+  char *filestem3 = strdup(filestem3Raw);
   
   // defaults:
   double eps = REAL(repsilon)[0];  // e
@@ -308,7 +316,7 @@ SEXP hcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP fs3, SEXP s, SEXP temp, SEXP n, SE
     N_iter = n_temp;
   }
   
-  srand(seed);
+  pcg_srand(seed);
   RNG = gsl_rng_alloc(gsl_rng_taus);  // global variable
   gsl_rng_set(RNG, seed);  // seed rng
   

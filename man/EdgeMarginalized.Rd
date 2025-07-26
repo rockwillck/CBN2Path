@@ -9,7 +9,7 @@ EdgeMarginalized(PathProb, x)
 \arguments{
 \item{PathProb}{The pathway probabilities returned in the step 3 of the R-CBN algorithm}
 
-\item{x}{}
+\item{x}{The number of mutations to consider}
 }
 \value{
 returns the marginal probability of all the potential edges

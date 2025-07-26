@@ -28,6 +28,8 @@ bcbn(
 
 \item{thin}{Thin <def: 10>}
 
+\item{Max_L}{The maximum number of iteration <def: 1000>}
+
 \item{n_cores}{Number of parallelized cores <def: 1>}
 }
 \value{

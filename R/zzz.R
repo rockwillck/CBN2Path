@@ -6,6 +6,24 @@
 #' @examples
 #' getBCBNinstall()
 getBCBNinstall <- function() {
-    # Path to the .tgz file within the package
-    system.file("extdata", "rBCBN_0.0.0.9000.tgz", package = "CBN2Path")
+    files = list.files(system.file("extdata", package = "CBN2Path"), full.names = TRUE)
+    match = files[grepl("^rBCBN", basename(files))]
+    
+    match[1]
+}
+
+#' Get needed BCBN version
+#' @NoRd
+getBCBNVersion <- function() {
+  pathsplit = strsplit(getBCBNinstall(),"/")[[1]]
+  packageVersionR = pathsplit[[length(pathsplit)]]
+  pkgVn = substr(packageVersionR, 7, nchar(packageVersionR)-4)
+  
+  pkgVn
+}
+
+#' Check if installed BCBN is correct
+#' @NoRd
+checkBCBNVersion <- function() {
+  identical(as.character(utils::packageVersion("rBCBN")), getBCBNVersion())
 }

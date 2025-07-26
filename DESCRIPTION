@@ -21,9 +21,12 @@ Imports:
     cowplot,
     magrittr,
     igraph,
-    rlang
+    rlang,
+    grDevices
 Suggests: 
-    testthat (>= 3.0.0), BiocStyle, knitr, rmarkdown
+    testthat (>= 3.0.0), BiocStyle, knitr, rmarkdown, rBCBN
+Depends:
+    R (>= 3.5.0)
 Config/testthat/edition: 3
 biocViews: Software, StatisticalMethod, GraphAndNetwork
 VignetteBuilder: knitr

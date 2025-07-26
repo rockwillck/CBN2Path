@@ -19,5 +19,5 @@ Visualize CBN Model
 }
 \examples{
 poset <- read_poset(get_examples()[1])
-visualize_cbn_model(poset)
+visualize_cbn_model(poset$sets)
 }

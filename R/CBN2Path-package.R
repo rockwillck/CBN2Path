@@ -21,6 +21,7 @@
 #' @importFrom ggraph geom_node_point
 #' @importFrom ggraph geom_node_text
 #' @importFrom ggraph ggraph
+#' @importFrom grDevices rainbow
 #' @importFrom igraph gsize
 #' @importFrom magrittr %>%
 #' @importFrom patchwork wrap_plots

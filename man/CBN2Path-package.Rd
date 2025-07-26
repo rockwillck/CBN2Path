@@ -15,6 +15,7 @@ Useful links:
   \item \url{https://github.com/rockwillck/CBN2Path}
   \item \url{http://dx.doi.org/10.1093/biomet/asp023}
   \item \url{http://dx.doi.org/10.1093/bioinformatics/btp505}
+  \item Report bugs at \url{https://github.com/rockwillck/CBN2Path/issues}
 }
 
 
@@ -23,6 +24,7 @@ Useful links:
   \item \url{https://github.com/rockwillck/CBN2Path}
   \item \url{http://dx.doi.org/10.1093/biomet/asp023}
   \item \url{http://dx.doi.org/10.1093/bioinformatics/btp505}
+  \item Report bugs at \url{https://github.com/rockwillck/CBN2Path/issues}
 }
 
 }

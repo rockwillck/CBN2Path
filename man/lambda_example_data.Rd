@@ -3,12 +3,21 @@
 \name{lambda_example_data}
 \alias{lambda_example_data}
 \title{Example .lambda files}
+\format{
+floats deliminated by new lines
+}
 \source{
 \url{https://bsse.ethz.ch/cbg/software/ct-cbn.html}
+}
+\usage{
+test
 }
 \description{
 Model parameters, if N > 0
 }
 \details{
 These files are included in the package under \verb{inst/extdata/} and can be accessed using \code{\link[=system.file]{system.file()}} or \code{\link[=get_examples]{get_examples()}}. They are unchanged from their original source.
+}
+\examples{
+test
 }

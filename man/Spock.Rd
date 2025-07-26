@@ -9,6 +9,14 @@ A data class containing poset and pattern/lambda matrices.
 \details{
 Use the read_ methods to feed data from files.
 }
+\examples{
+example_path <- get_examples()[1]
+bc <- Spock$new(
+    poset = read_poset(example_path)$sets,
+    numMutations = read_poset(example_path)$mutations,
+    genotypeMatrix = read_pattern(example_path)
+)
+}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{

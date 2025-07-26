@@ -4,6 +4,14 @@
 #'
 #' @details Use the read_ methods to feed data from files.
 #' @export
+#' 
+#' @examples
+#' example_path <- get_examples()[1]
+#' bc <- Spock$new(
+#'     poset = read_poset(example_path)$sets,
+#'     numMutations = read_poset(example_path)$mutations,
+#'     genotypeMatrix = read_pattern(example_path)
+#' )
 Spock <- R6::R6Class("Spock", list(
 
     #' @field poset Poset matrix.

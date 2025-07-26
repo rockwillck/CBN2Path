@@ -68,15 +68,15 @@ bcbn <- function(data = default_data(), n_samples = 25000, theta = 0, epsilon = 
     edgelist<-list()
     
     for( i in 1:n_chains) {
-      theta_m<-matrix(rets[[i]]$theta_out,ncol=n,byrow=T)
+      theta_m<-matrix(rets[[i]]$theta_out,ncol=n,byrow=TRUE)
       paramatrix<-cbind(theta_m,rets[[i]]$epsilon_out,rets[[i]]$log_posterior_out)
       mlist[[i]]<-paramatrix
       mcmclist[[i]]<-mcmc(paramatrix)
       sublist<-list()
       edgesum<-0
       for(k in 1:n_samples) {
-        sublist[[k]]<-matrix(rets[[i]]$edges_out[((k-1)*n*n+1):(k*n*n)],ncol=n,byrow=T)
-        edgesum<-edgesum+matrix(rets[[i]]$edges_out[((k-1)*n*n+1):(k*n*n)],ncol=n,byrow=T)
+        sublist[[k]]<-matrix(rets[[i]]$edges_out[((k-1)*n*n+1):(k*n*n)],ncol=n,byrow=TRUE)
+        edgesum<-edgesum+matrix(rets[[i]]$edges_out[((k-1)*n*n+1):(k*n*n)],ncol=n,byrow=TRUE)
       }
       edgelist[[i]]<-sublist
       print(summary(paramatrix))

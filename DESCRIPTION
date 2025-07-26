@@ -1,11 +1,12 @@
 Package: CBN2Path
 Title: Conjunctive Bayesian Networks
-Version: 0.1.0
+Version: 0.99.0
 Authors@R: 
     c(person("William", "Choi-Kim", email = "william@williamck.com", role = c("aut", "cre"), comment = c(ORCID = "0009-0000-3902-4745")),
     person("Sayed-Rzgar", "Hosseini", email = "rzgar.hosseini@indstate.edu", role = c("aut"), comment = c(ORCID = "0000-0002-2308-6754")))
 Description: A family of R functions based on the CBN family of functions created at ETH-Zurich.
 URL: https://github.com/rockwillck/CBN2Path, http://dx.doi.org/10.1093/biomet/asp023, http://dx.doi.org/10.1093/bioinformatics/btp505
+BugReports: https://github.com/rockwillck/CBN2Path/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -31,5 +32,5 @@ Suggests:
 Depends:
     R (>= 3.5.0)
 Config/testthat/edition: 3
-biocViews: Software, StatisticalMethod, GraphAndNetwork
+biocViews: Software, StatisticalMethod, GraphAndNetwork, Bayesian
 VignetteBuilder: knitr

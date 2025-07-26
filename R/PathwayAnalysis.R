@@ -420,7 +420,7 @@ PathProb_SSWM<-function(FITNESS,x){
         SN=which(GENO[j,]==0)# possible remaining mutations in the j-th step 
         N=length(SN)
         S=fitness[(j+1)]-fitness[j]# slective coefficient of the j-th step [the numerator of the equation (7) in the main text]
-        T=0;
+        t=0;
         for (k in 1:N){# checking the genotypes belonging to the exit set
           ggeno=GENO[j,]
           ggeno[(SN[k])]=1
@@ -428,9 +428,9 @@ PathProb_SSWM<-function(FITNESS,x){
           for (l in 1:x){ggeno_indx=ggeno_indx+2^(l-1)*ggeno[l]}
           fitness2=FITNESS[which(indx==ggeno_indx)]
           S1=fitness2-fitness[j]
-          if (S1>0){T=T+S1}# sum of the selecive coefficient of the genotypes in the exit set [the denominator of the equation (7) in the main text]
+          if (S1>0){t=t+S1}# sum of the selecive coefficient of the genotypes in the exit set [the denominator of the equation (7) in the main text]
         }
-        TEMP1=TEMP1*(S/T)#the product in equation (7)
+        TEMP1=TEMP1*(S/t)#the product in equation (7)
       }
       Prob[i]=TEMP1# probability of the i-th pathway
     }
@@ -519,10 +519,10 @@ PathProb_CBN <- function(DAG, LAMBDA, x) {
                 SN2[kaka] <- allowed_set[FINAL_index]
             }
             SNN <- SN[which(SN2 == 1)] # THE EXIT SET: the set of (allowed) genotypes with one additional mutation than the current genotype
-            T <- sum(LAMBDA[(SNN + 1)]) # sum of the lambdas of the exit set [The denominator of the equation (10) in the main text]
+            t <- sum(LAMBDA[(SNN + 1)]) # sum of the lambdas of the exit set [The denominator of the equation (10) in the main text]
             ###################################################
             S <- LAMBDA[(indx_lambda + 1)] # the lambda of the (j1-th mutation) [The numerator of the equation (10) in the main text]
-            TEMP1 <- TEMP1 * (S / T) # The multiplication in the equation (10) in the main text
+            TEMP1 <- TEMP1 * (S / t) # The multiplication in the equation (10) in the main text
         }
         if (flag == 0) {
             TEMP1 <- 0

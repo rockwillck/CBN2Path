@@ -9,7 +9,7 @@
 
 int verbose;
 gsl_rng *RNG;  // random number generator
-int** GENOTYPE;  // GENOTYPE[i] is the integer i in binary (as int array)
+int** bcbn_GENOTYPE;  // GENOTYPE[i] is the integer i in binary (as int array)
 
 int* bcbn_get_int_array(const int n)
 {
@@ -298,13 +298,13 @@ void bcbn_precompute_binary(const int n)
   int m = bcbn_pow2(n);
   int *g = bcbn_get_int_array(n);
   
-  GENOTYPE = bcbn_get_int_matrix(m, n);
+  bcbn_GENOTYPE = bcbn_get_int_matrix(m, n);
   
   for (i=0; i<m; i++)
   {
     genotype_of(i, g, n);
     for (j=0; j<n; j++)
-      GENOTYPE[i][j] = g[j];
+      bcbn_GENOTYPE[i][j] = g[j];
   }
   free(g);
 }
@@ -1060,11 +1060,11 @@ void compute_all_cbn_prob( double* theta, model* M, double* Prob, double* theta_
   for (i=0; i < m; i++)
   {
     //printf("%d ",M->J_P[i]);
-    //bcbn_print_int_array(GENOTYPE[M->J_P[i]],n);
+    //bcbn_print_int_array(bcbn_GENOTYPE[M->J_P[i]],n);
     double t = 1.0;
     for (c=0; c<n; c++)
     {
-      if( GENOTYPE[M->J_P[i]][c] ) {
+      if( bcbn_GENOTYPE[M->J_P[i]][c] ) {
         t *= theta[c];
       }
     }

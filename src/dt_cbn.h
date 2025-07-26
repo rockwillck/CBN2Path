@@ -28,7 +28,7 @@ int verbose;
 
 gsl_rng *RNG;  // random number generator
 
-int** GENOTYPE;  // GENOTYPE[i] is the integer i in binary (as int array)
+int** bcbn_GENOTYPE;  // bcbn_GENOTYPE[i] is the integer i in binary (as int array)
 
 
 typedef struct {

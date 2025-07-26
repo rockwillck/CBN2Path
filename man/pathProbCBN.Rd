@@ -2,7 +2,7 @@
 % Please edit documentation in R/PathwayAnalysis.R
 \name{pathProbCBN}
 \alias{pathProbCBN}
-\title{PathProb_CBN: quantifies pathway probabilities using the output of CT-CBN or H-CBN}
+\title{pathProbCBN: quantifies pathway probabilities using the output of CT-CBN or H-CBN}
 \usage{
 pathProbCBN(DAG, LAMBDA, x)
 }
@@ -17,11 +17,11 @@ pathProbCBN(DAG, LAMBDA, x)
 vector of probabilities assigned to all potential pathways of length x
 }
 \description{
-PathProb_CBN: quantifies pathway probabilities using the output of CT-CBN or H-CBN
+pathProbCBN: quantifies pathway probabilities using the output of CT-CBN or H-CBN
 }
 \examples{
 DAG<-matrix(c(2,2,4,1,3,3),3,2)
 LAMBDA<-c(1,4,3,2.5,2)
 x<-4
-PathP<-PathProb_CBN(DAG, LAMBDA, x)
+PathP<-pathProbCBN(DAG, LAMBDA, x)
 }

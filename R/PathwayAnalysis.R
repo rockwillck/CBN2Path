@@ -447,7 +447,7 @@ pathProbSSWM<-function(FITNESS,x){
 
 
 
-#' PathProb_CBN: quantifies pathway probabilities using the output of CT-CBN or H-CBN
+#' pathProbCBN: quantifies pathway probabilities using the output of CT-CBN or H-CBN
 #'
 #' @param DAG matrix representing the DAG of restrictions.
 #' @param LAMBDA the lambda values, which are produced by the CBN model.
@@ -460,7 +460,7 @@ pathProbSSWM<-function(FITNESS,x){
 #' DAG<-matrix(c(2,2,4,1,3,3),3,2)
 #' LAMBDA<-c(1,4,3,2.5,2)
 #' x<-4
-#' PathP<-PathProb_CBN(DAG, LAMBDA, x)
+#' PathP<-pathProbCBN(DAG, LAMBDA, x)
 pathProbCBN<- function(DAG, LAMBDA, x) {
     ### Step1: genotypes
     genotypes <- generateMatrixGenotypes(x) ## generates the genotype space[requires "OncoSimulR" package--two lines above]
@@ -565,7 +565,7 @@ pathProbQuartetCTCBN <- function(gMat) {
     } else {
         DAG <- Posets[[INDX]]
     }
-    PathProb <- PathProb_CBN(DAG, LAMBDA, 4)
+    PathProb <- pathProbCBN(DAG, LAMBDA, 4)
     return(PathProb)
 }
 
@@ -599,7 +599,7 @@ pathProbQuartetHCBN<-function(gMat){
 
    if (INDX==1){DAG<-matrix(0,0,0)}
    else {DAG<-Posets[[INDX]]}
-   PathProb<-PathProb_CBN(DAG,LAMBDA,4)
+   PathProb<-pathProbCBN(DAG,LAMBDA,4)
    return(PathProb)
 }
 
@@ -664,7 +664,7 @@ pathEdgeMapper <- function(x) {
 #' DAG<-matrix(c(2,2,4,1,3,3),3,2)
 #' LAMBDA<-c(1,4,3,2.5,2)
 #' x<-4
-#' PathP<-PathProb_CBN(DAG, LAMBDA, x)
+#' PathP<-pathProbCBN(DAG, LAMBDA, x)
 #' EdgeProb<-edgeMarginalized(PathP,x)
 edgeMarginalized <- function(PathProb, x) {
     PEmap <- pathEdgeMapper(x)
@@ -690,7 +690,7 @@ edgeMarginalized <- function(PathProb, x) {
 #' DAG<-matrix(c(2,2,4,1,3,3),3,2)
 #' LAMBDA<-c(1,4,3,2.5,2)
 #' x<-4
-#' PathP<-PathProb_CBN(DAG, LAMBDA, x)
+#' PathP<-pathProbCBN(DAG, LAMBDA, x)
 #' EdgeProb<-edgeMarginalized(PathP,x)
 #' PEmap<-pathEdgeMapper(4)
 #' W2<-pathwayWeightingRCBN(EdgeProb,PEmap)
@@ -722,7 +722,7 @@ pathwayWeightingRCBN <- function(EdgeProb, PEmap) {
 #' DAG<-matrix(c(2,2,4,1,3,3),3,2)
 #' LAMBDA<-c(1,4,3,2.5,2)
 #' x<-4
-#' PathP<-PathProb_CBN(DAG, LAMBDA, x)
+#' PathP<-pathProbCBN(DAG, LAMBDA, x)
 #' PathN<-pathNormalization(PathP, x)
 pathNormalization <- function(PathProb, x) {
     ### Step 4 of the R-CBN algorithm
@@ -765,7 +765,7 @@ pathProbQuartetRCBN <- function(gMat) {
         } else {
             DAG <- Posets[[i]]
         }
-        P[i, ] <- PathProb_CBN(DAG, LAMBDA, 4)
+        P[i, ] <- pathProbCBN(DAG, LAMBDA, 4)
     }
     ### Step 2: Poset-Level weighting
     w1 <- posetWeightingRCBN(LogLik)
@@ -836,7 +836,7 @@ pathProbQuartetBCBN <- function(gMat) {
         } else {
             DAG <- Posets[[i]]
         }
-        P[i, ] <- PathProb_CBN(DAG, LAMBDA, 4)
+        P[i, ] <- pathProbCBN(DAG, LAMBDA, 4)
     }
 
 

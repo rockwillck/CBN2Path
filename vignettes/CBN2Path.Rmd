@@ -267,11 +267,11 @@ One of the important feature of the CBN2Path package is its emphasis on mutation
 
 There are two approaches to quantify the pathway probabilities:
 
-i)  The first approach is to use the output of the ct-cbn or h-cbn methods (namely the estimated lambda parameters and the inferred ML poset) as input of the **PathProb_CBN** function. This method is generic as it can be used for every number of mutations.
+i)  The first approach is to use the output of the ct-cbn or h-cbn methods (namely the estimated lambda parameters and the inferred ML poset) as input of the **pathProbCBN** function. This method is generic as it can be used for every number of mutations.
 
 ii) The second approach works only for mutational quartets (n=4) and uses the genotypic data directly as the input. In this setting, each CBN model has its own pathway quantification functions: **pathProbQuartetCTCBN**, **pathProbQuartetHCBN**, **pathProbQuartetRCBN**, and **pathProbQuartetBCBN**.
 
-As examples for the first approach, let's use the ResultsC2 and ResultsH2 that we obtained in the previous section by learning respectively, ct-cbn and h-cbn models on genotypic data with n=10 mutations. First, we need to obtain the estimated lambda parameters and the inferred DAG and then use them as the input of the **PathProb_CBN** function as follows:
+As examples for the first approach, let's use the ResultsC2 and ResultsH2 that we obtained in the previous section by learning respectively, ct-cbn and h-cbn models on genotypic data with n=10 mutations. First, we need to obtain the estimated lambda parameters and the inferred DAG and then use them as the input of the **pathProbCBN** function as follows:
 
 ```{r,eval=FALSE}
 lambdaC<-as.numeric(ResultsC2[[1]]$lambda)
@@ -279,8 +279,8 @@ lambdaH<-as.numeric(ResultsH2[[1]]$lambda)
 dagC<-ResultsC2[[1]]$poset$sets
 dagH<-ResultsH2[[1]]$poset$sets
 
-ProbC<-PathProb_CBN(dagC,lambdaC,10)
-ProbH<-PathProb_CBN(dagH,lambdaH,10)
+ProbC<-pathProbCBN(dagC,lambdaC,10)
+ProbH<-pathProbCBN(dagH,lambdaH,10)
 ```
 
 Note that in the above code, probabilities of 10!=3,628,800 pathways need to be calculated, which is extremely time-consuming, so we have not executed this chunk of the code.

@@ -7,8 +7,8 @@
 #include "bcbn.h"
 #include "bcbn_rand.h"
 
-int verbose;
-gsl_rng *RNG;  // random number generator
+int bcbn_verbose;
+gsl_rng *bcbn_RNG;  // random number generator
 int** bcbn_GENOTYPE;  // GENOTYPE[i] is the integer i in binary (as int array)
 
 int* bcbn_get_int_array(const int n)
@@ -552,7 +552,7 @@ int** bcbn_read_patterns(char* filestem, int* N, int n)
   
   /* Read dimensions */
   fscanf(input, "%d %d", N, &p);
-  // if (verbose) printf("\nreading data from file %s :  %d samples, %d events ...\n\n", filename, *N, p-1);
+  // if (bcbn_verbose) printf("\nreading data from file %s :  %d samples, %d events ...\n\n", filename, *N, p-1);
   if (*N < 1)
   {
     // fprintf(stderr, "Error:  Less than one data point!\n");
@@ -609,7 +609,7 @@ void bcbn_read_poset(char* filestem, model* M)
   /* Read number of relations */
   int n;
   fscanf(input, "%d", &n);
-  // if (verbose)  printf("n = %d events\n\n", n);
+  // if (bcbn_verbose)  printf("n = %d events\n\n", n);
   if ((n < 1) || (n > 25))
   {
     // fprintf(stderr, "Error:  Number of events is %d.  Supported range is {1, ..., 14}.\n", n);
@@ -623,7 +623,7 @@ void bcbn_read_poset(char* filestem, model* M)
   fscanf(input,"%d %d", &left, &right);
   while (left != 0)
   {
-    // if (verbose)  printf("%d --> %d\n", left, right);  // i.e., left < right
+    // if (bcbn_verbose)  printf("%d --> %d\n", left, right);  // i.e., left < right
     if ((left > n) || (right > n) || (left < 0) || (right < 1))
     {
       // fprintf(stderr, "Error:  Undefined event in %s!\n", filename);
@@ -929,7 +929,7 @@ void bcbn_read_poset_dt(char* filestem, model* M)
   /* Read number of relations */
   int n;
   fscanf(input, "%d", &n);
-  // if (verbose)  printf("n = %d events\n\n", n);
+  // if (bcbn_verbose)  printf("n = %d events\n\n", n);
   if ((n < 1) || (n > 25))
   {
     // fprintf(stderr, "Error:  Number of events is %d.  Supported range is {1, ..., 14}.\n", n);
@@ -943,7 +943,7 @@ void bcbn_read_poset_dt(char* filestem, model* M)
   fscanf(input,"%d %d", &left, &right);
   while (left != 0)
   {
-    // if (verbose)  printf("%d --> %d\n", left, right);  // i.e., left < right
+    // if (bcbn_verbose)  printf("%d --> %d\n", left, right);  // i.e., left < right
     if ((left > n) || (right > n) || (left < 0) || (right < 1))
     {
       // fprintf(stderr, "Error:  Undefined event in %s!\n", filename);
@@ -993,7 +993,7 @@ data* bcbn_make_data_set(int** pat, int N, int n, int* N_u, int* pat_idx)
   for (k=0; k<N; k++)
     *N_u += (count[k] > 0);
   
-  // if (verbose)  printf("N_u = %d unique patterns\n", *N_u);
+  // if (bcbn_verbose)  printf("N_u = %d unique patterns\n", *N_u);
   
   data* D = calloc(*N_u, sizeof(data));
   
@@ -1359,7 +1359,7 @@ void relocate_whole_theta( double* theta, double* theta_p, int n ) {
     var = x * (1 - x) / ( beta / ( 1 - x) + 1 );
     alpha = x * ( x * ( 1 - x ) / var - 1 );
     alpha = beta = 1;
-    theta_p[i] = gsl_ran_beta (RNG, alpha, beta);
+    theta_p[i] = gsl_ran_beta (bcbn_RNG, alpha, beta);
   }
 }
 
@@ -1371,7 +1371,7 @@ void relocate_theta_i( double* theta, double* theta_p, int n, int i ) {
   //var = x * (1 - x) / ( beta / ( 1 - x) + 1 );
   //alpha = x * ( x * ( 1 - x ) / var - 1 );
   alpha = beta = 1;
-  theta_p[i] = gsl_ran_beta (RNG, alpha, beta);
+  theta_p[i] = gsl_ran_beta (bcbn_RNG, alpha, beta);
 }
 
 double compute_theta_transition_prob( double* theta, double* theta_p, int n ) {
@@ -1675,7 +1675,7 @@ void relocate_epsilon( double eps, double* epsilon_p ) {
   double alpha,beta,var,x;
   
   //BetaDist(2,20) is a bit broader than (5,30) used for the prior
-  (*epsilon_p) = gsl_ran_beta (RNG, 2, 20);
+  (*epsilon_p) = gsl_ran_beta (bcbn_RNG, 2, 20);
 }
 
 double get_tp_epsilon_relocation( double epsilon_p ) {
@@ -2107,7 +2107,7 @@ void start_MH( double eps, model* M, double* theta, data* D, int N_u, int burn_i
   
   for( k=0;k<burn_in+number_samples;k++) {
     
-    ms = gsl_ran_flat (RNG, 0, 1);
+    ms = gsl_ran_flat (bcbn_RNG, 0, 1);
     
     if( ms < cm ) {
       //relocate_whole_theta( theta, theta_p, n );
@@ -2206,7 +2206,7 @@ void start_MH( double eps, model* M, double* theta, data* D, int N_u, int burn_i
     
     alpha = MIN(1,MH_ratio);
     
-    u = gsl_ran_flat (RNG, 0, 1);
+    u = gsl_ran_flat (bcbn_RNG, 0, 1);
     
     if ( alpha > u ) {
       posterior_o = posterior_p;
@@ -2386,7 +2386,7 @@ long double start_Exp_theta_MH( double eps, model* M, double* theta, data* D, in
     
     alpha = MIN(1,MH_ratio);
     
-    u = gsl_ran_flat (RNG, 0, 1);
+    u = gsl_ran_flat (bcbn_RNG, 0, 1);
     
     if ( alpha > u ) {
       memcpy( theta, theta_p, sizeof(double)*n);
@@ -2453,7 +2453,7 @@ void start_nested_MH(double eps, model* M, double* theta, data* D, int N_u, int 
   children_dt(M_p);
   
   for( k=0;k<burn_in+number_samples;k++) {
-    ms = gsl_ran_flat (RNG, 0, 1);
+    ms = gsl_ran_flat (bcbn_RNG, 0, 1);
     
     if ( ms < fraction_exchange ) {
       
@@ -2519,7 +2519,7 @@ void start_nested_MH(double eps, model* M, double* theta, data* D, int N_u, int 
     
     alpha = MIN(1,MH_ratio);
     
-    u = gsl_ran_flat (RNG, 0, 1);
+    u = gsl_ran_flat (bcbn_RNG, 0, 1);
     
     if ( alpha > u ) {
       posterior_o = posterior_p;
@@ -2647,7 +2647,7 @@ void run_MH_sampler( model* M, double *theta_in, double epsilon_in, data* D, int
   epsilon_p = epsilon_in;
   
   for( k=0;k<number_samples*thinout;k++) {
-    ms = gsl_ran_flat (RNG, 0, 1);
+    ms = gsl_ran_flat (bcbn_RNG, 0, 1);
     
     if( ms < cm ) {
       //relocate_whole_theta( theta, theta_p, n );
@@ -2758,7 +2758,7 @@ void run_MH_sampler( model* M, double *theta_in, double epsilon_in, data* D, int
     
     alpha = MIN(1,MH_ratio);
     
-    u = gsl_ran_flat (RNG, 0, 1);
+    u = gsl_ran_flat (bcbn_RNG, 0, 1);
     
     if ( alpha > u ) {
       posterior_o = posterior_p;
@@ -2841,8 +2841,8 @@ void sample_full_cbn(double *theta_in, int *nevents, double *epsilon_in, int * e
   
   unsigned int seed = (unsigned) time(NULL);  // r, random seed
   bcbn_pcg_srand(seed);
-  RNG = gsl_rng_alloc (gsl_rng_taus);  // global variable
-  gsl_rng_set(RNG, seed);  // seed rng
+  bcbn_RNG = gsl_rng_alloc (gsl_rng_taus);  // global variable
+  gsl_rng_set(bcbn_RNG, seed);  // seed rng
   
   int i,j,k,n;
   n=(*nevents);

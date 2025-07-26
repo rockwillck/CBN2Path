@@ -24,9 +24,9 @@
 #define MAX(a,b) ( (a) > (b) ? (a) : (b) )
 #define MIN(a,b) ( (a) < (b) ? (a) : (b) )
 
-int verbose;
+int bcbn_verbose;
 
-gsl_rng *RNG;  // random number generator
+gsl_rng *bcbn_RNG;  // random number generator
 
 int** bcbn_GENOTYPE;  // bcbn_GENOTYPE[i] is the integer i in binary (as int array)
 

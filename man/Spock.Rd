@@ -13,11 +13,11 @@ A data class containing poset and pattern/lambda matrices.
 Use the read_ methods to feed data from files.
 }
 \examples{
-example_path <- get_examples()[1]
+example_path <- getExamples()[1]
 bc <- Spock$new(
-    poset = read_poset(example_path)$sets,
-    numMutations = read_poset(example_path)$mutations,
-    genotypeMatrix = read_pattern(example_path)
+    poset = readPoset(example_path)$sets,
+    numMutations = readPoset(example_path)$mutations,
+    genotypeMatrix = readPattern(example_path)
 )
 }
 \section{Public fields}{

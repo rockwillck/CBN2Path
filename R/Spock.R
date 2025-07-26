@@ -7,11 +7,11 @@
 #' @export
 #'
 #' @examples
-#' example_path <- get_examples()[1]
+#' example_path <- getExamples()[1]
 #' bc <- Spock$new(
-#'     poset = read_poset(example_path)$sets,
-#'     numMutations = read_poset(example_path)$mutations,
-#'     genotypeMatrix = read_pattern(example_path)
+#'     poset = readPoset(example_path)$sets,
+#'     numMutations = readPoset(example_path)$mutations,
+#'     genotypeMatrix = readPattern(example_path)
 #' )
 Spock <- R6::R6Class("Spock", list(
 

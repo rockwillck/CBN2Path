@@ -5,12 +5,12 @@ default_data <- function() {
   poset[1,2] <-1
   poset[2,3] <-1
   
-  tr<-transitive_closure(poset)
+  tr<-transitiveClosure(poset)
   theta <- c(0.8, 0.7, 0.6)
   eps <- 0.1
   N <- 10
   
-  generate_data(tr, theta, eps, N)
+  generateData(tr, theta, eps, N)
 }
 
 #' B-CBN
@@ -126,8 +126,8 @@ bcbn <- function(data = default_data(), n_samples = 25000, theta = 0, epsilon = 
 #' poset[8, 10] <- 1
 #' poset[6, 9] <- 1
 
-#' transitive_closure(poset)
-transitive_closure <- function(poset){
+#' transitiveClosure(poset)
+transitiveClosure <- function(poset){
   ## Returns the transitive closure of a set of relations,
   ## i.e., the minimal poset containing the relations
   p <- nrow(poset)
@@ -160,13 +160,13 @@ transitive_closure <- function(poset){
 #' poset[8, 10] <- 1
 #' poset[6, 9] <- 1
 #'
-#' tr <- transitive_closure(poset)
+#' tr <- transitiveClosure(poset)
 #' theta <- c(0.8, 0.7, 0.6, 0.7, 0.4, 0.25, 0.6, 0.75, 0.5, 0.2)
 #' eps <- 0.1
 #' N <- 400
 #'
-#' generate_data(tr, theta, eps, N)
-generate_data <- function(poset, thetas, eps, N)
+#' generateData(tr, theta, eps, N)
+generateData <- function(poset, thetas, eps, N)
 {
   n <- length(thetas)
   data <- matrix(0, N, n)

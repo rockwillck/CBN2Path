@@ -138,7 +138,7 @@ permutations <- function(n, r, v = 1:n, set = TRUE, repeats.allowed = FALSE) {
 
 
 
-#' generate_matrix_genotypes
+#' generateMatrixGenotypes
 #'
 #' @param g genotype length
 #'
@@ -146,8 +146,8 @@ permutations <- function(n, r, v = 1:n, set = TRUE, repeats.allowed = FALSE) {
 #' @export
 #'
 #' @examples
-#' Geno4<-generate_matrix_genotypes(4)
-generate_matrix_genotypes <- function(g) {
+#' Geno4<-generateMatrixGenotypes(4)
+generateMatrixGenotypes <- function(g) {
     if (g > 20) {
         stop("This would generate more than one million genotypes")
     }
@@ -173,7 +173,7 @@ generate_matrix_genotypes <- function(g) {
 
 
 
-#' Genotype_Feasibility
+#' genotypeFeasibility
 #'
 #' @param genotypes the full set of potential binary genotypes of a given length.
 #' @param DAG matrix representing the DAG of restrictions.
@@ -183,11 +183,11 @@ generate_matrix_genotypes <- function(g) {
 #' @export
 #'
 #' @examples
-#' Geno4<-generate_matrix_genotypes(4)
+#' Geno4<-generateMatrixGenotypes(4)
 #' DAG<-matrix(c(4,4,4,1,2,3),3,2)
 #' x<-4
-#' GenoF4<-Genotype_Feasibility(Geno4,DAG,x)
-Genotype_Feasibility <- function(genotypes, DAG, x) {
+#' GenoF4<-genotypeFeasibility(Geno4,DAG,x)
+genotypeFeasibility <- function(genotypes, DAG, x) {
     vec <- matrix(1, nrow = (2^x), ncol = 1)
     D <- dim(DAG)[1]
     if (D > 0) {
@@ -206,7 +206,7 @@ Genotype_Feasibility <- function(genotypes, DAG, x) {
 
 
 
-#' Pathway_Feasibility
+#' pathwayFeasibility
 #'
 #' @param DAG matrix representing the DAG of restrictions.
 #' @param x the number of mutations considered.
@@ -217,8 +217,8 @@ Genotype_Feasibility <- function(genotypes, DAG, x) {
 #' @examples
 #' DAG<-matrix(c(4,4,4,1,2,3),3,2)
 #' x<-4
-#' PathF<-Pathway_Feasibility(DAG, x)
-Pathway_Feasibility <- function(DAG, x) {
+#' PathF<-pathwayFeasibility(DAG, x)
+pathwayFeasibility <- function(DAG, x) {
     PERM <- permutations(x, x) ### all x! possible permutations (mutational pathways)
     P <- dim(PERM)[1]
     D <- dim(DAG)[1]
@@ -242,7 +242,7 @@ Pathway_Feasibility <- function(DAG, x) {
 
 
 
-#' Pathway_Genotype_Compatiblility
+#' pathwayGenotypeCompatibility
 #'
 #' @param Pathway a vector representing the given pathway.
 #' @param Genotype a binary vector representing the given genotype.
@@ -254,9 +254,9 @@ Pathway_Feasibility <- function(DAG, x) {
 #' Geno1<-c(1,0,1,0)
 #' Geno2<-c(1,1,0,0)
 #' Path<-c(1,2,3,4)
-#' Pathway_Genotype_Compatiblility(Path,Geno1)
-#' Pathway_Genotype_Compatiblility(Path,Geno2)
-Pathway_Genotype_Compatiblility <- function(Pathway, Genotype) {
+#' pathwayGenotypeCompatibility(Path,Geno1)
+#' pathwayGenotypeCompatibility(Path,Geno2)
+pathwayGenotypeCompatibility <- function(Pathway, Genotype) {
     C <- 1 # by default compatible unless:
     for (i in 1:(length(Pathway) - 1)) {
         P <- Pathway[i]
@@ -276,7 +276,7 @@ Pathway_Genotype_Compatiblility <- function(Pathway, Genotype) {
     return(C)
 }
 
-#' Base2IndVec
+#' base2IndVec
 #'
 #' @param vec a binary genotype vector
 #'
@@ -285,8 +285,8 @@ Pathway_Genotype_Compatiblility <- function(Pathway, Genotype) {
 #'
 #' @examples
 #' vec<-c(0,1,0,1)
-#' Base2IndVec(vec)
-Base2IndVec<-function(vec){
+#' base2IndVec(vec)
+base2IndVec<-function(vec){
   TOT<-0
   for (i in 1:length(vec)){
     if (vec[i]==1){
@@ -298,7 +298,7 @@ Base2IndVec<-function(vec){
 
 
 
-#' Pathway_Compatibility_Quartet
+#' pathwayCompatibilityQuartet
 #'
 #' @param gMat The n by 4 binary genotype matrix representing a given quartet for a sample of n genotypes.
 #'
@@ -308,19 +308,19 @@ Base2IndVec<-function(vec){
 #' @examples
 #' set.seed(100)
 #' gMat<-matrix(sample(c(0,1),800,replace = TRUE),200,4)
-#' Pathway_Compatibility_Quartet(gMat)
-Pathway_Compatibility_Quartet<-function(gMat){
+#' pathwayCompatibilityQuartet(gMat)
+pathwayCompatibilityQuartet<-function(gMat){
   ### Establishing the genotype frequency matrix
-  G<-generate_matrix_genotypes(4)
+  G<-generateMatrixGenotypes(4)
   INDXs<-numeric(16)
   for (i in 1:16){
-    INDXs[i]<-Base2IndVec(G[i,])
+    INDXs[i]<-base2IndVec(G[i,])
   }
   D<-dim(gMat)[1]
   V<-numeric(16)
   for (i in 1:D){
     vec<-gMat[i,]
-    INDX<-Base2IndVec(vec)
+    INDX<-base2IndVec(vec)
     g<-which(INDXs==INDX)
     V[g]<-V[g]+1
   }
@@ -331,7 +331,7 @@ Pathway_Compatibility_Quartet<-function(gMat){
   M<-matrix(0,24,16)
   for (i in 1:24){
     for (j in 1:16){
-      M[i,j]<-Pathway_Genotype_Compatiblility(PERM[i,],G[j,])
+      M[i,j]<-pathwayGenotypeCompatibility(PERM[i,],G[j,])
     }
   }
   
@@ -342,7 +342,7 @@ Pathway_Compatibility_Quartet<-function(gMat){
 }
 
 
-#' GenotypeMatrix_Mutator
+#' genotypeMatrixMutator
 #'
 #' @param mat The genotype matrix including sampled genotypes, which need to be muatated.
 #' @param FP False positive rate
@@ -354,8 +354,8 @@ Pathway_Compatibility_Quartet<-function(gMat){
 #' @examples
 #' set.seed(100)
 #' gMat<-matrix(sample(c(0,1),800,replace = TRUE),200,4)
-#' gMat_mut<-GenotypeMatrix_Mutator(gMat,0.2,0.2)
-GenotypeMatrix_Mutator<-function(mat,FP,FN){
+#' gMat_mut<-genotypeMatrixMutator(gMat,0.2,0.2)
+genotypeMatrixMutator<-function(mat,FP,FN){
 
   d<-dim(mat)[1]
   AllP<-which(mat==1)
@@ -379,7 +379,7 @@ GenotypeMatrix_Mutator<-function(mat,FP,FN){
 }
 
 
-#' PathProb_SSWM
+#' pathProbSSWM
 #'
 #' @param FITNESS A vector of length 2^x, each element of which representing the fitness assigned to one of the 2^x genotypes.
 #' @param x The number of mutations considered.
@@ -390,11 +390,11 @@ GenotypeMatrix_Mutator<-function(mat,FP,FN){
 #' @examples
 #' F<-c(0,0.1,0.2,0.1,0.2,0.4,0.3,0.2,0.2,0.1,0,0.6,0.4,0.3,0.2,1)
 #' x<-4
-#' PathP<-PathProb_SSWM(F,x)
-PathProb_SSWM<-function(FITNESS,x){
+#' PathP<-pathProbSSWM(F,x)
+pathProbSSWM<-function(FITNESS,x){
   
   ### Step1: genotypes
-  genotypes=generate_matrix_genotypes(x)## generates the genotype space
+  genotypes=generateMatrixGenotypes(x)## generates the genotype space
   indx<-matrix(0,nrow=2^x,ncol=1)## indexing the genotypes for easier retrival
   for (k in 1:(2^x)){for (j in 1:x){indx[k,1]=indx[k,1]+2^(j-1)*genotypes[k,j]}}
   
@@ -461,9 +461,9 @@ PathProb_SSWM<-function(FITNESS,x){
 #' LAMBDA<-c(1,4,3,2.5,2)
 #' x<-4
 #' PathP<-PathProb_CBN(DAG, LAMBDA, x)
-PathProb_CBN <- function(DAG, LAMBDA, x) {
+pathProbCBN<- function(DAG, LAMBDA, x) {
     ### Step1: genotypes
-    genotypes <- generate_matrix_genotypes(x) ## generates the genotype space[requires "OncoSimulR" package--two lines above]
+    genotypes <- generateMatrixGenotypes(x) ## generates the genotype space[requires "OncoSimulR" package--two lines above]
     indx <- matrix(0, nrow = 2^x, ncol = 1) ## indexing the genotypes for easier retrival
     for (k in 1:(2^x)) {
         for (j in 1:x) {
@@ -473,7 +473,7 @@ PathProb_CBN <- function(DAG, LAMBDA, x) {
 
     ### Step2: Allowed genotypes according to the DAG of restrictions (DAG)
     if (sum(is.na(DAG))>0){DAG<-matrix(0,0,0)}
-    allowed_set <- Genotype_Feasibility(genotypes, DAG, x)
+    allowed_set <- genotypeFeasibility(genotypes, DAG, x)
 
     ### Step3: Pathway Probabilities
     PERM <- permutations(x, x) ## all x! possible permutations (mutational pathways)
@@ -534,7 +534,7 @@ PathProb_CBN <- function(DAG, LAMBDA, x) {
 }
 
 
-#' PathProb_Quartet_CTCBN
+#' pathProbQuartetCTCBN
 #'
 #' @param gMat The n by 4 binary genotype matrix representing a given quartet for a sample of n genotypes.
 #'
@@ -544,8 +544,8 @@ PathProb_CBN <- function(DAG, LAMBDA, x) {
 #' @examples
 #' set.seed(100)
 #' gMat<-matrix(sample(c(0,1),800,replace = TRUE),200,4)
-#' PathCT<-PathProb_Quartet_CTCBN(gMat)
-PathProb_Quartet_CTCBN <- function(gMat) {
+#' PathCT<-pathProbQuartetCTCBN(gMat)
+pathProbQuartetCTCBN <- function(gMat) {
     Posets <- readRDS(system.file("extdata", "Posets.rds", package = "CBN2Path"))
     bc <- Spock$new(
         poset = Posets,
@@ -571,7 +571,7 @@ PathProb_Quartet_CTCBN <- function(gMat) {
 
 
 
-#' PathProb_Quartet_HCBN
+#' pathProbQuartetHCBN
 #'
 #' @param gMat The n by 4 binary genotype matrix representing a given quartet for a sample of n genotypes.
 #'
@@ -581,8 +581,8 @@ PathProb_Quartet_CTCBN <- function(gMat) {
 #' @examples
 #' set.seed(100)
 #' gMat<-matrix(sample(c(0,1),800,replace = TRUE),200,4)
-#' PathH<-PathProb_Quartet_HCBN(gMat)
-PathProb_Quartet_HCBN<-function(gMat){
+#' PathH<-pathProbQuartetHCBN(gMat)
+pathProbQuartetHCBN<-function(gMat){
    Posets<-readRDS(system.file("extdata","Posets.rds",package="CBN2Path"))
    bc=Spock$new(
      poset=Posets,
@@ -603,7 +603,7 @@ PathProb_Quartet_HCBN<-function(gMat){
    return(PathProb)
 }
 
-#' Poset_Weighting_RCBN
+#' posetWeightingRCBN
 #'
 #' @param vec The likelihood vector corresponding to a given set of posets
 #'
@@ -613,8 +613,8 @@ PathProb_Quartet_HCBN<-function(gMat){
 #' @examples
 #' set.seed(100)
 #' LogLik<-runif(219)
-#' W1<-Poset_Weighting_RCBN(LogLik)
-Poset_Weighting_RCBN <- function(vec) {
+#' W1<-posetWeightingRCBN(LogLik)
+posetWeightingRCBN <- function(vec) {
     w <- numeric(length(vec))
     for (i in 1:length(vec)) {
         temp <- sort(vec, index.return = TRUE, decreasing = TRUE)$ix
@@ -624,7 +624,7 @@ Poset_Weighting_RCBN <- function(vec) {
     return(w)
 }
 
-#' Path_Edge_Mapper
+#' pathEdgeMapper
 #'
 #' @param x number of mutations to consider
 #'
@@ -632,8 +632,8 @@ Poset_Weighting_RCBN <- function(vec) {
 #' @export
 #'
 #' @examples
-#' PEmap<-Path_Edge_Mapper(4)
-Path_Edge_Mapper <- function(x) {
+#' PEmap<-pathEdgeMapper(4)
+pathEdgeMapper <- function(x) {
     PATH <- permutations(x, x)
     EDGE <- permutations(x, 2)
     P <- dim(PATH)[1]
@@ -652,7 +652,7 @@ Path_Edge_Mapper <- function(x) {
 }
 
 
-#' EdgeMarginalized
+#' edgeMarginalized
 #'
 #' @param PathProb The pathway probabilities returned in the step 3 of the R-CBN algorithm
 #' @param x        The number of mutations to consider
@@ -665,9 +665,9 @@ Path_Edge_Mapper <- function(x) {
 #' LAMBDA<-c(1,4,3,2.5,2)
 #' x<-4
 #' PathP<-PathProb_CBN(DAG, LAMBDA, x)
-#' EdgeProb<-EdgeMarginalized(PathP,x)
-EdgeMarginalized <- function(PathProb, x) {
-    PEmap <- Path_Edge_Mapper(x)
+#' EdgeProb<-edgeMarginalized(PathP,x)
+edgeMarginalized <- function(PathProb, x) {
+    PEmap <- pathEdgeMapper(x)
     D <- dim(PEmap)[2]
     EdgeProb <- numeric(D)
     for (i in 1:D) {
@@ -678,7 +678,7 @@ EdgeMarginalized <- function(PathProb, x) {
 }
 
 
-#' Pathway_Weighting_RCBN
+#' pathwayWeightingRCBN
 #'
 #' @param EdgeProb Marginal edge probabilities
 #' @param PEmap Pathway-edge compatibility matrix
@@ -691,10 +691,10 @@ EdgeMarginalized <- function(PathProb, x) {
 #' LAMBDA<-c(1,4,3,2.5,2)
 #' x<-4
 #' PathP<-PathProb_CBN(DAG, LAMBDA, x)
-#' EdgeProb<-EdgeMarginalized(PathP,x)
-#' PEmap<-Path_Edge_Mapper(4)
-#' W2<-Pathway_Weighting_RCBN(EdgeProb,PEmap)
-Pathway_Weighting_RCBN <- function(EdgeProb, PEmap) {
+#' EdgeProb<-edgeMarginalized(PathP,x)
+#' PEmap<-pathEdgeMapper(4)
+#' W2<-pathwayWeightingRCBN(EdgeProb,PEmap)
+pathwayWeightingRCBN <- function(EdgeProb, PEmap) {
     D <- dim(PEmap)[1]
     w <- numeric(D)
     for (i in 1:D) {
@@ -710,7 +710,7 @@ Pathway_Weighting_RCBN <- function(EdgeProb, PEmap) {
 
 
 
-#' Path_Normalization
+#' pathNormalization
 #'
 #' @param PathProb The pathway probabilities returned in the step 3 of the R-CBN algorithm
 #' @param x        The number of mutations to consider
@@ -723,19 +723,19 @@ Pathway_Weighting_RCBN <- function(EdgeProb, PEmap) {
 #' LAMBDA<-c(1,4,3,2.5,2)
 #' x<-4
 #' PathP<-PathProb_CBN(DAG, LAMBDA, x)
-#' PathN<-Path_Normalization(PathP, x)
-Path_Normalization <- function(PathProb, x) {
+#' PathN<-pathNormalization(PathP, x)
+pathNormalization <- function(PathProb, x) {
     ### Step 4 of the R-CBN algorithm
-    PEmap <- Path_Edge_Mapper(x)
-    EdgeProb <- EdgeMarginalized(PathProb, x)
-    w <- Pathway_Weighting_RCBN(EdgeProb, PEmap)
+    PEmap <- pathEdgeMapper(x)
+    EdgeProb <- edgeMarginalized(PathProb, x)
+    w <- pathwayWeightingRCBN(EdgeProb, PEmap)
     ### Step 5 of the R-CBN algorithm
     PathProbn <- ((w * PathProb) / sum(w * PathProb)) # The normalized pathway probability
     return(PathProbn)
 }
 
 
-#' PathProb_Quartet_RCBN
+#' pathProbQuartetRCBN
 #'
 #' @param gMat The n by 4 binary genotype matrix representing a given quartet for a sample of n genotypes.
 #'
@@ -745,8 +745,8 @@ Path_Normalization <- function(PathProb, x) {
 #' @examples
 #' set.seed(100)
 #' gMat<-matrix(sample(c(0,1),800,replace = TRUE),200,4)
-#' PathR<-PathProb_Quartet_RCBN(gMat)
-PathProb_Quartet_RCBN <- function(gMat) {
+#' PathR<-pathProbQuartetRCBN(gMat)
+pathProbQuartetRCBN <- function(gMat) {
     ### Step 1: Constructing the P matrix
     Posets <- readRDS(system.file("extdata", "Posets.rds", package = "CBN2Path"))
     bc <- Spock$new(
@@ -768,11 +768,11 @@ PathProb_Quartet_RCBN <- function(gMat) {
         P[i, ] <- PathProb_CBN(DAG, LAMBDA, 4)
     }
     ### Step 2: Poset-Level weighting
-    w1 <- Poset_Weighting_RCBN(LogLik)
+    w1 <- posetWeightingRCBN(LogLik)
     ### Step 3: Aggregating the Probability Distributions
     PathProb1 <- apply((w1 * P), 2, sum) / sum(w1)
     ### Step 4: Pathway-level weighting && Step 5: Updating the pathway probabilities
-    PathProb2 <- Path_Normalization(PathProb1, 4)
+    PathProb2 <- pathNormalization(PathProb1, 4)
 
     return(PathProb2)
 }
@@ -780,7 +780,7 @@ PathProb_Quartet_RCBN <- function(gMat) {
 
 
 
-#' Base2Indexing
+#' base2Indexing
 #'
 #' @param mat A given poset represented by a binary matrix (in B-CBN)
 #'
@@ -790,8 +790,8 @@ PathProb_Quartet_RCBN <- function(gMat) {
 #' @examples
 #' set.seed(100)
 #' mat<-matrix(sample(c(0,1),16,replace=TRUE),4,4)
-#' Index<-Base2Indexing(mat)
-Base2Indexing <- function(mat) {
+#' Index<-base2Indexing(mat)
+base2Indexing <- function(mat) {
     count <- 0
     num <- 0
     D <- dim(mat)[1]
@@ -807,7 +807,7 @@ Base2Indexing <- function(mat) {
 }
 
 
-#' PathProb_Quartet_BCBN
+#' pathProbQuartetBCBN
 #'
 #' @param gMat The n by 4 binary genotype matrix representing a given quartet for a sample of n genotypes.
 #'
@@ -817,8 +817,8 @@ Base2Indexing <- function(mat) {
 #' @examples
 #' set.seed(100)
 #' gMat<-matrix(sample(c(0,1),800,replace = TRUE),200,4)
-#' PathB<-PathProb_Quartet_BCBN(gMat)
-PathProb_Quartet_BCBN <- function(gMat) {
+#' PathB<-pathProbQuartetBCBN(gMat)
+pathProbQuartetBCBN <- function(gMat) {
     ### Step 1: Constructing the P matrix
     genotypeMatrix <- cbind(1, gMat)
     Posets <- readRDS(system.file("extdata", "Posets.rds", package = "CBN2Path"))
@@ -852,12 +852,12 @@ PathProb_Quartet_BCBN <- function(gMat) {
             X2 <- Posets[[i]][j, 2]
             temp_mat[X1, X2] <- 1
         }
-        Poset_Index[i] <- Base2Indexing(temp_mat)
+        Poset_Index[i] <- base2Indexing(temp_mat)
     }
 
     wB <- numeric(219)
     for (i in 1:100000) {
-        Sample_Index <- Base2Indexing(Poset_Samples[[i]])
+        Sample_Index <- base2Indexing(Poset_Samples[[i]])
         INDX <- which(Poset_Index == Sample_Index)
         wB[INDX] <- wB[INDX] + 1
     }
@@ -875,7 +875,7 @@ PathProb_Quartet_BCBN <- function(gMat) {
 
 
 
-#' Jensen_Shannon_Divergence
+#' jensenShannonDivergence
 #'
 #' @param Prob1 The first (discrete) probability distribution (vector)
 #' @param Prob2 The second (discrete) probability distribution (vector)
@@ -886,10 +886,10 @@ PathProb_Quartet_BCBN <- function(gMat) {
 #' @examples
 #' set.seed(100)
 #' gMat<-matrix(sample(c(0,1),800,replace = TRUE),200,4)
-#' PathCT<-PathProb_Quartet_CTCBN(gMat)
-#' PathH<-PathProb_Quartet_HCBN(gMat)
-#' JSD<-Jensen_Shannon_Divergence(PathCT,PathH)
-Jensen_Shannon_Divergence <- function(Prob1, Prob2) {
+#' PathCT<-pathProbQuartetCTCBN(gMat)
+#' PathH<-pathProbQuartetHCBN(gMat)
+#' JSD<-jensenShannonDivergence(PathCT,PathH)
+jensenShannonDivergence <- function(Prob1, Prob2) {
     # Prob1: the first probability distribution
     # Prob2: the second probability distribution
     D <- 0
@@ -906,22 +906,22 @@ Jensen_Shannon_Divergence <- function(Prob1, Prob2) {
 }
 
 
-#' Predictability
+#' predictability
 #'
 #' @param Prob Pathway probability vector
 #' @param x The length of genotype vectors
 #'
-#' @return Predictability
+#' @return predictability
 #' @export
 #'
 #' @examples
 #' set.seed(100)
 #' gMat<-matrix(sample(c(0,1),800,replace = TRUE),200,4)
-#' PathCT<-PathProb_Quartet_CTCBN(gMat)
-#' PathH<-PathProb_Quartet_HCBN(gMat)
-#' PredC<-Predictability(PathCT,4)
-#' PredH<-Predictability(PathH,4)
-Predictability <- function(Prob, x) {
+#' PathCT<-pathProbQuartetCTCBN(gMat)
+#' PathH<-pathProbQuartetHCBN(gMat)
+#' PredC<-predictability(PathCT,4)
+#' PredH<-predictability(PathH,4)
+predictability <- function(Prob, x) {
     TOT <- 0
     for (i in 1:length(Prob)) {
         if (sum(Prob[i], na.rm = TRUE) > 0) {

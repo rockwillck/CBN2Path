@@ -6,9 +6,9 @@
 #' @export
 #'
 #' @examples
-#' bcPath <- get_examples()[1]
-#' read_pattern(bcPath)
-read_pattern <- function(filestem) {
+#' bcPath <- getExamples()[1]
+#' readPattern(bcPath)
+readPattern <- function(filestem) {
     lines <- readLines(paste(suppressWarnings(normalizePath(filestem)),
         ".pat",
         sep = ""
@@ -37,9 +37,9 @@ read_pattern <- function(filestem) {
 #' @export
 #'
 #' @examples
-#' bcPath <- get_examples()[1]
-#' read_pattern(bcPath)
-read_time <- function(filestem) {
+#' bcPath <- getExamples()[1]
+#' readPattern(bcPath)
+readTime <- function(filestem) {
   lines <- readLines(paste(suppressWarnings(normalizePath(filestem)),
                            ".time",
                            sep = ""
@@ -68,9 +68,9 @@ read_time <- function(filestem) {
 #' @export
 #'
 #' @examples
-#' bcPath <- get_examples()[1]
-#' read_poset(bcPath)
-read_poset <- function(filestem) {
+#' bcPath <- getExamples()[1]
+#' readPoset(bcPath)
+readPoset <- function(filestem) {
     lines <- readLines(paste(suppressWarnings(normalizePath(filestem)), ".poset",
         sep =
             ""
@@ -99,9 +99,9 @@ read_poset <- function(filestem) {
 #' @export
 #'
 #' @examples
-#' bcPath <- get_examples()[1]
-#' read_lambda(bcPath)
-read_lambda <- function(filestem) {
+#' bcPath <- getExamples()[1]
+#' readLambda(bcPath)
+readLambda <- function(filestem) {
     lines <- unlist(as.numeric(readLines(
         paste(suppressWarnings(normalizePath(filestem)), ".lambda", sep = "")
     )))
@@ -165,8 +165,8 @@ filter_strings_by_start <- function(strings, start_substring) {
 #' @export
 #'
 #' @examples
-#' get_examples()
-get_examples <- function() {
+#' getExamples()
+getExamples <- function() {
     examples <- c("BC", "CRC", "hiv", "HSD", "prostate", "RCC")
     gsub(".poset", "", lapply(examples, function(x) system.file("extdata", paste(x, ".poset", sep = ""), package = "CBN2Path")))
 }

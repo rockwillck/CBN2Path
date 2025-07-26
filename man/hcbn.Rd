@@ -14,7 +14,7 @@ hcbn(
 )
 }
 \arguments{
-\item{datasets}{Vector of \code{Spock} objects with poset and pattern/lambda data or a \code{Spock} object (alias of hcbn_single).}
+\item{datasets}{Vector of \code{Spock} objects with poset and pattern/lambda data or a \code{Spock} object (alias of hcbnSingle).}
 
 \item{anneal}{If \code{TRUE}, performes a simulated annealing run starting from the poset}
 
@@ -33,11 +33,11 @@ A matrix of results.
 H-CBN
 }
 \examples{
-example_path <- get_examples()[1]
+example_path <- getExamples()[1]
 bc <- Spock$new(
-    poset = read_poset(example_path)$sets,
-    numMutations = read_poset(example_path)$mutations,
-    genotypeMatrix = read_pattern(example_path)
+    poset = readPoset(example_path)$sets,
+    numMutations = readPoset(example_path)$mutations,
+    genotypeMatrix = readPattern(example_path)
 )
 hcbn(bc)
 hcbn(c(bc, bc, bc))

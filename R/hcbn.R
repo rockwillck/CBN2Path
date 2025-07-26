@@ -10,14 +10,14 @@
 #' @export
 #'
 #' @examples
-#' example_path <- get_examples()[1]
+#' example_path <- getExamples()[1]
 #' bc <- Spock$new(
-#'     poset = read_poset(example_path)$sets,
-#'     numMutations = read_poset(example_path)$mutations,
-#'     genotypeMatrix = read_pattern(example_path)
+#'     poset = readPoset(example_path)$sets,
+#'     numMutations = readPoset(example_path)$mutations,
+#'     genotypeMatrix = readPattern(example_path)
 #' )
-#' hcbn_single(bc)
-hcbn_single <- function(datasetObj,
+#' hcbnSingle(bc)
+hcbnSingle <- function(datasetObj,
                         anneal = FALSE,
                         temp = 0,
                         annealing_steps = 0,
@@ -53,13 +53,13 @@ hcbn_single <- function(datasetObj,
         for (f in outFiles) {
             f <- paste(c(outDir, f), collapse = "/")
             if (endsWith(f, ".poset")) {
-                outputList$poset <- read_poset(substring(f, 1, nchar(f) - 6))
+                outputList$poset <- readPoset(substring(f, 1, nchar(f) - 6))
             }
             if (endsWith(f, ".pat")) {
-                outputList$pattern <- read_pattern(substring(f, 1, nchar(f) - 4))
+                outputList$pattern <- readPattern(substring(f, 1, nchar(f) - 4))
             }
             if (endsWith(f, ".lambda")) {
-                outputList$lambda <- read_lambda(substring(f, 1, nchar(f) - 7))
+                outputList$lambda <- readLambda(substring(f, 1, nchar(f) - 7))
             }
             file.remove(f)
         }
@@ -87,7 +87,7 @@ hcbn_single <- function(datasetObj,
 
 #' H-CBN
 #'
-#' @param datasets Vector of `Spock` objects with poset and pattern/lambda data or a `Spock` object (alias of hcbn_single).
+#' @param datasets Vector of `Spock` objects with poset and pattern/lambda data or a `Spock` object (alias of hcbnSingle).
 #' @param anneal If `TRUE`, performes a simulated annealing run starting from the poset
 #' @param temp Temperature of simulated annealing.
 #' @param annealing_steps Number of simulated annealing steps.
@@ -98,11 +98,11 @@ hcbn_single <- function(datasetObj,
 #' @export
 #'
 #' @examples
-#' example_path <- get_examples()[1]
+#' example_path <- getExamples()[1]
 #' bc <- Spock$new(
-#'     poset = read_poset(example_path)$sets,
-#'     numMutations = read_poset(example_path)$mutations,
-#'     genotypeMatrix = read_pattern(example_path)
+#'     poset = readPoset(example_path)$sets,
+#'     numMutations = readPoset(example_path)$mutations,
+#'     genotypeMatrix = readPattern(example_path)
 #' )
 #' hcbn(bc)
 #' hcbn(c(bc, bc, bc))
@@ -117,7 +117,7 @@ hcbn <- function(datasets,
     }
     registerDoMC(cores = min(length(datasets), n_cores))
     if (inherits(datasets, "Spock")) {
-        return(hcbn_single(datasets, anneal, temp, annealing_steps, epsilon))
+        return(hcbnSingle(datasets, anneal, temp, annealing_steps, epsilon))
     }
     output_stems <- replicate(length(datasets), tempfile("output"))
     rowLength <- -1
@@ -125,7 +125,7 @@ hcbn <- function(datasets,
     outMatrixBuf <- vector("list", length(datasets))
     dataI <- 1
     rets <- foreach(dataI = 1:length(datasets)) %dopar% {
-        out <- hcbn_single(datasets[[dataI]], anneal, temp, annealing_steps, epsilon)
+        out <- hcbnSingle(datasets[[dataI]], anneal, temp, annealing_steps, epsilon)
         list(i = dataI, row = out)
     }
 

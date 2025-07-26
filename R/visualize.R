@@ -35,8 +35,8 @@ toBin <- function(n, nG) {
 #' )
 #' #
 #' COLintensity <- c(0, rep(0.25, 4), rep(0.5, 6), rep(0.75, 4), 1)
-#' visualize_fitness_landscape(COLintensity)
-visualize_fitness_landscape <- function(fitness,
+#' visualizeFitnessLandscape(COLintensity)
+visualizeFitnessLandscape <- function(fitness,
                                         selectNodes = NULL,
                                         nGenes = 4,
                                         lowColor = "white",
@@ -156,9 +156,9 @@ visualize_fitness_landscape <- function(fitness,
 #' @export
 #'
 #' @examples
-#' poset <- read_poset(get_examples()[1])
-#' visualize_cbn_model(poset$sets)
-visualize_cbn_model <- function(poset, nodeColor = "darkgreen") {
+#' poset <- readPoset(getExamples()[1])
+#' visualizeCBNModel(poset$sets)
+visualizeCBNModel <- function(poset, nodeColor = "darkgreen") {
   if (dim(poset)[2]<2){print("This is an empty poset, so no need for visualization.")}
   else {
     nodes <- data.frame(name = sort(unlist(unique(as.list(
@@ -292,13 +292,13 @@ pt_to_mm <- function(pts) {
 #' @export
 #'
 #' @examples
-#' visualize_probabilities(c(0.05, 0.03, 0.12, 0.04, 0.02, 0, 0.05, 0.04, 0.05, 0.06, 0.04, 0.02, 0.03, 0.02, 0.05, 0.03, 0.01, 0.09, 0.06, 0.04, 0, 0.08, 0.05, 0.02))
+#' visualizeProbabilities(c(0.05, 0.03, 0.12, 0.04, 0.02, 0, 0.05, 0.04, 0.05, 0.06, 0.04, 0.02, 0.03, 0.02, 0.05, 0.03, 0.01, 0.09, 0.06, 0.04, 0, 0.08, 0.05, 0.02))
 #'
-#' visualize_probabilities(c(0.05, 0.03, 0.12, 0.04, 0.02, 0, 0.05, 0.04, 0.05, 0.06, 0.04, 0.02, 0.03, 0.02, 0.05, 0.03, 0.01, 0.09, 0.06, 0.04, 0, 0.08, 0.05, 0.02), geneNames = c("AAAA", "BBBB", "CCCC", "DDDD"))
+#' visualizeProbabilities(c(0.05, 0.03, 0.12, 0.04, 0.02, 0, 0.05, 0.04, 0.05, 0.06, 0.04, 0.02, 0.03, 0.02, 0.05, 0.03, 0.01, 0.09, 0.06, 0.04, 0, 0.08, 0.05, 0.02), geneNames = c("AAAA", "BBBB", "CCCC", "DDDD"))
 #'
 #' mat <- matrix(c(0.1, 0.3, 0, 0.2, 0.4, 0, 0.2, 0.2, 0.1, 0, 0.2, 0.3), ncol = 2)
-#' visualize_probabilities(mat, columnTitles = TRUE)
-visualize_probabilities <- function(probabilities,
+#' visualizeProbabilities(mat, columnTitles = TRUE)
+visualizeProbabilities <- function(probabilities,
                                     outputFile = NULL,
                                     geneNames = as.character(1:inverse_factorial(length(probabilities))),
                                     geneColors = rainbow(length(geneNames), v = 0.5),

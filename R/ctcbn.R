@@ -12,14 +12,14 @@
 #' @export
 #'
 #' @examples
-#' example_path <- get_examples()[1]
+#' example_path <- getExamples()[1]
 #' bc <- Spock$new(
-#'     poset = read_poset(example_path)$sets,
-#'     numMutations = read_poset(example_path)$mutations,
-#'     genotypeMatrix = read_pattern(example_path)
+#'     poset = readPoset(example_path)$sets,
+#'     numMutations = readPoset(example_path)$mutations,
+#'     genotypeMatrix = readPattern(example_path)
 #' )
-#' ctcbn_single(bc)
-ctcbn_single <- function(dataset,
+#' ctcbnSingle(bc)
+ctcbnSingle <- function(dataset,
                          bootstrap_samples = 0,
                          random_seed = 1,
                          sampling_rate = 1.0,
@@ -61,16 +61,16 @@ ctcbn_single <- function(dataset,
         for (f in outFiles) {
             f <- paste(c(outDir, f), collapse = "/")
             if (endsWith(f, ".poset")) {
-                outputList$poset <- read_poset(substring(f, 1, nchar(f) - 6))
+                outputList$poset <- readPoset(substring(f, 1, nchar(f) - 6))
             }
             if (endsWith(f, ".pat")) {
-                outputList$pattern <- read_pattern(substring(f, 1, nchar(f) - 4))
+                outputList$pattern <- readPattern(substring(f, 1, nchar(f) - 4))
             }
             if (endsWith(f, ".lambda")) {
-                outputList$lambda <- read_lambda(substring(f, 1, nchar(f) - 7))
+                outputList$lambda <- readLambda(substring(f, 1, nchar(f) - 7))
             }
             if (endsWith(f, ".time")) {
-              outputList$time <- read_time(substring(f, 1, nchar(f) - 5))
+              outputList$time <- readTime(substring(f, 1, nchar(f) - 5))
             }
             file.remove(f)
         }
@@ -100,7 +100,7 @@ ctcbn_single <- function(dataset,
 
 #' CT-CBN
 #'
-#' @param datasets Vector of `Spock` objects with poset and pattern/lambda data or a `Spock` object (alias of ctcbn_single).
+#' @param datasets Vector of `Spock` objects with poset and pattern/lambda data or a `Spock` object (alias of ctcbnSingle).
 #' @param bootstrap_samples  Number of bootstrap samples (requires `epsilon` > 0, `num_drawn_samples` = 0)
 #' @param random_seed Random seed.
 #' @param sampling_rate Sampling rate.
@@ -113,11 +113,11 @@ ctcbn_single <- function(dataset,
 #' @export
 #'
 #' @examples
-#' example_path <- get_examples()[1]
+#' example_path <- getExamples()[1]
 #' bc <- Spock$new(
-#'     poset = read_poset(example_path)$sets,
-#'     numMutations = read_poset(example_path)$mutations,
-#'     genotypeMatrix = read_pattern(example_path)
+#'     poset = readPoset(example_path)$sets,
+#'     numMutations = readPoset(example_path)$mutations,
+#'     genotypeMatrix = readPattern(example_path)
 #' )
 #' ctcbn(bc)
 ctcbn <- function(datasets,
@@ -134,7 +134,7 @@ ctcbn <- function(datasets,
     registerDoMC(cores = min(length(datasets), n_cores))
 
     if (inherits(datasets, "Spock")) {
-        return(ctcbn_single(datasets, bootstrap_samples, random_seed, sampling_rate, epsilon, num_drawn_samples, num_em_runs))
+        return(ctcbnSingle(datasets, bootstrap_samples, random_seed, sampling_rate, epsilon, num_drawn_samples, num_em_runs))
     }
     output_stems <- replicate(length(datasets), tempfile("output"))
     rowLength <- -1
@@ -142,7 +142,7 @@ ctcbn <- function(datasets,
     outMatrixBuf <- vector("list", length(datasets))
     dataI <- 1
     rets <- foreach(dataI = 1:length(datasets)) %dopar% {
-        out <- ctcbn_single(datasets[[dataI]], bootstrap_samples, random_seed, sampling_rate, epsilon, num_drawn_samples, num_em_runs)
+        out <- ctcbnSingle(datasets[[dataI]], bootstrap_samples, random_seed, sampling_rate, epsilon, num_drawn_samples, num_em_runs)
         list(i = dataI, row = out)
     }
 

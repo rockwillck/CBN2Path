@@ -90,6 +90,9 @@ Please check the /vignettes/CBN2Path.html to learn how to use different
 CBN models and their associated pathway analysis and visualization
 functions in the `CBN2Path` R package.
 
+### Windows
+On Windows, we recommend running `CBN2Path` as administrator - there appear to be issues that arise with file permissions when R is not run as admin.
+
 ## Cite our work
 
 If you use the CBN2Path package, please cite the paper formally as

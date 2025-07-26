@@ -1,0 +1,2 @@
+# install GSL with homebrew on Mac:
+brew install gsl

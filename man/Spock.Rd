@@ -3,6 +3,9 @@
 \name{Spock}
 \alias{Spock}
 \title{Poset and pattern/lambda data}
+\value{
+a Spock object
+}
 \description{
 A data class containing poset and pattern/lambda matrices.
 }

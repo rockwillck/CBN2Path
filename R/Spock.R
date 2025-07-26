@@ -3,8 +3,9 @@
 #' @description A data class containing poset and pattern/lambda matrices.
 #'
 #' @details Use the read_ methods to feed data from files.
+#' @return a Spock object
 #' @export
-#' 
+#'
 #' @examples
 #' example_path <- get_examples()[1]
 #' bc <- Spock$new(

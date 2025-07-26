@@ -7,3 +7,6 @@ sudo apt-get install libgsl-dev
 # on Linux, if the ggraph dependency fails, run:
 sudo apt install libfontconfig1-dev
 # which appears to fix a sysfonts issue. We're not sure why this is necessary.
+
+# on Windows, we suggest installing RTools (which includes a distribution of GSL):
+https://cran.r-project.org/bin/windows/Rtools/

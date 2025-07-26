@@ -26,12 +26,12 @@ ctcbnSingle <- function(dataset,
                          epsilon = 0.0,
                          num_drawn_samples = 0,
                          num_em_runs = 1) {
-  
+
     if (bootstrap_samples != 0 && !(epsilon > 0 && num_drawn_samples == 0)) {
       stop("bootstrap_samples == 0 requires epsilon > 0 and num_drawn_samples == 0")
     }
     bootstrap_mode = bootstrap_samples != 0
-  
+
     outputStem <- tempfile("output")
     secondPath <- dataset$getSecond(num_drawn_samples)
     outputs <- list()
@@ -72,9 +72,9 @@ ctcbnSingle <- function(dataset,
             if (endsWith(f, ".time")) {
               outputList$time <- readTime(substring(f, 1, nchar(f) - 5))
             }
-            file.remove(f)
+            try(file.remove(f), silent = TRUE)
         }
-        
+
         if (num_drawn_samples == 0) {
           r <- as.numeric(unlist(strsplit(x, " ")))
           labels <- c(c("Poset", "Eps", "Alpha", "Loglike", "lambda_s"), paste0("lambda_", seq(1, length(r) - 5)))
@@ -83,16 +83,16 @@ ctcbnSingle <- function(dataset,
         }
 
         if (file.exists(paste(posetPath, "poset", sep = "."))) {
-            file.remove(paste(posetPath, "poset", sep = "."))
+            try(file.remove(paste(posetPath, "poset", sep = ".")), silent = TRUE)
         }
 
         outputs <- append(outputs, list(outputList))
     }
     if (file.exists(paste(secondPath, "lambda", sep = "."))) {
-        file.remove(paste(secondPath, "lambda", sep = "."))
+        try(file.remove(paste(secondPath, "lambda", sep = ".")), silent = TRUE)
     }
     if (file.exists(paste(secondPath, "pat", sep = "."))) {
-        file.remove(paste(secondPath, "pat", sep = "."))
+        try(file.remove(paste(secondPath, "pat", sep = ".")), silent = TRUE)
     }
 
     return(outputs)

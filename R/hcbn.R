@@ -61,11 +61,11 @@ hcbnSingle <- function(datasetObj,
             if (endsWith(f, ".lambda")) {
                 outputList$lambda <- readLambda(substring(f, 1, nchar(f) - 7))
             }
-            file.remove(f)
+            try(file.remove(f), silent = TRUE)
         }
 
         if (file.exists(paste(posetPath, "poset", sep = "."))) {
-            file.remove(paste(posetPath, "poset", sep = "."))
+            try(file.remove(paste(posetPath, "poset", sep = ".")), silent = TRUE)
         }
 
         r <- as.numeric(unlist(strsplit(x, " ")))
@@ -76,10 +76,10 @@ hcbnSingle <- function(datasetObj,
         outputs <- append(outputs, list(outputList))
     }
     if (file.exists(paste(thirdPath, "lambda", sep = "."))) {
-        file.remove(paste(thirdPath, "lambda", sep = "."))
+        try(file.remove(paste(thirdPath, "lambda", sep = ".")), silent = TRUE)
     }
     if (file.exists(paste(secondPath, "pat", sep = "."))) {
-        file.remove(paste(secondPath, "pat", sep = "."))
+        try(file.remove(paste(secondPath, "pat", sep = ".")), silent = TRUE)
     }
 
     return(outputs)

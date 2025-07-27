@@ -20,3 +20,4 @@ CBN2Path_*.tar.gz
 CBN2Path.BiocCheck
 src/*.o
 src/*.so
+inst/doc

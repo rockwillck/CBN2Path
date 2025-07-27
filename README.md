@@ -99,9 +99,23 @@ installation.
 Then, you can install the development version of `CBN2Path` by running
 the following in R:
 
+**Linux and Mac**
+
 ``` r
 remotes::install_github("rockwillck/CBN2Path", build_vignettes = TRUE)
 ```
+
+**Windows**
+
+``` r
+remotes::install_github("rockwillck/CBN2Path", build_vignettes = FALSE)
+```
+
+## Windows Support
+
+Windows support for `CBN2Path` is **limited**. Functions will be missing
+key functionality; the CBN models developed at ETH-Zurich that
+`CBN2Path` is based on don’t support Windows inherently.
 
 ## Usage
 

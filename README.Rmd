@@ -31,9 +31,9 @@ Tumorigenesis is a stepwise process that is driven by a sequence of molecular ch
 
 To install the `CBN2Path` R package, you first need to install the `gsl`:
 
-**install GSL with homebrew on Mac:**
+**Install GSL with homebrew on Mac:**
 
-*if you don't have homebrew:*
+*If you don't have homebrew:*
 
 ``` bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -47,21 +47,21 @@ brew install gsl
 
 Note that if `gsl` was installed using any method other Homebrew, you need to uninstall `gsl`, and then reinstall it using Homebrew (see <https://brew.sh> if you have not installed Homebrew yet).
 
-**install GSL on Linux:**
+**Install GSL on Linux:**
 
 ``` bash
 sudo apt-get install libgsl-dev
 ```
 
-**on Linux, if the `ggraph` dependency fails, run**
+**On Linux, if the `ggraph` dependency fails, run:**
 
 ``` bash
 sudo apt install libfontconfig1-dev
 ```
 
-which appears to fix a sysfonts issue. We're not sure why this is necessary.
+This appears to fix a sysfonts issue. We're not sure why this is necessary.
 
-**on Windows, we suggest installing RTools (which includes a distribution of GSL):**
+**On Windows, we suggest installing RTools (which includes a distribution of GSL):**
 
 Install it [here](https://cran.r-project.org/bin/windows/Rtools/).
 

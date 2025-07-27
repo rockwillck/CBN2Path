@@ -33,6 +33,14 @@ To install the `CBN2Path` R package, you first need to install the `gsl`:
 
 **install GSL with homebrew on Mac:**
 
+*if you don't have homebrew:*
+
+``` bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+Then:
+
 ``` bash
 brew install gsl
 ```

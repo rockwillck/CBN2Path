@@ -43,6 +43,8 @@ in the future.
 
 ## Installation
 
+### GSL
+
 To install the `CBN2Path` R package, you first need to install the
 `gsl`:
 
@@ -61,8 +63,8 @@ Then, also in terminal:
 brew install gsl
 ```
 
-Note that if `gsl` was installed using any method other Homebrew, you
-need to uninstall `gsl`, and then reinstall it using Homebrew (see
+Note that if `gsl` was installed using any method other than Homebrew,
+you need to uninstall `gsl`, and then reinstall it using Homebrew (see
 <https://brew.sh> if you have not installed Homebrew yet).
 
 **Install GSL on Linux:**
@@ -90,20 +92,26 @@ Download RTools from
 [here](https://cran.r-project.org/bin/windows/Rtools/) and proceed with
 installation.
 
+### Package Install
+
 **Make sure to restart R before proceeding.**
 
 Then, you can install the development version of `CBN2Path` by running
 the following in R:
 
 ``` r
-remotes::install_github("rockwillck/CBN2Path")
+remotes::install_github("rockwillck/CBN2Path", build_vignettes = TRUE)
 ```
 
 ## Usage
 
-Please check the /vignettes/CBN2Path.html to learn how to use different
-CBN models and their associated pathway analysis and visualization
-functions in the `CBN2Path` R package.
+To learn how to use different CBN models and their associated pathway
+analysis and visualization functions in the `CBN2Path` R package, please
+run:
+
+``` r
+vignette("CBN2Path")
+```
 
 ## Cite our work
 

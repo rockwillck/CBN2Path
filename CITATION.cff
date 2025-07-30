@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Choi-Kim"
+  given-names: "William"
+  orcid: "https://orcid.org/0009-0000-3902-4745"
+- family-names: "Hosseini"
+  given-names: "Sayed-Rzgar"
+  orcid: "https://orcid.org/0000-0002-2308-6754"
+title: "CBN2Path"
+version: 0.99.0
+doi: 10.5281/zenodo.1234
+date-released: 2025-07-30
+url: "https://github.com/rockwillck/CBN2Path"

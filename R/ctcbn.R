@@ -72,7 +72,7 @@ ctcbnSingle <- function(dataset,
             if (endsWith(f, ".time")) {
               outputList$time <- readTime(substring(f, 1, nchar(f) - 5))
             }
-            suppressWarnings(file.remove(f))
+            # suppressWarnings(file.remove(f))
         }
 
         if (num_drawn_samples == 0) {
@@ -83,16 +83,16 @@ ctcbnSingle <- function(dataset,
         }
 
         if (file.exists(paste(posetPath, "poset", sep = "."))) {
-            suppressWarnings(file.remove(paste(posetPath, "poset", sep = ".")))
+            # suppressWarnings(file.remove(paste(posetPath, "poset", sep = ".")))
         }
 
         outputs <- append(outputs, list(outputList))
     }
     if (file.exists(paste(secondPath, "lambda", sep = "."))) {
-        suppressWarnings(file.remove(paste(secondPath, "lambda", sep = ".")))
+        # suppressWarnings(file.remove(paste(secondPath, "lambda", sep = ".")))
     }
     if (file.exists(paste(secondPath, "pat", sep = "."))) {
-        suppressWarnings(file.remove(paste(secondPath, "pat", sep = ".")))
+        # suppressWarnings(file.remove(paste(secondPath, "pat", sep = ".")))
     }
 
     return(outputs)

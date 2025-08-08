@@ -14,13 +14,13 @@ int** bcbn_GENOTYPE;  // GENOTYPE[i] is the integer i in binary (as int array)
 int* bcbn_get_int_array(const int n)
 {
   int* x = calloc(n, sizeof(int));
-  
+
   if (x == NULL)
   {
     // fprintf(stderr, "Error: Out of memory!\n");
     // exit(1);
   }
-  
+
   return x;
 }
 
@@ -28,13 +28,13 @@ int* bcbn_get_int_array(const int n)
 unsigned int* bcbn_get_uint_array(const int n)
 {
   unsigned int* x = calloc(n, sizeof(unsigned int));
-  
+
   if (x == NULL)
   {
     // fprintf(stderr, "Error: Out of memory!\n");
     // exit(1);
   }
-  
+
   return x;
 }
 
@@ -42,13 +42,13 @@ unsigned int* bcbn_get_uint_array(const int n)
 double* bcbn_get_double_array(const int n)
 {
   double* x = calloc(n, sizeof(double));
-  
+
   if (x == NULL)
   {
     // fprintf(stderr, "Error: Out of memory!\n");
     // exit(1);
   }
-  
+
   return x;
 }
 
@@ -56,13 +56,13 @@ double* bcbn_get_double_array(const int n)
 int** bcbn_get_int_matrix(const int m, const int n)
 {
   int** x = malloc(m * sizeof(int *));
-  
+
   if (x == NULL)
   {
     // fprintf(stderr, "Error: Out of memory!\n");
     // exit(1);
   }
-  
+
   int i;
   for (i=0; i<m; i++)
   {
@@ -73,7 +73,7 @@ int** bcbn_get_int_matrix(const int m, const int n)
       // exit(1);
     }
   }
-  
+
   return x;
 }
 
@@ -81,13 +81,13 @@ int** bcbn_get_int_matrix(const int m, const int n)
 double** bcbn_get_double_matrix(const int m, const int n)
 {
   double** x = malloc(m * sizeof(double *));
-  
+
   if (x == NULL)
   {
     // fprintf(stderr, "Error: Out of memory!\n");
     // exit(1);
   }
-  
+
   int i;
   for (i=0; i<m; i++)
   {
@@ -98,20 +98,20 @@ double** bcbn_get_double_matrix(const int m, const int n)
       // exit(1);
     }
   }
-  
+
   return x;
 }
 
 double*** bcbn_get_double_cube(const int m, const int n, const int l)
 {
   double*** x = malloc(m * sizeof(double **));
-  
+
   if (x == NULL)
   {
     // fprintf(stderr, "Error: Out of memory!\n");
     // exit(1);
   }
-  
+
   int i;
   for (i=0; i<m; i++)
   {
@@ -122,20 +122,20 @@ double*** bcbn_get_double_cube(const int m, const int n, const int l)
       // exit(1);
     }
   }
-  
+
   return x;
 }
 
 int*** get_int_cube(const int m, const int n, const int l)
 {
   int*** x = malloc(m * sizeof(int **));
-  
+
   if (x == NULL)
   {
     // fprintf(stderr, "Error: Out of memory!\n");
     // exit(1);
   }
-  
+
   int i;
   for (i=0; i<m; i++)
   {
@@ -146,7 +146,7 @@ int*** get_int_cube(const int m, const int n, const int l)
       // exit(1);
     }
   }
-  
+
   return x;
 }
 
@@ -168,10 +168,10 @@ void bcbn_print_int_array(int* x, int n)
 void bcbn_print_int_matrix(int** X, int m, int n)
 {
   int i;
-  
+
   for (i=0; i<m; i++)
     bcbn_print_int_array(X[i], n);
-  
+
 }
 
 
@@ -196,10 +196,10 @@ void bcbn_print_double_array(double* x, int n)
 void bcbn_print_double_matrix(double** X, int m, int n)
 {
   int i;
-  
+
   for (i=0; i<m; i++)
     bcbn_print_double_array(X[i], n);
-  
+
 }
 
 
@@ -207,14 +207,14 @@ void bcbn_print_double_matrix(double** X, int m, int n)
 void bcbn_write_poset(int k, char* filestem, int** P, int n, int b)
 {
   int i, j;
-  
+
   char filename[255];
-  
+
   if (b >= 0)
     snprintf(filename, sizeof(filename), "%s/b%09d.poset", filestem, b);
   else
     snprintf(filename, sizeof(filename), "%s/%09d.poset", filestem, k);
-  
+
   FILE *output;
   if ( (output = fopen(filename, "w")) == NULL )
   {
@@ -222,13 +222,13 @@ void bcbn_write_poset(int k, char* filestem, int** P, int n, int b)
     // fprintf(stderr, "        Make sure the directory '%s' exists.\n", filestem);
     // exit(1);
   }
-  
+
   fprintf(output, "%d\n", n);
   for (i=0; i<n; i++)
     for (j=0; j<n; j++)
       if (P[i][j])
         fprintf(output, "%d %d\n", i+1, j+1);
-      
+
       fprintf(output, "0 0\n");
       fclose(output);
 }
@@ -238,20 +238,20 @@ void bcbn_write_poset(int k, char* filestem, int** P, int n, int b)
 void bcbn_write_patterns(char* filestem, int** pat, int N, int n)
 {
   int i, j;
-  
+
   char suffix[15] = ".sim.pat";
   //char suffix[15] = ".pat";
   char *filename = (char *) calloc(strlen(filestem) + strlen(suffix) + 1, sizeof(char));
   strcat(filename, filestem);
   strcat(filename, suffix);
-  
+
   FILE *output;
   if ( (output = fopen(filename, "w")) == NULL )
   {
     // fprintf(stderr, "Error:  Could not write to file %s\n", filename);
     // exit(1);
   }
-  
+
   fprintf(output, "%d %d\n", N, n+1);
   for (i=0; i<N; i++)
   {
@@ -259,7 +259,7 @@ void bcbn_write_patterns(char* filestem, int** pat, int N, int n)
       fprintf(output, "%d ", pat[i][j]);
     fprintf(output, "%d\n", pat[i][n]);
   }
-  
+
   fclose(output);
 }
 
@@ -269,13 +269,13 @@ void bcbn_write_patterns(char* filestem, int** pat, int N, int n)
 inline void genotype_of(int index, int* x, int n)
 {
   int i;
-  
+
   for (i=n-1; i>=0; i--)
   {
     x[i] = index % 2;
     index = index / 2;
   }
-  
+
 }
 
 
@@ -283,10 +283,10 @@ inline void genotype_of(int index, int* x, int n)
 int bcbn_pow2(int k)
 {
   int i, pow = 1;
-  
+
   for (i=0; i<k; i++)
     pow *= 2;
-  
+
   return(pow);
 }
 
@@ -297,9 +297,9 @@ void bcbn_precompute_binary(const int n)
   int i, j;
   int m = bcbn_pow2(n);
   int *g = bcbn_get_int_array(n);
-  
+
   bcbn_GENOTYPE = bcbn_get_int_matrix(m, n);
-  
+
   for (i=0; i<m; i++)
   {
     genotype_of(i, g, n);
@@ -314,25 +314,25 @@ void bcbn_precompute_binary(const int n)
 int bcbn_index_of(int* x, int n)
 {
   int i, index = 0;
-  
+
   for (i=0; i<n; i++)
   {
     if (x[i] == 1)
       index += bcbn_pow2(n-1-i);
   }
-  
+
   return index;
 }
 
 int bcbn_is_equal_int_matrix(int** A, int** B, int n)
 {
   int i, j;
-  
+
   for (i=0; i<n; i++)
     for (j=0; j<n; j++)
       if (A[i][j] != B[i][j])
         return 0;
-      
+
       return 1;
 }
 
@@ -343,16 +343,16 @@ void bcbn_boolean_matrix_sum(int** A, int** B, int** C, int n)
   /*
    Boolean matrix sum  A + B = C
    */
-  
+
   int i, j;
-  
+
   for (i=0; i<n; i++)
     for (j=0; j<n; j++)
     {
       C[i][j] = A[i][j] + B[i][j];
       C[i][j] = C[i][j] ? 1 : 0;
     }
-    
+
 }
 
 void bcbn_boolean_matrix_product(int** A, int** B, int** C, int n)
@@ -360,9 +360,9 @@ void bcbn_boolean_matrix_product(int** A, int** B, int** C, int n)
   /*
    Boolean matrix product  A * B = C
    */
-  
+
   int i, j, k;
-  
+
   for (i=0; i<n; i++)
     for (j=0; j<n; j++)
     {
@@ -371,12 +371,12 @@ void bcbn_boolean_matrix_product(int** A, int** B, int** C, int n)
         C[i][j] += A[i][k] * B[k][j];
       C[i][j] = C[i][j] ? 1 : 0;
     }
-    
+
 }
 
 void free_int_matrix( int** A, int n) {
   int j;
-  
+
   for (j=0; j<n; j++)
     free(A[j]);
   free(A);
@@ -384,7 +384,7 @@ void free_int_matrix( int** A, int n) {
 
 void free_double_matrix( double** A, int n) {
   int j;
-  
+
   for (j=0; j<n; j++)
     free(A[j]);
   free(A);
@@ -392,7 +392,7 @@ void free_double_matrix( double** A, int n) {
 
 void free_int_cube( int*** A, int n, int m) {
   int j;
-  
+
   for (j=0; j<n; j++) {
     //printf("before free int mat\n");
     free_int_matrix(A[j], m );
@@ -414,7 +414,7 @@ void bcbn_free_poset(model* M)
 void bcbn_free_lattice(model* M)
 {
   int i;
-  
+
   free(M->J_P);
   for (i=0; i<M->m; i++)
   {
@@ -431,7 +431,7 @@ void bcbn_free_lattice(model* M)
 void bcbn_free_lattice_children(model* M)
 {
   int i;
-  
+
   free(M->J_P);
   free_int_matrix( M->ch_diff, M->m );
   free(M->N_ch);
@@ -512,7 +512,7 @@ void bcbn_print_data(data* D, int N_u, int n, int m)
   // 	printf("is compatible = %d\n", D[k].is_compatible);
   // 	printf("--------------------\n");
   // }
-  
+
 }
 
 
@@ -520,7 +520,7 @@ void bcbn_print_data(data* D, int N_u, int n, int m)
 void bcbn_free_data(data* D, int N_u, int n)
 {
   int k, j;
-  
+
   for (k=0; k<N_u; k++)
   {
     free(D[k].g);
@@ -537,21 +537,21 @@ void bcbn_free_data(data* D, int N_u, int n)
 int** bcbn_read_patterns(char* filestem, int* N, int n)
 {
   int j, k, p;
-  
+
   char suffix[15] = ".pat";
   char *filename = (char *) calloc(strlen(filestem) + strlen(suffix) + 1, sizeof(char));
   strcat(filename, filestem);
   strcat(filename, suffix);
-  
+
   FILE *input;
   if ( (input = fopen(filename, "r")) == NULL)
   {
     // fprintf(stderr, "Error:  Could not read %s\n", filename);
     // exit(1);
   }
-  
+
   /* Read dimensions */
-  fscanf(input, "%d %d", N, &p);
+  if(fscanf(input, "%d %d", N, &p));
   // if (bcbn_verbose) printf("\nreading data from file %s :  %d samples, %d events ...\n\n", filename, *N, p-1);
   if (*N < 1)
   {
@@ -563,9 +563,9 @@ int** bcbn_read_patterns(char* filestem, int* N, int n)
     // fprintf(stderr, "Error:  Number of events in poset and data do not match!\n");
     // exit(1);
   }
-  
+
   int** pat = bcbn_get_int_matrix(*N, p);
-  
+
   /* Read patterns */
   int x;
   for (k=0; k<*N; k++)
@@ -583,44 +583,44 @@ int** bcbn_read_patterns(char* filestem, int* N, int n)
         // fprintf(stderr, "Error reading data from %s!\n", filename);
         // exit(1);
       }
-      
+
     }
   }
-  
+
   return pat;
 }
 
 void bcbn_read_poset(char* filestem, model* M)
 {
   int left, right;
-  
+
   char suffix[15] = ".poset";
   char *filename = (char *) calloc(strlen(filestem) + strlen(suffix) + 1, sizeof(char));
   strcat(filename, filestem);
   strcat(filename, suffix);
-  
+
   FILE *input;
   if ( (input = fopen(filename, "r")) == NULL)
   {
     // fprintf(stderr, "Error:  Could not read %s\n", filename);
     // exit(1);
   }
-  
+
   /* Read number of relations */
   int n;
-  fscanf(input, "%d", &n);
+  if(fscanf(input, "%d", &n));
   // if (bcbn_verbose)  printf("n = %d events\n\n", n);
   if ((n < 1) || (n > 25))
   {
     // fprintf(stderr, "Error:  Number of events is %d.  Supported range is {1, ..., 14}.\n", n);
     // exit(1);
   }
-  
+
   M->n = n;
   M->P = bcbn_get_int_matrix(n+1, n+1);
-  
+
   /* Read partial orderings from file */
-  fscanf(input,"%d %d", &left, &right);
+  if(fscanf(input,"%d %d", &left, &right));
   while (left != 0)
   {
     // if (bcbn_verbose)  printf("%d --> %d\n", left, right);  // i.e., left < right
@@ -630,19 +630,19 @@ void bcbn_read_poset(char* filestem, model* M)
       // exit(1);
     }
     M->P[left][right] = 1;
-    fscanf(input,"%d %d", &left, &right);
+    if(fscanf(input,"%d %d", &left, &right));
   }
-  
+
   fclose(input);
 }
 
 void bcbn_print_genotype(int* x, int n)
 {
   int i;
-  
+
   // for (i=0; i<n; i++)
   // 	printf("%d", x[i]);
-  
+
 }
 
 
@@ -650,29 +650,29 @@ void bcbn_print_genotype(int* x, int n)
 int* bcbn_bfs_order_ideals(int** poset, const int len, int* count, int* lin_ext)
 {
   // implements BFS in the genotype lattice
-  
+
   int i, j, k, is_compatible;
   int lin_ext_size = 0;
-  
+
   queue q;
   int g_idx, new_idx;  // current, new genotype index
   int* g = bcbn_get_int_array(len);  // current genotype
-  
+
   int* lattice = malloc(sizeof(int));
-  
+
   int* added = bcbn_get_int_array(bcbn_pow2(len));  // records added genotypes
   /* TODO: make this dynamic, e.g., using a list */
-  
+
   init_queue(&q);
   new_idx = 0;  // wild type 0...0
   enqueue(&q, new_idx);
   added[new_idx] = 1;
-  
+
   *count = 0;
   while (empty(&q) == FALSE) {
     g_idx = dequeue(&q);
     genotype_of(g_idx, g, len);
-    
+
     // visit...
     (*count)++;
     if ((lattice = (int*) realloc(lattice, (*count) * sizeof(int))) == NULL)
@@ -681,7 +681,7 @@ int* bcbn_bfs_order_ideals(int** poset, const int len, int* count, int* lin_ext)
       // exit(1);
     }
     lattice[(*count)-1] = g_idx;
-    
+
     // linear extension
     for (i=1; i<len; i++)  // exclude 0
     {
@@ -701,8 +701,8 @@ int* bcbn_bfs_order_ideals(int** poset, const int len, int* count, int* lin_ext)
           }
       }
     }
-    
-    
+
+
     // generate children:
     for (i=0; i<len; i++)
     {
@@ -710,7 +710,7 @@ int* bcbn_bfs_order_ideals(int** poset, const int len, int* count, int* lin_ext)
       {
         g[i] = 1;  // try this new event
         new_idx = bcbn_index_of(g, len);
-        
+
         // check bcbn_compatibility:
         is_compatible = 1;
         for (k=0; k<len; k++)
@@ -721,22 +721,22 @@ int* bcbn_bfs_order_ideals(int** poset, const int len, int* count, int* lin_ext)
             break;
           }
         }
-        
+
         if ((is_compatible) && (! added[new_idx]))
           /* add if compatible and really new */
         {
           enqueue(&q, new_idx);
           added[new_idx] = 1;
         }
-        
+
         g[i] = 0;  // undo event
       }
     }
   }
-  
+
   free(g);
   free(added);
-  
+
   return(lattice);
 }
 
@@ -746,15 +746,15 @@ int bcbn_norm1(const int g_idx, const int n)
 {
   int i;
   int *g = bcbn_get_int_array(n);
-  
+
   genotype_of(g_idx, g, n);
-  
+
   int bcbn_norm1 = 0;
   for(i=0; i<n; i++)
     bcbn_norm1 += g[i];
-  
+
   free(g);
-  
+
   return bcbn_norm1;
 }
 
@@ -771,13 +771,13 @@ double bcbn_power(double m, int n)
 unsigned bcbn_hamdist(unsigned x, unsigned y)
 {
   unsigned dist = 0, val = x ^ y;
-  
+
   while(val)
   {
     ++dist;
     val &= val - 1;
   }
-  
+
   return dist;
 }
 
@@ -786,10 +786,10 @@ int bcbn_hamming_distance(int g_idx, int h_idx, int* diff_idx, int n)
   int i;
   int *g = bcbn_get_int_array(n);
   int *h = bcbn_get_int_array(n);
-  
+
   genotype_of(g_idx, g, n);
   genotype_of(h_idx, h, n);
-  
+
   int dist = 0;
   for(i=0; i<n; i++)
     if (g[i] != h[i])
@@ -797,10 +797,10 @@ int bcbn_hamming_distance(int g_idx, int h_idx, int* diff_idx, int n)
       dist++;
       *diff_idx = i;
     }
-    
+
     free(g);
     free(h);
-    
+
     return dist;
 }
 
@@ -809,7 +809,7 @@ void parents_dt(model* M)
   int i, j, k, c;
   int m = M->m;
   int n = M->n;
-  
+
   M->N_pa = bcbn_get_int_array(m);
   M->pa = malloc(m * sizeof(int*));
   M->pa_diff = malloc(m * sizeof(int*));
@@ -818,7 +818,7 @@ void parents_dt(model* M)
     // fprintf(stderr, "Error: Out of memory!\n");
     // exit(1);
   }
-  
+
   // count parents:
   for (i=0; i<m; i++)
   {
@@ -834,7 +834,7 @@ void parents_dt(model* M)
       k--;
     }
   }
-  
+
   // list parents:
   for (i=0; i<m; i++)
   {
@@ -854,7 +854,7 @@ void parents_dt(model* M)
       k--;
     }
   }
-  
+
 }
 
 
@@ -864,7 +864,7 @@ void children_dt(model* M)
   int i, j, k, c;
   int m = M->m;
   int n = M->n;
-  
+
   M->N_ch = bcbn_get_int_array(m);
   M->ch_diff = malloc(m * sizeof(int*));
   if (M->ch_diff == NULL)
@@ -872,7 +872,7 @@ void children_dt(model* M)
     // fprintf(stderr, "Error: Out of memory!\n");
     // exit(1);
   }
-  
+
   // count children:
   for (i=0; i<m; i++)
   {
@@ -889,7 +889,7 @@ void children_dt(model* M)
       k++;
     }
   }
-  
+
   // list children:
   for (i=0; i<m; i++)
   {
@@ -907,40 +907,40 @@ void children_dt(model* M)
       k++;
     }
   }
-  
+
 }
 
 void bcbn_read_poset_dt(char* filestem, model* M)
 {
   int left, right;
-  
+
   char suffix[15] = ".poset";
   char *filename = (char *) calloc(strlen(filestem) + strlen(suffix) + 1, sizeof(char));
   strcat(filename, filestem);
   strcat(filename, suffix);
-  
+
   FILE *input;
   if ( (input = fopen(filename, "r")) == NULL)
   {
     // fprintf(stderr, "Error:  Could not read %s\n", filename);
     // exit(1);
   }
-  
+
   /* Read number of relations */
   int n;
-  fscanf(input, "%d", &n);
+  if(fscanf(input, "%d", &n));
   // if (bcbn_verbose)  printf("n = %d events\n\n", n);
   if ((n < 1) || (n > 25))
   {
     // fprintf(stderr, "Error:  Number of events is %d.  Supported range is {1, ..., 14}.\n", n);
     // exit(1);
   }
-  
+
   M->n = n;
   M->P = bcbn_get_int_matrix(n, n);
-  
+
   /* Read partial orderings from file */
-  fscanf(input,"%d %d", &left, &right);
+  if(fscanf(input,"%d %d", &left, &right));
   while (left != 0)
   {
     // if (bcbn_verbose)  printf("%d --> %d\n", left, right);  // i.e., left < right
@@ -950,22 +950,22 @@ void bcbn_read_poset_dt(char* filestem, model* M)
       // exit(1);
     }
     M->P[left-1][right-1] = 1;
-    fscanf(input,"%d %d", &left, &right);
+    if(fscanf(input,"%d %d", &left, &right));
   }
-  
+
   fclose(input);
 }
 
 data* bcbn_make_data_set(int** pat, int N, int n, int* N_u, int* pat_idx)
 {
   int j, k, l, skip;
-  
+
   int* idx = bcbn_get_int_array(N);
   int* count = bcbn_get_int_array(N);
-  
+
   for (k=0; k<N; k++)
     idx[k] = bcbn_index_of(pat[k], n);
-  
+
   // count unique patterns:
   int c = 0;
   for (k=0; k<N; k++)
@@ -988,15 +988,15 @@ data* bcbn_make_data_set(int** pat, int N, int n, int* N_u, int* pat_idx)
       c++;
     }
   }
-  
+
   *N_u = 0;
   for (k=0; k<N; k++)
     *N_u += (count[k] > 0);
-  
+
   // if (bcbn_verbose)  printf("N_u = %d unique patterns\n", *N_u);
-  
+
   data* D = calloc(*N_u, sizeof(data));
-  
+
   c = 0;
   for (k=0; k<N; k++)
   {
@@ -1011,14 +1011,14 @@ data* bcbn_make_data_set(int** pat, int N, int n, int* N_u, int* pat_idx)
       c++;
     }
   }
-  
+
   return D;
 }
 
 void bcbn_compatibility(data* D, int N_u, model* M)
 {
   int i, j, k;
-  
+
   for (k=0; k<N_u; k++)
   {
     D[k].is_compatible = 1;
@@ -1037,7 +1037,7 @@ void bcbn_compatibility(data* D, int N_u, model* M)
       i++;
     }
   }
-  
+
 }
 
 
@@ -1049,14 +1049,14 @@ void bcbn_compatibility(data* D, int N_u, model* M)
  * @param theta_exit IN the exit probabilities for all elements in the genotype lattice; size: m
  */
 void compute_all_cbn_prob( double* theta, model* M, double* Prob, double* theta_exit ) {
-  
+
   int m = M->m;
   int n = M->n;
-  
+
   int i,j,c,k;
-  
+
   Prob[0] = 1.0;
-  
+
   for (i=0; i < m; i++)
   {
     //printf("%d ",M->J_P[i]);
@@ -1069,9 +1069,9 @@ void compute_all_cbn_prob( double* theta, model* M, double* Prob, double* theta_
       }
     }
     Prob[i] = t * theta_exit[i];
-    
+
   }
-  
+
   double p = 0;
   for(i=0;i<m;i++) {
     p += Prob[i];
@@ -1087,16 +1087,16 @@ void compute_all_cbn_prob( double* theta, model* M, double* Prob, double* theta_
 void compute_theta_exit(double *theta, model* M, double* theta_exit)
 {
   int i, j, c;
-  
+
   for (i=0; i<M->m; i++)
   {
     theta_exit[i] = 1.0;
-    
+
     for (c=0; c<M->N_ch[i]; c++)
     {
       j = M->ch_diff[i][c];  // index of differing event
       theta_exit[i] *= (1-theta[j]);
-      
+
     }
   }
 }
@@ -1106,15 +1106,15 @@ void compute_cond_error_prob(model* M, data* D, int N_u, double epsilon, double*
 {
   int n = M->n;
   int m = M->m;
-  
+
   int i,k,d,index;
-  
-  
+
+
   for (k=0; k<N_u; k++)   // All patients
   {
     //prob_tmp = 0;
     index = bcbn_index_of(D[k].g, n);
-    
+
     for (i=1; i<m; i++) // All patterns
     {
       condprob[i][k] = 0.0;
@@ -1130,7 +1130,7 @@ void compute_cond_error_prob(model* M, data* D, int N_u, double epsilon, double*
 
 
 void clone_poset( model* M_src, model* M_dest ) {
-  
+
   int i,j;
   int n = M_src->n;
   //int m = M_src->m;
@@ -1151,7 +1151,7 @@ void clone_poset( model* M_src, model* M_dest ) {
    }
    M_dest->eps = M_src->eps;
    */
-  
+
 }
 
 void bcbn_transitive_closure(int** A, int**T, int n)
@@ -1159,34 +1159,34 @@ void bcbn_transitive_closure(int** A, int**T, int n)
   /*
    T is the transitive closure of the relation A
    */
-  
+
   int** R = bcbn_get_int_matrix(n, n);
   int** S = bcbn_get_int_matrix(n, n);
-  
+
   int i, j, k = 0;
-  
+
   // initialize T = A
   for (i=0; i<n; i++)
     for (j=0; j<n; j++)
       T[i][j] = A[i][j];
-  
+
   while ((k == 0) || (! bcbn_is_equal_int_matrix(S, T, n)))
   {
     // S = T
     for (i=0; i<n; i++)
       for (j=0; j<n; j++)
         S[i][j] = T[i][j];
-    
+
     // T = A*S + A
     bcbn_boolean_matrix_product(A, S, R, n);
     bcbn_boolean_matrix_sum(R, A, T, n);
-    
+
     k++;
   }
-  
+
   free_int_matrix(R, n);
   free_int_matrix(S, n);
-  
+
 }
 
 /**
@@ -1201,20 +1201,20 @@ int bcbn_reduce_to_cover_relations ( int** P, int n, int** C )
   int i,j,k;
   queue q;
   int stat = 0;
-  
+
   // Sample all nodes
   for (i=0; i<n; i++)
   {
     int* visit = bcbn_get_int_array(n);
     init_queue(&q);
-    
+
     // Fill queue with children of i
     for (j=0; j<n; j++)
       if (P[i][j])
       {
         enqueue(&q,j);
       }
-      
+
       // Walk through grandchildren
       while (empty(&q) == FALSE)
       {
@@ -1225,7 +1225,7 @@ int bcbn_reduce_to_cover_relations ( int** P, int n, int** C )
           {
             visit[k] = 1;
             enqueue(&q,k);
-            
+
             // Remove non-cover relations
             if (P[i][k])
             {
@@ -1233,7 +1233,7 @@ int bcbn_reduce_to_cover_relations ( int** P, int n, int** C )
               C[i][k] = 1;
               stat = 1; // Report changes
             }
-            
+
             // Check if cyclic
             if (P[k][i]) {
               free(visit);
@@ -1274,12 +1274,12 @@ int bcbn_reduce_to_cover_relations ( int** P, int n, int** C )
  * @return likelihood
  */
 long double compute_likelihood( double eps, model* M, double* theta, data* D, int N_u, double* Prob, double** cond_err_prob ) {
-  
+
   int i,j;
   int m = M->m;
-  
+
   long double likelihood, likelihood_d;
-  
+
   //likelihood = 1;
   long double loglik = 0;
   //product over observed genotypes (i.e. data)
@@ -1311,10 +1311,10 @@ long double compute_likelihood( double eps, model* M, double* theta, data* D, in
  * @return unnormalized posterior
  */
 long double compute_unnomr_posterior( double eps, model*M, double* theta, data* D, int N_u ) {
-  
+
   int m = M->m;
   int n = M->n;
-  
+
   double* Prob = bcbn_get_double_array(m);
   double* theta_exit = bcbn_get_double_array(m);
   compute_theta_exit( theta, M, theta_exit);
@@ -1327,7 +1327,7 @@ long double compute_unnomr_posterior( double eps, model*M, double* theta, data* 
   free(Prob);
   int i;
   free_double_matrix( cond_err_prob, m );
-  
+
   double t=1;
   double alpha, beta;
   for( i=0;i<n;i++ ) {
@@ -1341,7 +1341,7 @@ long double compute_unnomr_posterior( double eps, model*M, double* theta, data* 
   double eps_pdf = gsl_ran_beta_pdf( eps, 5, 30 );
   //long double posterior;
   //posterior = lik*t*eps_pdf;
-  
+
   long double temp1 = (long double) log10(t);
   long double temp2 = (long double) log10(eps_pdf);
   long double lposterior = (lik+temp1+temp2);
@@ -1396,7 +1396,7 @@ void valid_new_cover_relation_matrix( model *M, int** V ) {
   int i,j,k,l;
   int** T = bcbn_get_int_matrix(n, n);
   int** C = bcbn_get_int_matrix(n, n);
-  
+
   for( i=0;i<n;i++ ) {
     for( k=0;k<n;k++ ) {
       C[i][k] = 0;
@@ -1405,7 +1405,7 @@ void valid_new_cover_relation_matrix( model *M, int** V ) {
   }
   int stat;
   bcbn_transitive_closure( M->P, T, n );
-  
+
   for( i=0;i<n;i++ ) {
     for( j=0;j<n;j++ ) {
       if( !T[i][j] && i!=j ) {
@@ -1430,7 +1430,7 @@ void valid_new_cover_relation_matrix( model *M, int** V ) {
           V[i][j] = 1;
         }
       }
-      
+
       for( l=0;l<n;l++ ) {
         for( k=0;k<n;k++ ) {
           T[l][k] = 0;
@@ -1456,7 +1456,7 @@ int propose_new_cover_relation( model *M, double* tp, data* D, int N_u ) {
   int valid_c = 0;
   int c = 0;
   N_all_comp = 0;
-  
+
   for( i=0;i<n;i++ ) {
     for( j=0;j<n;j++ ) {
       if( V[i][j] ) {
@@ -1561,7 +1561,7 @@ double get_tp_for_new_cover_move( model* M, data* D, int N_u ) {
   valid_new_cover_relation_matrix( M, V );
   int valid_c = 0;
   N_all_comp = 0;
-  
+
   for( i=0;i<n;i++ ) {
     for( j=0;j<n;j++ ) {
       if( V[i][j] ) {
@@ -1580,7 +1580,7 @@ double get_tp_for_new_cover_move( model* M, data* D, int N_u ) {
       }
     }
   }
-  
+
   if (valid_c) {
     //(*tp) = (double)1/valid_c;
     int new_index = bcbn_pcg_rand()%valid_c;
@@ -1611,16 +1611,16 @@ void propose_event_exchange_move( model* M, double* tp, int *ti, int *tj ) {
       h += M->P[i][j];
     }
   }
-  
+
   i = j = bcbn_pcg_rand()%n;
   while( i==j ) {
     j = bcbn_pcg_rand()%n;
   }
-  
+
   int ij,ji;
   ij = M->P[i][j];
   ji = M->P[j][i];
-  
+
   for( k=0;k<n;k++ ) {
     h_out[k] = M->P[i][k];
     h_in[k] = M->P[k][i];
@@ -1639,23 +1639,23 @@ void propose_event_exchange_move( model* M, double* tp, int *ti, int *tj ) {
   }
   M->P[i][j] = ji;
   M->P[j][i] = ij;
-  
+
   (*ti) = i;
   (*tj) = j;
-  
-  
+
+
   for( i=0;i<n;i++ ) {
     for( j=0;j<n;j++ ) {
       h -= M->P[i][j];
     }
   }
-  
+
   if ( h != 0 ) {
     // printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");
   }
-  
+
   (*tp) = 2/(double)(n*(n-1));
-  
+
 }
 
 
@@ -1673,13 +1673,13 @@ int propose_reincarnation_move( model* M, data* D, int N_u ) {
 
 void relocate_epsilon( double eps, double* epsilon_p ) {
   double alpha,beta,var,x;
-  
+
   //BetaDist(2,20) is a bit broader than (5,30) used for the prior
   (*epsilon_p) = gsl_ran_beta (bcbn_RNG, 2, 20);
 }
 
 double get_tp_epsilon_relocation( double epsilon_p ) {
-  
+
   return gsl_ran_beta_pdf( epsilon_p, 2, 20);
 }
 
@@ -1692,7 +1692,7 @@ void valid_new_transitive_closer_relation_matrix( model *M, int** V ) {
   int new_n_edges;
   int orig_n_edges = 0;
   int changes;
-  
+
   for( i=0;i<n;i++ ) {
     for( k=0;k<n;k++ ) {
       C[i][k] = 0;
@@ -1707,7 +1707,7 @@ void valid_new_transitive_closer_relation_matrix( model *M, int** V ) {
       orig_n_edges += T[l][k];
     }
   }
-  
+
   for( i=0;i<n;i++ ) {
     for( j=0;j<n;j++ ) {
       if( !T[i][j] && i!=j ) {
@@ -1718,7 +1718,7 @@ void valid_new_transitive_closer_relation_matrix( model *M, int** V ) {
           for( k=0;k<n;k++ ) {
             new_n_edges += T2[l][k];
           }
-          
+
         }
         if ((new_n_edges - orig_n_edges) == 1) {
           stat = bcbn_reduce_to_cover_relations( T2, n, C );
@@ -1767,7 +1767,7 @@ int propose_new_bcbn_transitive_closure_relation( model *M, double* tp, data* D,
   int c = 0;
   N_all_comp = 0;
   bcbn_transitive_closure( M->P, T, n );
-  
+
   for( i=0;i<n;i++ ) {
     for( j=0;j<n;j++ ) {
       if( V[i][j] ) {
@@ -1827,7 +1827,7 @@ void valid_delete_bcbn_transitive_closure_relation_matrix( model *M, int** V ) {
   int** T2 = bcbn_get_int_matrix(n, n);
   int** C = bcbn_get_int_matrix(n, n);
   int changes = 0;
-  
+
   for( i=0;i<n;i++ ) {
     for( k=0;k<n;k++ ) {
       C[i][k] = 0;
@@ -1873,7 +1873,7 @@ void valid_delete_bcbn_transitive_closure_relation_matrix( model *M, int** V ) {
 }
 
 int propose_delete_bcbn_transitive_closure_relation( model *M, double* tp, data* D, int N_u ) {
-  
+
   int n = M->n;
   int i,j,k,N_compatible,N_all_comp;
   int** V = bcbn_get_int_matrix(n, n);
@@ -1887,7 +1887,7 @@ int propose_delete_bcbn_transitive_closure_relation( model *M, double* tp, data*
   int valid_c = 0;
   int c = 0;
   N_all_comp = 0;
-  
+
   for( i=0;i<n;i++ ) {
     for( j=0;j<n;j++ ) {
       if( V[i][j] ) {
@@ -1956,7 +1956,7 @@ double get_tp_for_delete_bcbn_transitive_closure_relation_move( model* M ) {
   int valid_c = 0;
   int c = 0;
   N_all_comp = 0;
-  
+
   for( i=0;i<n;i++ ) {
     for( j=0;j<n;j++ ) {
       if( V[i][j] ) {
@@ -1978,7 +1978,7 @@ double get_tp_for_delete_bcbn_transitive_closure_relation_move( model* M ) {
   //TODO: what if N_compatible is 0 for a specific instert???
   if (valid_c) {
     tp = (double)1/valid_c;
-    
+
   }
   else {
     free_int_matrix( V, n );
@@ -2007,7 +2007,7 @@ double get_tp_for_new_bcbn_transitive_closure_relation_move( model* M ) {
   int valid_c = 0;
   int c = 0;
   N_all_comp = 0;
-  
+
   for( i=0;i<n;i++ ) {
     for( j=0;j<n;j++ ) {
       if( V[i][j] ) {
@@ -2029,7 +2029,7 @@ double get_tp_for_new_bcbn_transitive_closure_relation_move( model* M ) {
   //TODO: what if N_compatible is 0 for a specific instert???
   if (valid_c) {
     tp = (double)1/valid_c;
-    
+
   }
   else {
     free_int_matrix( V, n );
@@ -2054,14 +2054,14 @@ double get_tp_for_new_bcbn_transitive_closure_relation_move( model* M ) {
  * @param number_samples
  */
 void start_MH( double eps, model* M, double* theta, data* D, int N_u, int burn_in, int number_samples, int record_ith ) {
-  
+
   /*
    * suffixes of variables in this method
    * *_p ... proposal
    * *_o ... old value
    * *_r ... reverse
    */
-  
+
   double cm = 0.5;
   double fraction_exchange = 0.03;
   double fraction_reincarnation = 0.05;
@@ -2080,7 +2080,7 @@ void start_MH( double eps, model* M, double* theta, data* D, int N_u, int burn_i
   long double posterior_o, posterior_p;
   double msp, msp_r, tp, tp_r;
   int accepted = 0;
-  
+
   int si;
   int n_edges = 0;
   for( i=0;i<n;i++ ) {
@@ -2090,28 +2090,28 @@ void start_MH( double eps, model* M, double* theta, data* D, int N_u, int burn_i
       }
     }
   }
-  
+
   posterior_o = compute_unnomr_posterior(eps, M, theta, D, N_u );
   // printf("posterior_o %.20Lg\n", posterior_o);
-  
+
   clone_poset( M, M_p );
   M_p->J_P = bcbn_bfs_order_ideals(M_p->P, M_p->n, &(M_p->m), M_p->lin_ext);
   //parents_dt(&M);
   children_dt(M_p);
   epsilon_p = eps;
-  
+
   FILE *samplelog;
   if ( (samplelog = fopen("data/output/SYNrun10.3sample", "w")) == NULL ) {
     // exit(1);
   }
-  
+
   for( k=0;k<burn_in+number_samples;k++) {
-    
+
     ms = gsl_ran_flat (bcbn_RNG, 0, 1);
-    
+
     if( ms < cm ) {
       //relocate_whole_theta( theta, theta_p, n );
-      
+
       si = bcbn_pcg_rand()%n;;
       //si = k%n;
       relocate_theta_i( theta, theta_p, n, si );
@@ -2122,7 +2122,7 @@ void start_MH( double eps, model* M, double* theta, data* D, int N_u, int burn_i
     }
     else {
       if ( ms < cm+fraction_exchange ) {
-        
+
         int ti,tj;
         propose_event_exchange_move( M_p, &tp, &ti, &tj );
         msp = msp_r = fraction_exchange;
@@ -2197,17 +2197,17 @@ void start_MH( double eps, model* M, double* theta, data* D, int N_u, int burn_i
       //parents_dt(&M);
       children_dt(M_p);
     }
-    
+
     posterior_p = compute_unnomr_posterior(epsilon_p, M_p, theta_p, D, N_u );
     //printf("posterior_p %.20Lg\n", posterior_p);
-    
-    
+
+
     MH_ratio = posterior_p * msp_r * tp_r / (posterior_o * msp * tp );
-    
+
     alpha = MIN(1,MH_ratio);
-    
+
     u = gsl_ran_flat (bcbn_RNG, 0, 1);
-    
+
     if ( alpha > u ) {
       posterior_o = posterior_p;
       if( ms < cm ) {
@@ -2237,7 +2237,7 @@ void start_MH( double eps, model* M, double* theta, data* D, int N_u, int burn_i
         M->J_P = bcbn_bfs_order_ideals(M->P, M->n, &(M->m), M->lin_ext);
         //parents_dt(M);
         children_dt(M);
-        
+
         eps = epsilon_p;
         if ( ms < cm+fraction_exchange ) {
           // printf("successful poset event EXCHANGE move!!!! posterior %.10Lg number edges %d epsilon: %.3f\n", posterior_o, n_edges, eps);
@@ -2276,8 +2276,8 @@ void start_MH( double eps, model* M, double* theta, data* D, int N_u, int burn_i
           // printf("successful transitive closure DEATH move!!!! posterior %.10Lg number edges %d epsilon: %.3f\n", posterior_o, n_edges, eps);
         }
       }
-      
-      
+
+
       if( k>burn_in ) {
         accepted ++;
         //if ( !(accepted%record_ith) ) {
@@ -2298,13 +2298,13 @@ void start_MH( double eps, model* M, double* theta, data* D, int N_u, int burn_i
         //bcbn_transitive_closure( M->P, T, n );
         //bcbn_bcbn_write_poset(0, "data/output_tc/SYNrun1", T, n, k);
         //free_int_matrix( T, n );
-        
+
         //}
       }
     }
     else {
       memcpy( theta_p, theta, sizeof(double)*n);
-      
+
       bcbn_free_poset( M_p );
       bcbn_free_lattice_children( M_p );
       clone_poset( M, M_p );
@@ -2313,7 +2313,7 @@ void start_MH( double eps, model* M, double* theta, data* D, int N_u, int burn_i
       children_dt(M_p);
       epsilon_p = eps;
     }
-    
+
     //log samples
     if( k>burn_in && !(k%record_ith) ) {
       for (j=0; j<n; j++) {
@@ -2330,11 +2330,11 @@ void start_MH( double eps, model* M, double* theta, data* D, int N_u, int burn_i
         // printf("sample number %d: posterior %.10Lg number edges %d number order ideals %d\n", k,posterior_o, n_edges, M_p->m);
       }
     }
-    
+
   }
-  
+
   fclose(samplelog);
-  
+
   free(M_p);
   // printf("poset:\n");
   bcbn_print_int_matrix( M->P, n, n);
@@ -2354,7 +2354,7 @@ void start_MH( double eps, model* M, double* theta, data* D, int N_u, int burn_i
  * @return
  */
 long double start_Exp_theta_MH( double eps, model* M, double* theta, data* D, int N_u, int burn_in, int number_samples, int record_ith ) {
-  
+
   int i,j,k = 0;
   long double posterior_o, posterior_p, posterior_sum;
   posterior_sum = 0;
@@ -2366,11 +2366,11 @@ long double start_Exp_theta_MH( double eps, model* M, double* theta, data* D, in
   double* theta_p = bcbn_get_double_array(n);
   memcpy( theta_p, theta, sizeof(double)*n);
   long double alpha, MH_ratio;
-  
+
   posterior_o = compute_unnomr_posterior(eps, M, theta, D, N_u );
-  
+
   for( k=0;k<burn_in+number_samples;k++) {
-    
+
     si = bcbn_pcg_rand()%n;;
     //si = k%n;
     relocate_theta_i( theta, theta_p, n, si );
@@ -2380,23 +2380,23 @@ long double start_Exp_theta_MH( double eps, model* M, double* theta, data* D, in
     msp_r = 1;
     posterior_p = compute_unnomr_posterior(eps, M, theta_p, D, N_u );
     //printf("posterior_p %.20Lg\n", posterior_p);
-    
-    
+
+
     MH_ratio = posterior_p * msp_r * tp_r / (posterior_o * msp * tp );
-    
+
     alpha = MIN(1,MH_ratio);
-    
+
     u = gsl_ran_flat (bcbn_RNG, 0, 1);
-    
+
     if ( alpha > u ) {
       memcpy( theta, theta_p, sizeof(double)*n);
-      
+
       posterior_o = posterior_p;
-      
+
     }
     else {
       memcpy( theta_p, theta, sizeof(double)*n);
-      
+
     }
     if( k>burn_in ) {
       if ( !(k%record_ith) ) {
@@ -2404,7 +2404,7 @@ long double start_Exp_theta_MH( double eps, model* M, double* theta, data* D, in
         posterior_sum += posterior_o;
       }
     }
-    
+
   }
   return posterior_sum/recorded;
 }
@@ -2412,7 +2412,7 @@ long double start_Exp_theta_MH( double eps, model* M, double* theta, data* D, in
 
 
 void start_nested_MH(double eps, model* M, double* theta, data* D, int N_u, int burn_in, int number_samples, int record_ith ) {
-  
+
   double fraction_exchange = 0.03;
   double fraction_reincarnation = 0.1;
   double fraction_birth = 0.5;
@@ -2428,7 +2428,7 @@ void start_nested_MH(double eps, model* M, double* theta, data* D, int N_u, int 
   long double posterior_o, posterior_p;
   double msp, msp_r, tp, tp_r;
   int accepted = 0;
-  
+
   int si;
   int n_edges = 0;
   for( i=0;i<n;i++ ) {
@@ -2438,7 +2438,7 @@ void start_nested_MH(double eps, model* M, double* theta, data* D, int N_u, int 
       }
     }
   }
-  
+
   FILE *samplelog;
   if ( (samplelog = fopen("data/output/SYNrun1sampleNest2", "w")) == NULL ) {
     // exit(1);
@@ -2446,17 +2446,17 @@ void start_nested_MH(double eps, model* M, double* theta, data* D, int N_u, int 
   epsilon_p = eps;
   posterior_o = start_Exp_theta_MH(eps, M, theta, D, N_u, 20000, 1000, 20 );;
   // printf("posterior_o %.20Lg\n", posterior_o);
-  
+
   clone_poset( M, M_p );
   M_p->J_P = bcbn_bfs_order_ideals(M_p->P, M_p->n, &(M_p->m), M_p->lin_ext);
   //parents_dt(&M);
   children_dt(M_p);
-  
+
   for( k=0;k<burn_in+number_samples;k++) {
     ms = gsl_ran_flat (bcbn_RNG, 0, 1);
-    
+
     if ( ms < fraction_exchange ) {
-      
+
       int ti,tj;
       propose_event_exchange_move( M_p, &tp, &ti, &tj );
       msp = msp_r = fraction_exchange;
@@ -2497,7 +2497,7 @@ void start_nested_MH(double eps, model* M, double* theta, data* D, int N_u, int 
       tp = tp_r = get_tp_epsilon_relocation( epsilon_p );
       msp = msp_r = 1 - (fraction_exchange+fraction_reincarnation+fraction_birth+fraction_death);
     }
-    
+
     //just for testing perturb theta after structure move
     for ( i=0;i<3;i++ ) {
       si = bcbn_pcg_rand()%n;
@@ -2510,20 +2510,20 @@ void start_nested_MH(double eps, model* M, double* theta, data* D, int N_u, int 
     M_p->J_P = bcbn_bfs_order_ideals(M_p->P, M_p->n, &(M_p->m), M_p->lin_ext);
     //parents_dt(&M);
     children_dt(M_p);
-    
+
     posterior_p = start_Exp_theta_MH(epsilon_p, M_p, theta_p, D, N_u, 1000, 1000, 20 );
     //printf("posterior_p %.20Lg\n", posterior_p);
-    
-    
+
+
     MH_ratio = posterior_p * msp_r * tp_r / (posterior_o * msp * tp );
-    
+
     alpha = MIN(1,MH_ratio);
-    
+
     u = gsl_ran_flat (bcbn_RNG, 0, 1);
-    
+
     if ( alpha > u ) {
       posterior_o = posterior_p;
-      
+
       for( i=0;i<n;i++ ) {
         for( j=0;j<n;j++ ) {
           if( M->P[i][j] != M_p->P[i][j] ) {
@@ -2537,7 +2537,7 @@ void start_nested_MH(double eps, model* M, double* theta, data* D, int N_u, int 
       M->J_P = bcbn_bfs_order_ideals(M->P, M->n, &(M->m), M->lin_ext);
       //parents_dt(M);
       children_dt(M);
-      
+
       eps = epsilon_p;
       if ( ms < fraction_exchange ) {
         // printf("successful poset event EXCHANGE move!!!! posterior %.10Lg number edges %d\n", posterior_o, n_edges);
@@ -2553,13 +2553,13 @@ void start_nested_MH(double eps, model* M, double* theta, data* D, int N_u, int 
         n_edges--;
         // printf("successful poset DEATH move!!!! posterior %.10Lg number edges %d\n", posterior_o, n_edges);
       }
-      
-      
+
+
       if( k>burn_in ) {
         accepted ++;
         if ( !(accepted%record_ith) ) {
           // printf("sample number %d: posterior %.10Lg number edges %d\n", k,posterior_o, n_edges);
-          
+
           //printf("poset:\n");
           //bcbn_print_int_matrix( M->P, n, n);
           //bcbn_write_poset(0, "data/output/run16", M->P, n, k);
@@ -2567,12 +2567,12 @@ void start_nested_MH(double eps, model* M, double* theta, data* D, int N_u, int 
           //bcbn_transitive_closure( M->P, T, n );
           //bcbn_write_poset(0, "data/output_tc/run16", T, n, k);
           //free_int_matrix( T, n );
-          
+
         }
       }
     }
     else {
-      
+
       bcbn_free_poset( M_p );
       bcbn_free_lattice_children( M_p );
       clone_poset( M, M_p );
@@ -2580,9 +2580,9 @@ void start_nested_MH(double eps, model* M, double* theta, data* D, int N_u, int 
       //parents_dt(M_p);
       children_dt(M_p);
       epsilon_p = eps;
-      
+
     }
-    
+
     //log samples
     if( k>burn_in && !(k%record_ith) ) {
       fprintf(samplelog, "posterior %.10Lg log-posterior %.5Lg number edges %d epsilon: %.3f\n", posterior_o, log10l(posterior_o), n_edges, eps );
@@ -2597,13 +2597,13 @@ void start_nested_MH(double eps, model* M, double* theta, data* D, int N_u, int 
   // printf("poset:\n");
   bcbn_print_int_matrix( M->P, n, n);
   // printf("\n accepted: %d, ratio %f\n", accepted, (float)accepted/number_samples);
-  
+
 }
 
 void run_MH_sampler( model* M, double *theta_in, double epsilon_in, data* D, int N_u, int number_samples, int thinout,
                      double **theta_matrix_out, int ***edges_cube_out, double *epsilon_out, double *log_posterior_out ) {
-  
-  
+
+
   /*
    * suffixes of variables in this method
    * *_p ... proposal
@@ -2628,7 +2628,7 @@ void run_MH_sampler( model* M, double *theta_in, double epsilon_in, data* D, int
   long double posterior_o, posterior_p;
   double msp, msp_r, tp, tp_r;
   int accepted = 0;
-  
+
   int si;
   int n_edges = 0;
   for( i=0;i<n;i++ ) {
@@ -2639,16 +2639,16 @@ void run_MH_sampler( model* M, double *theta_in, double epsilon_in, data* D, int
     }
   }
   posterior_o = compute_unnomr_posterior(epsilon_in, M, theta_in, D, N_u );
-  
+
   clone_poset( M, M_p );
   M_p->J_P = bcbn_bfs_order_ideals(M_p->P, M_p->n, &(M_p->m), M_p->lin_ext);
   //parents_dt(&M);
   children_dt(M_p);
   epsilon_p = epsilon_in;
-  
+
   for( k=0;k<number_samples*thinout;k++) {
     ms = gsl_ran_flat (bcbn_RNG, 0, 1);
-    
+
     if( ms < cm ) {
       //relocate_whole_theta( theta, theta_p, n );
       //printf("propose relocate theta\n");
@@ -2743,30 +2743,30 @@ void run_MH_sampler( model* M, double *theta_in, double epsilon_in, data* D, int
       //parents_dt(&M);
       children_dt(M_p);
     }
-    
+
     posterior_p = compute_unnomr_posterior(epsilon_p, M_p, theta_p, D, N_u );
-    
-    
+
+
     long double tempor = (posterior_p-posterior_o);
-    
+
     long double temporr = (long double) (log10(msp_r)+log10(tp_r)-log10(msp)-log10(tp));
     long double temp_ratio = (tempor+temporr);
     //MH_ratio = posterior_p * msp_r * tp_r / (posterior_o * msp * tp );
     long double MH_ratio = (long double) pow(10,temp_ratio);
-    
+
     //MH_ratio = posterior_p * msp_r * tp_r / (posterior_o * msp * tp );
-    
+
     alpha = MIN(1,MH_ratio);
-    
+
     u = gsl_ran_flat (bcbn_RNG, 0, 1);
-    
+
     if ( alpha > u ) {
       posterior_o = posterior_p;
       if( ms < cm ) {
         memcpy( theta_in, theta_p, sizeof(double)*n);
       }
       else {
-        
+
         bcbn_free_poset( M );
         //printf("before free lattice children M\n");
         bcbn_free_lattice_children( M );
@@ -2774,14 +2774,14 @@ void run_MH_sampler( model* M, double *theta_in, double epsilon_in, data* D, int
         M->J_P = bcbn_bfs_order_ideals(M->P, M->n, &(M->m), M->lin_ext);
         //parents_dt(M);
         children_dt(M);
-        
+
         epsilon_in = epsilon_p;
       }
       accepted ++;
     }
     else {
       memcpy( theta_p, theta_in, sizeof(double)*n);
-      
+
       bcbn_free_poset( M_p );
       //printf("before free lattice children M_p\n");
       bcbn_free_lattice_children( M_p );
@@ -2791,7 +2791,7 @@ void run_MH_sampler( model* M, double *theta_in, double epsilon_in, data* D, int
       children_dt(M_p);
       epsilon_p = epsilon_in;
     }
-    
+
     //log samples
     if( !(k%thinout) ) {
       memcpy( theta_matrix_out[k/thinout], theta_in, sizeof(double)*n);
@@ -2813,7 +2813,7 @@ void run_MH_sampler( model* M, double *theta_in, double epsilon_in, data* D, int
        fprintf(samplelog, "posterior %.10Lg log-posterior %.5Lg number edges %d epsilon: %.3f accepted: %d, samplenr: %d u: %.5f ms: %.5f\n", posterior_o, log10l(posterior_o), n_edges, epsilon_in, accepted, k, u, ms );
        */
     }
-    
+
   }
   bcbn_free_poset( M_p );
   bcbn_free_lattice_children( M_p );
@@ -2838,29 +2838,29 @@ void run_MH_sampler( model* M, double *theta_in, double epsilon_in, data* D, int
 
 void sample_full_cbn(double *theta_in, int *nevents, double *epsilon_in, int * edges_in, int *number_samples, int *thinout, int *patdata,
                      int *number_cases, double *theta_out, double *epsilon_out, int* edges_out, double* log_posterior_out ) {
-  
+
   unsigned int seed = (unsigned) time(NULL);  // r, random seed
   bcbn_pcg_srand(seed);
   bcbn_RNG = gsl_rng_alloc (gsl_rng_taus);  // global variable
   gsl_rng_set(bcbn_RNG, seed);  // seed rng
-  
+
   int i,j,k,n;
   n=(*nevents);
   int n_samples = (*number_samples);
   int n_cases = (*number_cases);
-  
-  
+
+
   model M;
   M.n = n;
   M.P = bcbn_get_int_matrix(n, n);
-  
+
   for( i=0;i<n;i++){
     for( j=0;j<n;j++) {
       M.P[i][j] = edges_in[i*n+j];
     }
   }
   bcbn_precompute_binary(M.n);
-  
+
   M.lin_ext = bcbn_get_int_array(M.n);  // a linear extension of the poset
   int** pat = bcbn_get_int_matrix( n_cases,n );
   for( i=0;i<n_cases;i++) {
@@ -2868,15 +2868,15 @@ void sample_full_cbn(double *theta_in, int *nevents, double *epsilon_in, int * e
       pat[i][j] = patdata[i*n+j];
     }
   }
-  
+
   int* pat_idx = bcbn_get_int_array(n_cases);
   int N_u;
   data* D = bcbn_make_data_set(pat, n_cases, M.n, &N_u, pat_idx);
-  
+
   for (k=0; k<n_cases; k++)
     free(pat[k]);
   free(pat);
-  
+
   double ** theta_matrix_out = bcbn_get_double_matrix( n_samples ,n );
   int *** edges_cube_out = get_int_cube( n_samples, n, n );
   for( i=0;i<n_samples;i++ ) {
@@ -2886,12 +2886,12 @@ void sample_full_cbn(double *theta_in, int *nevents, double *epsilon_in, int * e
       }
     }
   }
-  
+
   M.J_P = bcbn_bfs_order_ideals(M.P, M.n, &(M.m), M.lin_ext);
   //parents_dt(&M);
   children_dt(&M);
   run_MH_sampler( &M, theta_in, (*epsilon_in), D, N_u, n_samples, (*thinout), theta_matrix_out, edges_cube_out, epsilon_out, log_posterior_out );
-  
+
   for( i=0;i<n_samples;i++) {
     for( j=0;j<n;j++ ) {
       theta_out[i*n+j] = theta_matrix_out[i][j];

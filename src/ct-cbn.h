@@ -548,7 +548,7 @@ int** read_patterns(char* filestem, int* N, int n)
   }
 
   /* Read dimensions */
-  fscanf(input, "%d %d", N, &p);
+  if(fscanf(input, "%d %d", N, &p));
   // if (verbose) printf("\nreading data from file %s :  %d samples, %d events ...\n\n", filename, *N, p-1);
   if (*N < 1)
   {
@@ -608,7 +608,7 @@ double** read_times(char* filestem, int* N, int n)
   }
 
   /* Read dimensions */
-  fscanf(input, "%d %d", N, &p);
+  if(fscanf(input, "%d %d", N, &p));
   // printf("read times: %d samples, %d events\n\n", *N, p-1);
   if (*N < 1)
   {
@@ -667,7 +667,7 @@ void read_poset(char* filestem, model* M)
 
   /* Read number of relations */
   int n;
-  fscanf(input, "%d", &n);
+  if(fscanf(input, "%d", &n));
   // if (verbose)  printf("n = %d events\n\n", n);
   if ((n < 1) || (n > 25))
   {
@@ -679,7 +679,7 @@ void read_poset(char* filestem, model* M)
   M->P = get_int_matrix(n+1, n+1);
 
   /* Read partial orderings from file */
-  fscanf(input,"%d %d", &left, &right);
+  if(fscanf(input,"%d %d", &left, &right));
   while (left != 0)
   {
     // if (verbose)  printf("%d --> %d\n", left, right);  // i.e., left < right
@@ -689,7 +689,7 @@ void read_poset(char* filestem, model* M)
       // exit(1);
     }
     M->P[left][right] = 1;
-    fscanf(input,"%d %d", &left, &right);
+    if(fscanf(input,"%d %d", &left, &right));
   }
 
   fclose(input);
@@ -716,7 +716,7 @@ void read_lambda(char* filestem, double* lambda, int n)
   double x;
   for (j=0; j<=n; j++)
   {
-    fscanf(input, "%lf", &x);
+    if(fscanf(input, "%lf", &x));
     lambda[j] = x;
   }
 

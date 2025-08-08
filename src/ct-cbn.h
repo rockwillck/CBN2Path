@@ -218,7 +218,7 @@ char* print_double_array(double* x, int n)
     {
       snprintf(buffer, sizeof(buffer), DOUBLE_FORMAT, x[j]);
       size_t new_length = strlen(result) + strlen(buffer) + 2; // +2 for space and null terminator
-      
+
       if (new_length > buffer_size) {
         buffer_size = new_length * 2; // Increase size by a factor of 2
         char* new_result = (char*)realloc(result, buffer_size);
@@ -227,7 +227,7 @@ char* print_double_array(double* x, int n)
         }
         result = new_result;
       }
-      
+
       strcat(result, buffer);
       if (j < n-1)
         strcat(result, " ");
@@ -584,6 +584,8 @@ int** read_patterns(char* filestem, int* N, int n)
     }
   }
 
+  fclose(input);
+
   return pat;
 }
 
@@ -639,6 +641,8 @@ double** read_times(char* filestem, int* N, int n)
 
     }
   }
+
+  fclose(input);
 
   return t;
 }
@@ -2666,7 +2670,7 @@ char* select_poset(int k, double eps, model* M, double* lambda, data* D, int N_u
       if (buffer == NULL) {
         return("N");
       }
-      
+
       // Format the string into the buffer
       snprintf(buffer, 512, "%d %g %g %g %s", k, eps, alpha, loglik, print_double_array(lambda, M->n+1));
       return(buffer);
@@ -3069,6 +3073,8 @@ double** read_loglik_next(char* filestem, int n)
 
     }
   }
+
+  fclose(input);
 
   return loglik_next;
 }

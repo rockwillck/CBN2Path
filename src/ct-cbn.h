@@ -774,7 +774,7 @@ void write_gps(char* filestem, double* cond_GPS, int N, int* pat_idx)
   fclose(output);
 }
 
-void write_double_array(char* filestem, char suffix[15], double* array, int n)
+void write_double_array(char* filestem, char suffix[], double* array, int n)
 {
   int i;
   char *filename = (char *) calloc(strlen(filestem) + strlen(suffix) + 1, sizeof(char));

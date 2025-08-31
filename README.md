@@ -132,7 +132,7 @@ vignette("CBN2Path")
 If you use the CBN2Path package, please cite the paper formally as
 follows:
 
-Choi-Kim W and Hosseini SR. CBN2Path: an R/Bioconductor package for the analysis of cancer progression pathways using Conjunctive Bayesian Networks [version 1; peer review: awaiting peer review]. F1000Research 2025, 14:834 (https://doi.org/10.12688/f1000research.168810.1)
+Choi-Kim W and Hosseini SR. CBN2Path: an R/Bioconductor package for the analysis of cancer progression pathways using Conjunctive Bayesian Networks. F1000Research 2025, 14:834 (https://doi.org/10.12688/f1000research.168810.1).
 
 ## References
 

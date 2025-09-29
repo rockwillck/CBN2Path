@@ -22,5 +22,5 @@ DAG<-matrix(c(2,2,4,1,3,3),3,2)
 LAMBDA<-c(1,4,3,2.5,2)
 x<-4
 PathP<-pathProbCBN(DAG, LAMBDA, x)
-EdgeProb<-edgeMarginalized(PathP,x)
+edgeMarginalized(PathP,x)
 }

@@ -20,5 +20,5 @@ pathwayFeasibility
 \examples{
 DAG<-matrix(c(4,4,4,1,2,3),3,2)
 x<-4
-PathF<-pathwayFeasibility(DAG, x)
+pathwayFeasibility(DAG, x)
 }

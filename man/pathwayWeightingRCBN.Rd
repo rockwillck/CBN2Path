@@ -24,5 +24,5 @@ x<-4
 PathP<-pathProbCBN(DAG, LAMBDA, x)
 EdgeProb<-edgeMarginalized(PathP,x)
 PEmap<-pathEdgeMapper(4)
-W2<-pathwayWeightingRCBN(EdgeProb,PEmap)
+pathwayWeightingRCBN(EdgeProb,PEmap)
 }

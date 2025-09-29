@@ -21,3 +21,5 @@ CBN2Path.BiocCheck
 src/*.o
 src/*.so
 inst/doc
+GDCdata
+MANIFEST.txt

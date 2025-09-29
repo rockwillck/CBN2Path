@@ -1,73 +1,3 @@
-##############################################################################################################
-#' combinations
-#'
-#' @param n total number of elements in the set
-#' @param r subset size
-#' @param v 1:n
-#' @param set Logical flag indicating whether duplicates should be removed from the source vector v. Defaults to TRUE.
-#' @param repeats.allowed Logical flag indicating whether the constructed vectors may include duplicated values. Defaults to FALSE.
-#'
-#' @return a matrix with (n choose r) rows and r columns
-#' @export
-#'
-#' @examples
-#' combinations(10,4)
-combinations <- function(n, r, v = 1:n, set = TRUE, repeats.allowed = FALSE) {
-    if (mode(n) != "numeric" || length(n) != 1 || n < 1 || (n %% 1) !=
-        0) {
-        stop("bad value of n")
-    }
-    if (mode(r) != "numeric" || length(r) != 1 || r < 1 || (r %% 1) !=
-        0) {
-        stop("bad value of r")
-    }
-    if (!is.atomic(v) || length(v) < n) {
-        stop("v is either non-atomic or too short")
-    }
-    if ((r > n) & repeats.allowed == FALSE) {
-        stop("r > n and repeats.allowed=FALSE")
-    }
-    if (set) {
-        v <- unique(sort(v))
-        if (length(v) < n) {
-            stop("too few different elements")
-        }
-    }
-    v0 <- vector(mode(v), 0)
-    if (repeats.allowed) {
-        sub <- function(n, r, v) {
-            if (r == 0) {
-                v0
-            } else if (r == 1) {
-                matrix(v, n, 1)
-            } else if (n == 1) {
-                matrix(v, 1, r)
-            } else {
-                rbind(cbind(v[1], Recall(n, r - 1, v)), Recall(n -
-                    1, r, v[-1]))
-            }
-        }
-    } else {
-        sub <- function(n, r, v) {
-            if (r == 0) {
-                v0
-            } else if (r == 1) {
-                matrix(v, n, 1)
-            } else if (r == n) {
-                matrix(v, 1, n)
-            } else {
-                rbind(
-                    cbind(v[1], Recall(n - 1, r - 1, v[-1])),
-                    Recall(n - 1, r, v[-1])
-                )
-            }
-        }
-    }
-    sub(n, r, v[1:n])
-}
-
-
-
 #' permutations
 #'
 #' @param n total number of elements in the set
@@ -146,13 +76,13 @@ permutations <- function(n, r, v = 1:n, set = TRUE, repeats.allowed = FALSE) {
 #' @export
 #'
 #' @examples
-#' Geno4<-generateMatrixGenotypes(4)
+#' generateMatrixGenotypes(4)
 generateMatrixGenotypes <- function(g) {
     if (g > 20) {
         stop("This would generate more than one million genotypes")
     }
     f1 <- function(n) {
-        lapply(seq.int(n), function(x) combinations(n = n, r = x))
+        lapply(seq.int(n), function(x) t(combn(n, x)))
     }
     genotNums <- f1(g)
     list.of.vectors <- function(y) {

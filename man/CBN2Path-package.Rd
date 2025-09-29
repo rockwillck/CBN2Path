@@ -5,9 +5,9 @@
 \alias{CBN2Path-package}
 \title{CBN2Path: Conjunctive Bayesian Networks}
 \description{
-A family of R functions based on the CBN family of functions created at ETH-Zurich.
+CBN2Path package provides a unifying interface to facilitate CBN-based quantification, analysis and visualization of cancer progression pathways.
 
-A family of R functions based on the CBN family of functions created at ETH-Zurich.
+CBN2Path package provides a unifying interface to facilitate CBN-based quantification, analysis and visualization of cancer progression pathways.
 }
 \seealso{
 Useful links:

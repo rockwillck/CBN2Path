@@ -18,5 +18,5 @@ base2Indexing
 \examples{
 set.seed(100)
 mat<-matrix(sample(c(0,1),16,replace=TRUE),4,4)
-Index<-base2Indexing(mat)
+base2Indexing(mat)
 }

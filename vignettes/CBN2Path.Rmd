@@ -269,10 +269,10 @@ ii) The second approach works only for mutational quartets (**n=4**) and uses th
 As examples for the first approach, let's use the `resultsC2` and `resultsH2` that we obtained in the previous section by learning respectively, ct-cbn and h-cbn models on genotypic data with **n=10** mutations. First, we need to obtain the estimated lambda parameters and the inferred DAG and then use them as the input of the **`pathProbCBN`** function as follows:
 
 ```{r,eval=FALSE}
-lambda_c <- as.numeric(resultsC2[[1]]$lambda)
-lambda_h <- as.numeric(resultsH2[[1]]$lambda)
-dag_c <- resultsC2[[1]]$poset$sets
-dag_h <- resultsH2[[1]]$poset$sets
+lambda_c <- as.numeric(resultsC2$lambda)
+lambda_h <- as.numeric(resultsH2$lambda)
+dag_c <- resultsC2$poset$sets
+dag_h <- resultsH2$poset$sets
 
 prob_c <- pathProbCBN(dag_c, lambda_c, 10)
 prob_h <- pathProbCBN(dag_h, lambda_h, 10)

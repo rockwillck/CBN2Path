@@ -15,7 +15,7 @@ toBin <- function(n, nG) {
 #' @export
 #'
 #' @examples
-#' Genotypes <- c(
+#' genotypes <- c(
 #'     "0000",
 #'     "1000",
 #'     "0100",
@@ -34,8 +34,8 @@ toBin <- function(n, nG) {
 #'     "1111"
 #' )
 #' #
-#' COLintensity <- c(0, rep(0.25, 4), rep(0.5, 6), rep(0.75, 4), 1)
-#' visualizeFitnessLandscape(COLintensity)
+#' colIntensity <- c(0, rep(0.25, 4), rep(0.5, 6), rep(0.75, 4), 1)
+#' visualizeFitnessLandscape(colIntensity)
 visualizeFitnessLandscape <- function(fitness,
                                         selectNodes = NULL,
                                         nGenes = 4,
@@ -45,11 +45,11 @@ visualizeFitnessLandscape <- function(fitness,
     toBin(x, nGenes)
   })
   
-  count_ones <- function(s) {
+  countOnes <- function(s) {
     sum(unlist(gregexpr("1", s)) > 0)
   }
   getColumn <- function(num) {
-    rev(allStrings[sapply(allStrings, count_ones) == num])
+    rev(allStrings[sapply(allStrings, countOnes) == num])
   }
   columns <- lapply(0:nGenes, getColumn)
   
@@ -70,25 +70,25 @@ visualizeFitnessLandscape <- function(fitness,
   nodes <- unlist(columns)
   
   # Create data frame for nodes and positions
-  layout_df <- data.frame(name = nodes, stringsAsFactors = FALSE)
+  layoutDf <- data.frame(name = nodes, stringsAsFactors = FALSE)
   
   # Assign x/y layout
-  col_start <- 1
-  x_vals <- numeric(length(nodes))
-  y_vals <- numeric(length(nodes))
+  colStart <- 1
+  xVals <- numeric(length(nodes))
+  yVals <- numeric(length(nodes))
   
-  for (column_nodes in columns) {
-    column_height <- length(column_nodes)
+  for (columnNodes in columns) {
+    columnHeight <- length(columnNodes)
     
-    ys <- seq((column_height - 1) / 2, -(column_height - 1) / 2)
+    ys <- seq((columnHeight - 1) / 2, -(columnHeight - 1) / 2)
     
-    for (j in seq_along(column_nodes)) {
-      idx <- which(layout_df$name == column_nodes[j])
-      x_vals[idx] <- col_start
-      y_vals[idx] <- ys[j]
+    for (j in seq_along(columnNodes)) {
+      idx <- which(layoutDf$name == columnNodes[j])
+      xVals[idx] <- colStart
+      yVals[idx] <- ys[j]
     }
     
-    col_start <- col_start + 1
+    colStart <- colStart + 1
   }
   
   getFitness <- function(name) {
@@ -101,24 +101,24 @@ visualizeFitnessLandscape <- function(fitness,
     }
   }
   
-  layout_df$x <- x_vals
-  layout_df$y <- y_vals
-  layout_df$fitness <- unlist(lapply(layout_df$name, getFitness))
+  layoutDf$x <- xVals
+  layoutDf$y <- yVals
+  layoutDf$fitness <- unlist(lapply(layoutDf$name, getFitness))
   
   # Convert edge list to data frame
-  edge_df <- do.call(rbind, edges)
-  colnames(edge_df) <- c("from", "to")
-  edge_df <- as.data.frame(edge_df, stringsAsFactors = FALSE)
+  edgeDf <- do.call(rbind, edges)
+  colnames(edgeDf) <- c("from", "to")
+  edgeDf <- as.data.frame(edgeDf, stringsAsFactors = FALSE)
   
   # Create tidygraph object
-  g_tbl <- tbl_graph(
-    nodes = layout_df,
-    edges = edge_df,
+  gTbl <- tbl_graph(
+    nodes = layoutDf,
+    edges = edgeDf,
     directed = FALSE
   )
   
   # Plot with ggraph
-  ggraph(g_tbl,
+  ggraph(gTbl,
          layout = "manual",
          x = x,
          y = y
@@ -167,12 +167,12 @@ visualizeCBNModel <- function(poset, nodeColor = "darkgreen") {
     edges <- as.data.frame(poset)
     colnames(edges) <- c("from", "to")
     
-    g_tbl <- tbl_graph(
+    gTbl <- tbl_graph(
       nodes = nodes,
       edges = edges,
       directed = TRUE
     )
-    ggraph(g_tbl) +
+    ggraph(gTbl) +
       geom_edge_link(
         colour = "black",
         arrow = arrow(length = unit(16, "pt")),
@@ -192,24 +192,24 @@ visualizeCBNModel <- function(poset, nodeColor = "darkgreen") {
   }
 }
 
-inverse_factorial <- function(n) {
+inverseFactorial <- function(n) {
   if (n < 1) {
     return(NA)
   }
   
-  log_n <- log(n)
-  log_fact <- 0
+  logN <- log(n)
+  logFact <- 0
   k <- 1
   
-  while (log_fact <= log_n) {
+  while (logFact <= logN) {
     k <- k + 1
-    log_fact <- log_fact + log(k)
+    logFact <- logFact + log(k)
   }
   
   return(k - 1)
 }
 
-generate_gg_text <- function(text, bg, color = "black") {
+generateGgText <- function(text, bg, color = "black") {
   data.frame(label = text, x = 0, y = 0) %>%
     ggplot(aes(x, y, label = label)) +
     geom_text(parse = TRUE, family = "serif", color = color) +
@@ -217,8 +217,8 @@ generate_gg_text <- function(text, bg, color = "black") {
     theme(panel.background = element_rect(fill = bg))
 }
 
-generate_geom_node_point <- function(gra, fill, color, name, arrowColor = "black") {
-  node_names <- gra %>%
+generateGeomNodePoint <- function(gra, fill, color, name, arrowColor = "black") {
+  nodeNames <- gra %>%
     activate(nodes) %>%
     pull(name)
   if (length(fill) > 1) {
@@ -226,10 +226,10 @@ generate_geom_node_point <- function(gra, fill, color, name, arrowColor = "black
     strokes <- c(NA, rep(0.3, length(fill)), NA)
     fill <- c(NA, fill, NA)
   } else {
-    strokes <- c(NA, rep(0.3, length(node_names) - 2), NA)
-    fill <- c(NA, rep(fill, length(node_names) - 2), NA)
+    strokes <- c(NA, rep(0.3, length(nodeNames) - 2), NA)
+    fill <- c(NA, rep(fill, length(nodeNames) - 2), NA)
   }
-  variable_cap_size(gra, rep(4, length(node_names)), arrowColor) +
+  variableCapSize(gra, rep(4, length(nodeNames)), arrowColor) +
     geom_node_point(
       fill = fill,
       shape = 21,
@@ -239,44 +239,44 @@ generate_geom_node_point <- function(gra, fill, color, name, arrowColor = "black
     geom_node_text(aes(label = name), color = color, size = 3)
 }
 
-generate_geom_node_text <- function(gra, color, name, arrowColor) {
-  node_names <- gra %>%
+generateGeomNodeText <- function(gra, color, name, arrowColor) {
+  nodeNames <- gra %>%
     activate(nodes) %>%
     pull(name)
   if (length(color) > 1) {
     color <- c(NA, color, NA)
   }
-  variable_cap_size(gra, rep(max(nchar(node_names)) * 3, length(node_names)), arrowColor) +
+  variableCapSize(gra, rep(max(nchar(nodeNames)) * 3, length(nodeNames)), arrowColor) +
     geom_node_text(aes(label = name), color = color, size = 3)
 }
 
-variable_cap_size <- function(g_tbl, node_sizes, arrowColor) {
-  g_tbl <- g_tbl %>%
+variableCapSize <- function(gTbl, nodeSizes, arrowColor) {
+  gTbl <- gTbl %>%
     activate(edges) %>%
-    mutate(cap_size = 1:gsize(g_tbl))
+    mutate(cap_size = 1:gsize(gTbl))
   
-  graph <- ggraph(g_tbl,
+  graph <- ggraph(gTbl,
                   layout = "manual",
                   x = x,
                   y = y
   ) + theme_void()
   
-  for (i in 2:(gsize(g_tbl) - 1)) {
-    filter_expr <- call2("==", sym("cap_size"), i)
+  for (i in 2:(gsize(gTbl) - 1)) {
+    filterExpr <- call2("==", sym("cap_size"), i)
     
     graph <- graph + geom_edge_link(
-      aes(filter = !!filter_expr),
+      aes(filter = !!filterExpr),
       colour = arrowColor,
       arrow = arrow(length = unit(5, "pt")),
-      end_cap = circle(node_sizes[[i + 1]] + 5, "pt"),
-      start_cap = circle(node_sizes[[i]] + 5, "pt")
+      end_cap = circle(nodeSizes[[i + 1]] + 5, "pt"),
+      start_cap = circle(nodeSizes[[i]] + 5, "pt")
     )
   }
   
   graph
 }
 
-pt_to_mm <- function(pts) {
+ptToMm <- function(pts) {
   pts / 2.83465
 }
 
@@ -300,7 +300,7 @@ pt_to_mm <- function(pts) {
 #' visualizeProbabilities(mat, columnTitles = TRUE)
 visualizeProbabilities <- function(probabilities,
                                     outputFile = NULL,
-                                    geneNames = as.character(1:inverse_factorial(length(probabilities))),
+                                    geneNames = as.character(1:inverseFactorial(length(probabilities))),
                                     geneColors = rainbow(length(geneNames), v = 0.5),
                                     columnTitles = TRUE) {
   numCol <- 1
@@ -310,13 +310,13 @@ visualizeProbabilities <- function(probabilities,
     numCol <- ncol(probabilities)
   }
   
-  pathway_length <- inverse_factorial(nrow(probabilities))
+  pathwayLength <- inverseFactorial(nrow(probabilities))
   
-  if (factorial(pathway_length) != nrow(probabilities)) {
+  if (factorial(pathwayLength) != nrow(probabilities)) {
     stop("Length of probabilities is not a factorial.")
   }
   
-  perms <- permutations(pathway_length, pathway_length)
+  perms <- permutations(pathwayLength, pathwayLength)
   labels <- sprintf("Pi[%d]", 1:length(probabilities))
   if (numCol == 1) {
     perms <- perms[order(probabilities, decreasing = TRUE), ]
@@ -324,24 +324,24 @@ visualizeProbabilities <- function(probabilities,
     probabilities <- matrix(sort(probabilities, decreasing = TRUE), ncol = 1)
   }
   
-  generate_row <- function(row, padding = FALSE) {
+  generateRow <- function(row, padding = FALSE) {
     row <- unlist(lapply(row, function(x) {
       geneNames[[x]]
     }))
-    width_middle <- length(row)
+    widthMiddle <- length(row)
     if (padding) {
       row <- c(" ", row, " ")
-      x_coord <- c(0, 15)
+      xCoord <- c(0, 15)
       for (i in 1:(length(row) - 3)) {
-        current_x <- x_coord[[i + 1]]
+        currentX <- xCoord[[i + 1]]
         diff <- max(nchar(row)) * 3 + 10 + 20
-        x_coord <- c(x_coord, current_x + diff)
+        xCoord <- c(xCoord, currentX + diff)
       }
-      x_coord <- c(x_coord, x_coord[[length(row) - 1]] + 15)
-      width_middle <- x_coord[[length(x_coord) - 1]]
+      xCoord <- c(xCoord, xCoord[[length(row) - 1]] + 15)
+      widthMiddle <- xCoord[[length(xCoord) - 1]]
       nodes <- data.frame(
         name = row,
-        x = x_coord,
+        x = xCoord,
         y = rep(0, length(row))
       )
     } else {
@@ -357,61 +357,61 @@ visualizeProbabilities <- function(probabilities,
       nodes = nodes,
       edges = edges,
       directed = TRUE
-    ), width_middle)
+    ), widthMiddle)
   }
   
-  elements <- vector("list", (factorial(pathway_length) + 1) * (2 + numCol))
+  elements <- vector("list", (factorial(pathwayLength) + 1) * (2 + numCol))
   
   if (columnTitles) {
-    elements[[1]] <- generate_gg_text("pi", "lightgray")
+    elements[[1]] <- generateGgText("pi", "lightgray")
     for (i in 1:numCol) {
-      elements[[2 + i]] <- generate_gg_text("P(pi)", "lightgray")
+      elements[[2 + i]] <- generateGgText("P(pi)", "lightgray")
     }
-    elements[[2]] <- generate_gg_text("Pathways", "lightgray")
+    elements[[2]] <- generateGgText("Pathways", "lightgray")
   }
   
-  for (i in 1:factorial(pathway_length)) {
+  for (i in 1:factorial(pathwayLength)) {
     if (i %% 2 == 0) {
-      bg_col <- "floralwhite"
+      bgCol <- "floralwhite"
     } else {
-      bg_col <- "white"
+      bgCol <- "white"
     }
     
     textColor <- "black"
     if (probabilities[[i]] == 0 & numCol == 1) {
       textColor <- "lightgray"
     }
-    elements[[(i) * (2 + numCol) + 1]] <- generate_gg_text(labels[[i]], bg_col, textColor)
+    elements[[(i) * (2 + numCol) + 1]] <- generateGgText(labels[[i]], bgCol, textColor)
     
-    gen_row <- generate_row(perms[i, ], TRUE)
-    gra <- gen_row[[1]]
-    width_middle <- gen_row[[2]]
+    genRow <- generateRow(perms[i, ], TRUE)
+    gra <- genRow[[1]]
+    widthMiddle <- genRow[[2]]
     
     if (all(unlist(lapply(as.list(geneNames), function(x) {
       nchar(x) == 1
     })))) {
       if (numCol == 1 & probabilities[[i]] == 0) {
-        gra <- generate_geom_node_point(gra, "white", "black", name, textColor)
+        gra <- generateGeomNodePoint(gra, "white", "black", name, textColor)
       } else {
-        gra <- generate_geom_node_point(gra, unlist(lapply(perms[i, ], function(x) {
+        gra <- generateGeomNodePoint(gra, unlist(lapply(perms[i, ], function(x) {
           geneColors[[x]]
         })), "white", name, textColor)
       }
     } else {
       if (probabilities[[i]] == 0) {
-        gra <- generate_geom_node_text(gra, "gray", name, textColor)
+        gra <- generateGeomNodeText(gra, "gray", name, textColor)
       } else {
-        gra <- generate_geom_node_text(gra, unlist(lapply(perms[i, ], function(x) {
+        gra <- generateGeomNodeText(gra, unlist(lapply(perms[i, ], function(x) {
           geneColors[[x]]
         })), name, textColor)
       }
     }
     
     elements[[(i) * (2 + numCol) + 2]] <- gra +
-      theme(panel.background = element_rect(fill = bg_col))
+      theme(panel.background = element_rect(fill = bgCol))
     
     for (colI in 1:numCol) {
-      elements[[(i) * (2 + numCol) + 2 + colI]] <- generate_gg_text(sprintf("%.2f", probabilities[i, colI]), bg_col, textColor)
+      elements[[(i) * (2 + numCol) + 2 + colI]] <- generateGgText(sprintf("%.2f", probabilities[i, colI]), bgCol, textColor)
     }
   }
   
@@ -421,7 +421,7 @@ visualizeProbabilities <- function(probabilities,
   
   out <- wrap_plots(elements,
                     ncol = 2 + numCol,
-                    widths = c(24, width_middle * 2, rep(32, numCol))
+                    widths = c(24, widthMiddle * 2, rep(32, numCol))
   )
   
   if (is.null(outputFile)) {
@@ -430,7 +430,7 @@ visualizeProbabilities <- function(probabilities,
     ggsave(
       outputFile,
       out,
-      width = pt_to_mm(24 + width_middle * 2 + 32 * numCol),
+      width = ptToMm(24 + widthMiddle * 2 + 32 * numCol),
       height = 2 * length(perms),
       limitsize = FALSE,
       units = "mm"

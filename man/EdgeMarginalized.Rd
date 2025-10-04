@@ -4,10 +4,10 @@
 \alias{edgeMarginalized}
 \title{edgeMarginalized}
 \usage{
-edgeMarginalized(PathProb, x)
+edgeMarginalized(pathProb, x)
 }
 \arguments{
-\item{PathProb}{The pathway probabilities returned in the step 3 of the R-CBN algorithm}
+\item{pathProb}{The pathway probabilities returned in the step 3 of the R-CBN algorithm}
 
 \item{x}{The number of mutations to consider}
 }
@@ -18,9 +18,9 @@ returns the marginal probability of all the potential edges
 edgeMarginalized
 }
 \examples{
-DAG<-matrix(c(2,2,4,1,3,3),3,2)
-LAMBDA<-c(1,4,3,2.5,2)
-x<-4
-PathP<-pathProbCBN(DAG, LAMBDA, x)
-edgeMarginalized(PathP,x)
+dag <- matrix(c(2, 2, 4, 1, 3, 3), 3, 2)
+lambda <- c(1, 4, 3, 2.5, 2)
+x <- 4
+pathP <- pathProbCBN(dag, lambda, x)
+edgeMarginalized(pathP, x)
 }

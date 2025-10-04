@@ -5,7 +5,7 @@
 \title{Generate TCGA Genotype Matrix}
 \usage{
 generateTCGAMatrix(
-  rawData = getRawTCGAData("TCGA-BLCA"),
+  rawData = suppressMessages(getRawTCGAData("TCGA-BLCA")),
   genes = c("TP53", "ARID1A", "KDM6A", "PIK3CA", "RB1", "EP300", "FGFR3", "CREBBP",
     "STAG2", "ATM")
 )

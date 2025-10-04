@@ -4,10 +4,10 @@
 \alias{pathProbSSWM}
 \title{pathProbSSWM}
 \usage{
-pathProbSSWM(FITNESS, x)
+pathProbSSWM(fitness, x)
 }
 \arguments{
-\item{FITNESS}{A vector of length 2^x, each element of which representing the fitness assigned to one of the 2^x genotypes.}
+\item{fitness}{A vector of length 2^x, each element of which representing the fitness assigned to one of the 2^x genotypes.}
 
 \item{x}{The number of mutations considered.}
 }
@@ -18,7 +18,7 @@ vector of probabilities assigned to all potential pathways of length x
 pathProbSSWM
 }
 \examples{
-F<-c(0,0.1,0.2,0.1,0.2,0.4,0.3,0.2,0.2,0.1,0,0.6,0.4,0.3,0.2,1)
-x<-4
-PathP<-pathProbSSWM(F,x)
+f <- c(0, 0.1, 0.2, 0.1, 0.2, 0.4, 0.3, 0.2, 0.2, 0.1, 0, 0.6, 0.4, 0.3, 0.2, 1)
+x <- 4
+pathP <- pathProbSSWM(f, x)
 }

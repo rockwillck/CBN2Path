@@ -3,24 +3,24 @@
 #' @param datasetObj `Spock` object with poset and pattern/lambda data.
 #' @param anneal If `TRUE`, performes a simulated annealing run starting from the poset
 #' @param temp Temperature of simulated annealing.
-#' @param annealing_steps Number of simulated annealing steps.
+#' @param annealingSteps Number of simulated annealing steps.
 #' @param epsilon Value of eps for CT-CBN model selection. Requires both pattern and lambda data in input `Spock`.
 #'
 #' @return A list of output data.
 #' @export
 #'
 #' @examples
-#' example_path <- getExamples()[1]
+#' examplePath <- getExamples()[1]
 #' bc <- Spock$new(
-#'     poset = readPoset(example_path)$sets,
-#'     numMutations = readPoset(example_path)$mutations,
-#'     genotypeMatrix = readPattern(example_path)
+#'     poset = readPoset(examplePath)$sets,
+#'     numMutations = readPoset(examplePath)$mutations,
+#'     genotypeMatrix = readPattern(examplePath)
 #' )
 #' hcbnSingle(bc)
 hcbnSingle <- function(datasetObj,
                         anneal = FALSE,
                         temp = 0,
-                        annealing_steps = 0,
+                        annealingSteps = 0,
                         epsilon = 2) {
     if ((epsilon > 0 && epsilon != 2) && is.null(datasetObj$lambda)) {
         stop("Spock object should have lambda list if non-zero epsilon provided.")
@@ -40,14 +40,14 @@ hcbnSingle <- function(datasetObj,
             thirdPath,
             as.integer(anneal),
             as.double(temp),
-            as.integer(annealing_steps),
+            as.integer(annealingSteps),
             as.double(epsilon)
         )
 
         splitted <- unlist(strsplit(outputStem, "/"))
 
         outDir <- paste(splitted[1:(length(splitted) - 1)], collapse = "/")
-        outFiles <- (filter_strings_by_start(list.files(outDir), splitted[[length(splitted)]]))
+        outFiles <- (filterStringsByStart(list.files(outDir), splitted[[length(splitted)]]))
 
         outputList <- list()
         for (f in outFiles) {
@@ -82,6 +82,10 @@ hcbnSingle <- function(datasetObj,
         # suppressWarnings(file.remove(paste(secondPath, "pat", sep = ".")))
     }
 
+    if (length(outputs) == 1) {
+      return(outputs[[1]])
+    }
+
     return(outputs)
 }
 
@@ -90,44 +94,50 @@ hcbnSingle <- function(datasetObj,
 #' @param datasets Vector of `Spock` objects with poset and pattern/lambda data or a `Spock` object (alias of hcbnSingle).
 #' @param anneal If `TRUE`, performes a simulated annealing run starting from the poset
 #' @param temp Temperature of simulated annealing.
-#' @param annealing_steps Number of simulated annealing steps.
+#' @param annealingSteps Number of simulated annealing steps.
 #' @param epsilon Value of eps for CT-CBN model selection. Requires both pattern and lambda data in input `Spock`.
-#' @param n_cores Maximum number of threads to use to parallelize.
+#' @param nCores Maximum number of threads to use to parallelize.
 #'
 #' @return A matrix of results.
 #' @export
 #'
 #' @examples
-#' example_path <- getExamples()[1]
+#' examplePath <- getExamples()[1]
 #' bc <- Spock$new(
-#'     poset = readPoset(example_path)$sets,
-#'     numMutations = readPoset(example_path)$mutations,
-#'     genotypeMatrix = readPattern(example_path)
+#'     poset = readPoset(examplePath)$sets,
+#'     numMutations = readPoset(examplePath)$mutations,
+#'     genotypeMatrix = readPattern(examplePath)
 #' )
 #' hcbn(bc)
 #' hcbn(c(bc, bc, bc))
 hcbn <- function(datasets,
                  anneal = FALSE,
                  temp = 0,
-                 annealing_steps = 0,
+                 annealingSteps = 0,
                  epsilon = 2,
-                 n_cores = 1) {
-    if (length(datasets) < n_cores) {
-        message(paste("Number of datasets was less than number of cores. Using number of datasets (", length(datasets), ") as thread count.", sep = ""))
+                 nCores = 1) {
+
+    if (inherits(datasets, "Spock") && length(datasets$poset) == 1) {
+      return(hcbnSingle(datasets, anneal, temp, annealingSteps, epsilon))
+    } else if (inherits(datasets, "Spock")) {
+      datasets = sapply(datasets$poset, \(poset) Spock$new(
+        poset = poset,
+        numMutations = datasets$numMutations,
+        genotypeMatrix = datasets$genotypeMatrix
+      ))
     }
-    registerDoMC(cores = min(length(datasets), n_cores))
-    if (inherits(datasets, "Spock")) {
-        return(hcbnSingle(datasets, anneal, temp, annealing_steps, epsilon))
-    }
-    output_stems <- replicate(length(datasets), tempfile("output"))
+
+  if (length(datasets) < nCores) {
+    message(paste("Number of datasets was less than number of cores. Using number of datasets (", length(datasets), ") as thread count.", sep = ""))
+  }
+
+    outputStems <- replicate(length(datasets), tempfile("output"))
     rowLength <- -1
     done <- 0
     outMatrixBuf <- vector("list", length(datasets))
-    dataI <- 1
-    rets <- foreach(dataI = 1:length(datasets)) %dopar% {
-        out <- hcbnSingle(datasets[[dataI]], anneal, temp, annealing_steps, epsilon)
-        list(i = dataI, row = out)
-    }
+
+    p <- MulticoreParam(workers = min(length(datasets), nCores))
+    rets <- bplapply(datasets, \(x) hcbnSingle(x, anneal, temp, annealingSteps, epsilon), BPOPTIONS = bpoptions(progressbar = TRUE), BPPARAM = p)
 
     return(rets)
 }

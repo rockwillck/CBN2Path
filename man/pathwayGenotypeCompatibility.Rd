@@ -4,12 +4,12 @@
 \alias{pathwayGenotypeCompatibility}
 \title{pathwayGenotypeCompatibility}
 \usage{
-pathwayGenotypeCompatibility(Pathway, Genotype)
+pathwayGenotypeCompatibility(pathway, genotype)
 }
 \arguments{
-\item{Pathway}{a vector representing the given pathway.}
+\item{pathway}{a vector representing the given pathway.}
 
-\item{Genotype}{a binary vector representing the given genotype.}
+\item{genotype}{a binary vector representing the given genotype.}
 }
 \value{
 returns 1 (if the given genotype is compatible with the given pathway), and 0 otherwise
@@ -18,9 +18,9 @@ returns 1 (if the given genotype is compatible with the given pathway), and 0 ot
 pathwayGenotypeCompatibility
 }
 \examples{
-Geno1<-c(1,0,1,0)
-Geno2<-c(1,1,0,0)
-Path<-c(1,2,3,4)
-pathwayGenotypeCompatibility(Path,Geno1)
-pathwayGenotypeCompatibility(Path,Geno2)
+geno1 <- c(1, 0, 1, 0)
+geno2 <- c(1, 1, 0, 0)
+path <- c(1, 2, 3, 4)
+pathwayGenotypeCompatibility(path, geno1)
+pathwayGenotypeCompatibility(path, geno2)
 }

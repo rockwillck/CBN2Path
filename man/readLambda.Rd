@@ -4,10 +4,10 @@
 \alias{readLambda}
 \title{Read a .lambda file}
 \usage{
-readLambda(filestem)
+readLambda(fileStem)
 }
 \arguments{
-\item{filestem}{The filename of the .lambda file without the .lambda suffix.}
+\item{fileStem}{The filename of the .lambda file without the .lambda suffix.}
 }
 \value{
 A matrix.

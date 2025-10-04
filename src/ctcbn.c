@@ -87,7 +87,7 @@ SEXP ctcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP mb, SEXP bs, SEXP rs, SEXP sr, SE
   int BM = INTEGER(mb)[0]; // bootstrap mode
   int c = 0;
   char* output;
-  
+
   // // no epsilon provided from R
   if (eps > 1.0) {
     e_flag = 0;
@@ -139,7 +139,7 @@ SEXP ctcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP mb, SEXP bs, SEXP rs, SEXP sr, SE
 
   model M;
   read_poset(filestem1, &M);
-  
+
   // precompute binary expansions
   precompute_binary(M.n+1);
 
@@ -157,7 +157,7 @@ SEXP ctcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP mb, SEXP bs, SEXP rs, SEXP sr, SE
     for (k = 0; k < N; k++)
       free(pat[k]);
     free(pat);
-  
+
     if (eps >= 0.0) // fixed epsilon
     {
       int b;
@@ -165,8 +165,8 @@ SEXP ctcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP mb, SEXP bs, SEXP rs, SEXP sr, SE
 
       // single run:
       output = select_poset(0, eps, &M, lambda, D, N_u, R, mode, 1);
-      if (e_flag)
-        write_poset(0, ofilestem, M.P, M.n, -1);
+      // if (e_flag)
+      write_poset(0, ofilestem, M.P, M.n, -1);
       write_lambda(ofilestem, lambda, M.n);
 
       // bootstrap runs:
@@ -190,8 +190,8 @@ SEXP ctcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP mb, SEXP bs, SEXP rs, SEXP sr, SE
         transitive_closure(M.P, T, M.n + 1);
         int_matrix_sum(bootstrap_count, T, bootstrap_count, M.n + 1);
 
-        if (e_flag)
-          write_poset(0, ofilestem, M.P, M.n, b);
+        // if (e_flag)
+        write_poset(0, ofilestem, M.P, M.n, b);
       }
 
       // if ((B > 0) && (BM == 0))
@@ -258,8 +258,8 @@ SEXP ctcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP mb, SEXP bs, SEXP rs, SEXP sr, SE
 
   free(lambda);
 
-  
-  
+
+
   return char_to_sexp(output);
 }
 
@@ -273,7 +273,7 @@ SEXP hcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP fs3, SEXP s, SEXP temp, SEXP n, SE
   char *filestem2 = strdup(filestem2Raw);
   const char *filestem3Raw = CHAR(STRING_ELT(fs3, 0));
   char *filestem3 = strdup(filestem3Raw);
-  
+
   // defaults:
   double eps = REAL(repsilon)[0];  // e
   int R = 1;  // # of EM runs
@@ -301,7 +301,7 @@ SEXP hcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP fs3, SEXP s, SEXP temp, SEXP n, SE
   double epsilon = 0.0;
   int c = 0;
   char* rOutput;
-  
+
   // // no epsilon provided from R
   if (eps > 1.0) {
     e_flag = 0;
@@ -309,31 +309,31 @@ SEXP hcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP fs3, SEXP s, SEXP temp, SEXP n, SE
   } else {
     e_flag = 1;
   }
-  
+
   int n_temp = INTEGER(n)[0];
   if (n_temp > 0) {
     n_flag = 1;
     N_iter = n_temp;
   }
-  
+
   pcg_srand(seed);
   RNG = gsl_rng_alloc(gsl_rng_taus);  // global variable
   gsl_rng_set(RNG, seed);  // seed rng
-  
+
   int i, k;
-  
+
   model M;
   read_poset(filestem1, &M);
-  
+
   // precompute binary expansions
   precompute_binary(M.n+1);
-  
+
   M.lin_ext = get_int_array(M.n);  // a linear extension of the poset
   double* lambda = get_double_array(M.n+1);  // Exp rates
   lambda[0] = S;
-  
+
   double total_loglik = 0.0;
-  
+
   {
 
     if (N_draw == 0)  // learn model
@@ -394,7 +394,7 @@ SEXP hcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP fs3, SEXP s, SEXP temp, SEXP n, SE
 
           epsilon = 0.00001;
           total_loglik = EM_EM(&M, D, N_u, lambda, &epsilon);
-          
+
           char* buffer = (char*)malloc(512);
           if (buffer == NULL) {
             rOutput = "N";
@@ -447,6 +447,6 @@ SEXP hcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP fs3, SEXP s, SEXP temp, SEXP n, SE
     }
   }
   free(lambda);
-  
+
   return char_to_sexp(rOutput);
 }

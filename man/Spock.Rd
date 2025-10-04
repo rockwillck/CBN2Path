@@ -13,11 +13,11 @@ A data class containing poset and pattern/lambda matrices.
 Use the read_ methods to feed data from files.
 }
 \examples{
-example_path <- getExamples()[1]
+examplePath <- getExamples()[1]
 bc <- Spock$new(
-    poset = readPoset(example_path)$sets,
-    numMutations = readPoset(example_path)$mutations,
-    genotypeMatrix = readPattern(example_path)
+    poset = readPoset(examplePath)$sets,
+    numMutations = readPoset(examplePath)$mutations,
+    genotypeMatrix = readPattern(examplePath)
 )
 }
 \section{Public fields}{
@@ -42,6 +42,7 @@ bc <- Spock$new(
 \item \href{#method-Spock-getSecond}{\code{Spock$getSecond()}}
 \item \href{#method-Spock-getPattern}{\code{Spock$getPattern()}}
 \item \href{#method-Spock-getLambda}{\code{Spock$getLambda()}}
+\item \href{#method-Spock-show}{\code{Spock$show()}}
 \item \href{#method-Spock-clone}{\code{Spock$clone()}}
 }
 }
@@ -148,6 +149,26 @@ Write lambda data to a tempfile.
 
 \subsection{Returns}{
 File path to tempfile.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Spock-show"></a>}}
+\if{latex}{\out{\hypertarget{method-Spock-show}{}}}
+\subsection{Method \code{show()}}{
+Print summary information to console.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Spock$show(verbose = FALSE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{verbose}}{Method prints contents as well as dimensions to console if \code{TRUE}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Nothing.
 }
 }
 \if{html}{\out{<hr>}}

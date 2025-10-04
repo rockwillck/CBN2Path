@@ -5,32 +5,32 @@
 \title{B-CBN}
 \usage{
 bcbn(
-  data = default_data(),
-  n_samples = 25000,
+  data = defaultData(),
+  nSamples = 25000,
   theta = 0,
   epsilon = 0.05,
-  n_chains = 4,
+  nChains = 4,
   thin = 10,
-  Max_L = 1000,
-  n_cores = 1
+  maxL = 1000,
+  nCores = 1
 )
 }
 \arguments{
 \item{data}{Generated data}
 
-\item{n_samples}{Number of samples <def: 25000>}
+\item{nSamples}{Number of samples <def: 25000>}
 
 \item{theta}{Theta <def: 0>}
 
 \item{epsilon}{Epsilon <def: 0.05>}
 
-\item{n_chains}{N-Chains <def: 4>}
+\item{nChains}{N-Chains <def: 4>}
 
 \item{thin}{Thin <def: 10>}
 
-\item{Max_L}{The maximum number of iteration <def: 1000>}
+\item{maxL}{The maximum number of iteration <def: 1000>}
 
-\item{n_cores}{Number of parallelized cores <def: 1>}
+\item{nCores}{Number of parallelized cores <def: 1>}
 }
 \value{
 A matrix

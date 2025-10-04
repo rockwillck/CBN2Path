@@ -16,5 +16,5 @@ Pathway to edge compatibility matrix, each element of which indicates whether a 
 pathEdgeMapper
 }
 \examples{
-PEmap<-pathEdgeMapper(4)
+peMap <- pathEdgeMapper(4)
 }

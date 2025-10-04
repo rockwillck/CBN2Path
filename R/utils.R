@@ -1,6 +1,6 @@
 #' Read a .pat file
 #'
-#' @param filestem The filename of the .pat file without the .pat suffix.
+#' @param fileStem The filename of the .pat file without the .pat suffix.
 #'
 #' @return A matrix.
 #' @export
@@ -8,30 +8,30 @@
 #' @examples
 #' bcPath <- getExamples()[1]
 #' readPattern(bcPath)
-readPattern <- function(filestem) {
-    lines <- readLines(paste(suppressWarnings(normalizePath(filestem)),
+readPattern <- function(fileStem) {
+    lines <- readLines(paste(suppressWarnings(normalizePath(fileStem)),
         ".pat",
         sep = ""
     ))
 
     # Parse dimensions from the first line
     dimensions <- as.numeric(strsplit(lines[1], "\\s+")[[1]][2:3])
-    num_rows <- dimensions[1]
-    num_cols <- dimensions[2]
+    numRows <- dimensions[1]
+    numCols <- dimensions[2]
 
     # Read matrix data from subsequent lines
-    matrix_data <- sapply(lines[2:length(lines)], function(line) {
+    matrixData <- sapply(lines[2:length(lines)], function(line) {
         as.numeric(strsplit(line, "\\s+")[[1]])
     })
 
     # Convert matrix data into a matrix
-    matrix_data <- matrix(matrix_data, nrow = num_rows, byrow = FALSE)
-    return(t(matrix_data))
+    matrixData <- matrix(matrixData, nrow = numRows, byrow = FALSE)
+    return(t(matrixData))
 }
 
 #' Read a .time file
 #'
-#' @param filestem The filename of the .time file without the .time suffix.
+#' @param fileStem The filename of the .time file without the .time suffix.
 #'
 #' @return A matrix.
 #' @export
@@ -39,30 +39,30 @@ readPattern <- function(filestem) {
 #' @examples
 #' bcPath <- getExamples()[1]
 #' readPattern(bcPath)
-readTime <- function(filestem) {
-  lines <- readLines(paste(suppressWarnings(normalizePath(filestem)),
+readTime <- function(fileStem) {
+  lines <- readLines(paste(suppressWarnings(normalizePath(fileStem)),
                            ".time",
                            sep = ""
   ))
   
   # Parse dimensions from the first line
   dimensions <- as.numeric(strsplit(lines[1], "\\s+")[[1]][2:3])
-  num_rows <- dimensions[1]
-  num_cols <- dimensions[2]
+  numRows <- dimensions[1]
+  numCols <- dimensions[2]
   
   # Read matrix data from subsequent lines
-  matrix_data <- sapply(lines[2:length(lines)], function(line) {
+  matrixData <- sapply(lines[2:length(lines)], function(line) {
     as.numeric(strsplit(line, "\\s+")[[1]])
   })
   
   # Convert matrix data into a matrix
-  matrix_data <- matrix(matrix_data, nrow = num_rows, byrow = FALSE)
-  return(t(matrix_data))
+  matrixData <- matrix(matrixData, nrow = numRows, byrow = FALSE)
+  return(t(matrixData))
 }
 
 #' Read a .poset file
 #'
-#' @param filestem The filename of the .poset file without the .poset suffix.
+#' @param fileStem The filename of the .poset file without the .poset suffix.
 #'
 #' @return A list containing the number of mutations and a matrix.
 #' @export
@@ -70,8 +70,8 @@ readTime <- function(filestem) {
 #' @examples
 #' bcPath <- getExamples()[1]
 #' readPoset(bcPath)
-readPoset <- function(filestem) {
-    lines <- readLines(paste(suppressWarnings(normalizePath(filestem)), ".poset",
+readPoset <- function(fileStem) {
+    lines <- readLines(paste(suppressWarnings(normalizePath(fileStem)), ".poset",
         sep =
             ""
     ))
@@ -93,7 +93,7 @@ readPoset <- function(filestem) {
 
 #' Read a .lambda file
 #'
-#' @param filestem The filename of the .lambda file without the .lambda suffix.
+#' @param fileStem The filename of the .lambda file without the .lambda suffix.
 #'
 #' @return A matrix.
 #' @export
@@ -101,9 +101,9 @@ readPoset <- function(filestem) {
 #' @examples
 #' bcPath <- getExamples()[1]
 #' readLambda(bcPath)
-readLambda <- function(filestem) {
+readLambda <- function(fileStem) {
     lines <- unlist(as.numeric(readLines(
-        paste(suppressWarnings(normalizePath(filestem)), ".lambda", sep = "")
+        paste(suppressWarnings(normalizePath(fileStem)), ".lambda", sep = "")
     )))
     return(matrix(lines, ncol = 1))
 }
@@ -111,26 +111,21 @@ readLambda <- function(filestem) {
 #' Writes a matrix to a string
 #' @param mat A matrix.
 #' @noRd
-matrix_to_string <- function(mat) {
+matrixToString <- function(mat) {
     # Get the dimensions of the matrix
-    nrows <- nrow(mat)
-    ncols <- ncol(mat)
+    nRows <- nrow(mat)
+    nCols <- ncol(mat)
 
     # Initialize an empty string to store the result
     result <- ""
 
     # Loop through each row
-    for (i in 1:nrows) {
+    for (i in 1:nRows) {
         res <- paste(mat[i, ], collapse = " ")
-        # Loop through each column
-        # for (j in 1:ncols) {
-        #   # Append the matrix element to the result string
-        #   result <- paste(result, mat[i, j], sep = " ")
-        # }
         # Add a newline character at the end of each row (except the last row)
         if (i == 1) {
             result <- res
-        } else if (i <= nrows) {
+        } else if (i <= nRows) {
             result <- paste(result, res, sep = "\n")
         }
     }
@@ -142,7 +137,7 @@ matrix_to_string <- function(mat) {
 #' @param ext File extension.
 #' @param fileC File contents.
 #' @noRd
-temp_file <- function(ext, fileC) {
+tempFile <- function(ext, fileC) {
     tf <- tempfile("tempo", fileext = ext)[[1]]
     tfObj <- file(tf)
     write(fileC, tfObj)
@@ -152,11 +147,11 @@ temp_file <- function(ext, fileC) {
 
 #' Filters strings by start
 #' @param strings A list of strings.
-#' @param start_substring Starting string to filter by.
+#' @param startSubstring Starting string to filter by.
 #' @noRd
-filter_strings_by_start <- function(strings, start_substring) {
-    filtered_strings <- grep(paste0("^", start_substring), strings, value = TRUE)
-    return(filtered_strings)
+filterStringsByStart <- function(strings, startSubstring) {
+    filteredStrings <- grep(paste0("^", startSubstring), strings, value = TRUE)
+    return(filteredStrings)
 }
 
 #' Get paths to examples
@@ -171,22 +166,22 @@ getExamples <- function() {
     gsub(".poset", "", lapply(examples, function(x) system.file("extdata", paste(x, ".poset", sep = ""), package = "CBN2Path")))
 }
 
-pad_list <- function(list, length) {
+padList <- function(list, length) {
     vec <- unlist(list)
-    length_out <- length - length(vec)
-    if (length_out > 0) {
-        c(vec, rep(NA, length_out))
+    lengthOut <- length - length(vec)
+    if (lengthOut > 0) {
+        c(vec, rep(NA, lengthOut))
     } else {
         vec
     }
 }
 
-`getParents` <- function(poset, i){
+getParents <- function(poset, i){
   allParents <- which(poset[, i] == 1)
   sort(allParents)
 }
 
-`matrixPower` <- function (X, n){
+matrixPower <- function (X, n){
   ## unfortunately R doesn't have a matrix power function like MATLAB.
   ## This function is taken from packages Biodem and is originally called mtx.exp.
   if (n != round(n)) {

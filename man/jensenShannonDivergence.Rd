@@ -4,12 +4,12 @@
 \alias{jensenShannonDivergence}
 \title{jensenShannonDivergence}
 \usage{
-jensenShannonDivergence(Prob1, Prob2)
+jensenShannonDivergence(prob1, prob2)
 }
 \arguments{
-\item{Prob1}{The first (discrete) probability distribution (vector)}
+\item{prob1}{The first (discrete) probability distribution (vector)}
 
-\item{Prob2}{The second (discrete) probability distribution (vector)}
+\item{prob2}{The second (discrete) probability distribution (vector)}
 }
 \value{
 Jensen Shannon Divergence between the two (discrete) probability distributions
@@ -19,8 +19,8 @@ jensenShannonDivergence
 }
 \examples{
 set.seed(100)
-gMat<-matrix(sample(c(0,1),12,replace = TRUE),3,4)
-PathCT<-pathProbQuartetCTCBN(gMat)
-PathH<-pathProbQuartetHCBN(gMat)
-jensenShannonDivergence(PathCT,PathH)
+gMat <- matrix(sample(c(0, 1), 12, replace = TRUE), 3, 4)
+pathCT <- pathProbQuartetCTCBN(gMat)
+pathH <- pathProbQuartetHCBN(gMat)
+jensenShannonDivergence(pathCT, pathH)
 }

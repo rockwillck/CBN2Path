@@ -4,10 +4,10 @@
 \alias{readTime}
 \title{Read a .time file}
 \usage{
-readTime(filestem)
+readTime(fileStem)
 }
 \arguments{
-\item{filestem}{The filename of the .time file without the .time suffix.}
+\item{fileStem}{The filename of the .time file without the .time suffix.}
 }
 \value{
 A matrix.

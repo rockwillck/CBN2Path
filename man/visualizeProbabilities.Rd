@@ -7,7 +7,7 @@
 visualizeProbabilities(
   probabilities,
   outputFile = NULL,
-  geneNames = as.character(1:inverse_factorial(length(probabilities))),
+  geneNames = as.character(1:inverseFactorial(length(probabilities))),
   geneColors = rainbow(length(geneNames), v = 0.5),
   columnTitles = TRUE
 )

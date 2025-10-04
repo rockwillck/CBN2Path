@@ -31,7 +31,7 @@ Suggests:
     testthat (>= 3.0.0), BiocStyle, knitr, rmarkdown
 Depends:
     R (>= 3.5.0)
-Remotes: bioc::TCGAbiolinks
+Remotes: bioc::TCGAbiolinks, bioc::BiocParallel
 Config/testthat/edition: 3
 biocViews: Software, StatisticalMethod, GraphAndNetwork, Bayesian
 VignetteBuilder: knitr

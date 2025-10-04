@@ -30,7 +30,7 @@ getRawTCGAData <- function(project) {
 #'
 #' @examples
 #' generateTCGAMatrix()
-generateTCGAMatrix <- function(rawData=getRawTCGAData("TCGA-BLCA"), genes=c("TP53","ARID1A","KDM6A","PIK3CA","RB1","EP300","FGFR3","CREBBP","STAG2","ATM")) {
+generateTCGAMatrix <- function(rawData=suppressMessages(getRawTCGAData("TCGA-BLCA")), genes=c("TP53","ARID1A","KDM6A","PIK3CA","RB1","EP300","FGFR3","CREBBP","STAG2","ATM")) {
   geneSet = list()
   allIDs = c()
   for (gene in genes) {
@@ -57,5 +57,5 @@ generateTCGAMatrix <- function(rawData=getRawTCGAData("TCGA-BLCA"), genes=c("TP5
 
   rownames(mat) = NULL
 
-  mat
+  cbind(1,mat)
 }

@@ -17,6 +17,6 @@ posetWeightingRCBN
 }
 \examples{
 set.seed(100)
-LogLik<-runif(219)
-W1<-posetWeightingRCBN(LogLik)
+logLik <- runif(219)
+w1 <- posetWeightingRCBN(logLik)
 }

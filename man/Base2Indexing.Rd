@@ -10,13 +10,13 @@ base2Indexing(mat)
 \item{mat}{A given poset represented by a binary matrix (in B-CBN)}
 }
 \value{
-#Poset weight vectors based on the frequency of occurence in the BCBN MCMC-sampling scheme.
+#Poset weight vectors based on the frequency of occurrence in the BCBN MCMC-sampling scheme.
 }
 \description{
 base2Indexing
 }
 \examples{
 set.seed(100)
-mat<-matrix(sample(c(0,1),16,replace=TRUE),4,4)
+mat <- matrix(sample(c(0, 1), 16, replace = TRUE), 4, 4)
 base2Indexing(mat)
 }

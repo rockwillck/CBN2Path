@@ -6,31 +6,31 @@
 \usage{
 ctcbn(
   datasets,
-  bootstrap_samples = 0,
-  random_seed = 1,
-  sampling_rate = 1,
+  bootstrapSamples = 0,
+  randomSeed = 1,
+  samplingRate = 1,
   epsilon = 2,
-  num_drawn_samples = 0,
-  num_em_runs = 1,
-  n_cores = 1
+  numDrawnSamples = 0,
+  numEmRuns = 1,
+  nCores = 1
 )
 }
 \arguments{
 \item{datasets}{Vector of \code{Spock} objects with poset and pattern/lambda data or a \code{Spock} object (alias of ctcbnSingle).}
 
-\item{bootstrap_samples}{Number of bootstrap samples (requires \code{epsilon} > 0, \code{num_drawn_samples} = 0)}
+\item{bootstrapSamples}{Number of bootstrap samples (requires \code{epsilon} > 0, \code{numDrawnSamples} = 0)}
 
-\item{random_seed}{Random seed.}
+\item{randomSeed}{Random seed.}
 
-\item{sampling_rate}{Sampling rate.}
+\item{samplingRate}{Sampling rate.}
 
 \item{epsilon}{If between 0 and 1, the fraction of violations allowed per edge. If negative, the interval 0 to 0.5 will be sampled equidistantly with N points.}
 
-\item{num_drawn_samples}{If > 0, the number of samples to draw from the model. If zero (default), the model will be learned from data.}
+\item{numDrawnSamples}{If > 0, the number of samples to draw from the model. If zero (default), the model will be learned from data.}
 
-\item{num_em_runs}{Number of em runs.}
+\item{numEmRuns}{Number of em runs.}
 
-\item{n_cores}{Maximum number of threads to use to parallelize.}
+\item{nCores}{Maximum number of threads to use to parallelize.}
 }
 \value{
 A matrix of results.
@@ -39,11 +39,11 @@ A matrix of results.
 CT-CBN
 }
 \examples{
-example_path <- getExamples()[1]
+examplePath <- getExamples()[1]
 bc <- Spock$new(
-    poset = readPoset(example_path)$sets,
-    numMutations = readPoset(example_path)$mutations,
-    genotypeMatrix = readPattern(example_path)
+    poset = readPoset(examplePath)$sets,
+    numMutations = readPoset(examplePath)$mutations,
+    genotypeMatrix = readPattern(examplePath)
 )
 ctcbn(bc)
 }

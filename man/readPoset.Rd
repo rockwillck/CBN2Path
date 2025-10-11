@@ -4,10 +4,10 @@
 \alias{readPoset}
 \title{Read a .poset file}
 \usage{
-readPoset(filestem)
+readPoset(fileStem)
 }
 \arguments{
-\item{filestem}{The filename of the .poset file without the .poset suffix.}
+\item{fileStem}{The filename of the .poset file without the .poset suffix.}
 }
 \value{
 A list containing the number of mutations and a matrix.

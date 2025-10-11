@@ -1,99 +1,27 @@
-##############################################################################################################
-#' combinations
-#'
-#' @param n total number of elements in the set
-#' @param r subset size
-#' @param v 1:n
-#' @param set Logical flag indicating whether duplicates should be removed from the source vector v. Defaults to TRUE.
-#' @param repeats.allowed Logical flag indicating whether the constructed vectors may include duplicated values. Defaults to FALSE.
-#'
-#' @return a matrix with (n choose r) rows and r columns
-#' @export
-#'
-#' @examples
-#' combinations(10,4)
-combinations <- function(n, r, v = 1:n, set = TRUE, repeats.allowed = FALSE) {
-    if (mode(n) != "numeric" || length(n) != 1 || n < 1 || (n %% 1) !=
-        0) {
-        stop("bad value of n")
-    }
-    if (mode(r) != "numeric" || length(r) != 1 || r < 1 || (r %% 1) !=
-        0) {
-        stop("bad value of r")
-    }
-    if (!is.atomic(v) || length(v) < n) {
-        stop("v is either non-atomic or too short")
-    }
-    if ((r > n) & repeats.allowed == FALSE) {
-        stop("r > n and repeats.allowed=FALSE")
-    }
-    if (set) {
-        v <- unique(sort(v))
-        if (length(v) < n) {
-            stop("too few different elements")
-        }
-    }
-    v0 <- vector(mode(v), 0)
-    if (repeats.allowed) {
-        sub <- function(n, r, v) {
-            if (r == 0) {
-                v0
-            } else if (r == 1) {
-                matrix(v, n, 1)
-            } else if (n == 1) {
-                matrix(v, 1, r)
-            } else {
-                rbind(cbind(v[1], Recall(n, r - 1, v)), Recall(n -
-                    1, r, v[-1]))
-            }
-        }
-    } else {
-        sub <- function(n, r, v) {
-            if (r == 0) {
-                v0
-            } else if (r == 1) {
-                matrix(v, n, 1)
-            } else if (r == n) {
-                matrix(v, 1, n)
-            } else {
-                rbind(
-                    cbind(v[1], Recall(n - 1, r - 1, v[-1])),
-                    Recall(n - 1, r, v[-1])
-                )
-            }
-        }
-    }
-    sub(n, r, v[1:n])
-}
-
-
-
 #' permutations
 #'
 #' @param n total number of elements in the set
 #' @param r subset size
 #' @param v 1:n
 #' @param set Logical flag indicating whether duplicates should be removed from the source vector v. Defaults to TRUE.
-#' @param repeats.allowed Logical flag indicating whether the constructed vectors may include duplicated values. Defaults to FALSE.
+#' @param repeatsAllowed Logical flag indicating whether the constructed vectors may include duplicated values. Defaults to FALSE.
 #'
 #' @return a matrix with (n!/(n-r)!) rows and r columns
 #' @export
 #'
 #' @examples
-#' PERM<-permutations(4,4)
-permutations <- function(n, r, v = 1:n, set = TRUE, repeats.allowed = FALSE) {
-    if (mode(n) != "numeric" || length(n) != 1 || n < 1 || (n %% 1) !=
-        0) {
+#' perm <- permutations(4, 4)
+permutations <- function(n, r, v = 1:n, set = TRUE, repeatsAllowed = FALSE) {
+    if (mode(n) != "numeric" || length(n) != 1 || n < 1 || (n %% 1) != 0) {
         stop("bad value of n")
     }
-    if (mode(r) != "numeric" || length(r) != 1 || r < 1 || (r %% 1) !=
-        0) {
+    if (mode(r) != "numeric" || length(r) != 1 || r < 1 || (r %% 1) != 0) {
         stop("bad value of r")
     }
     if (!is.atomic(v) || length(v) < n) {
         stop("v is either non-atomic or too short")
     }
-    if ((r > n) & repeats.allowed == FALSE) {
+    if ((r > n) & repeatsAllowed == FALSE) {
         stop("r > n and repeats.allowed=FALSE")
     }
     if (set) {
@@ -103,7 +31,7 @@ permutations <- function(n, r, v = 1:n, set = TRUE, repeats.allowed = FALSE) {
         }
     }
     v0 <- vector(mode(v), 0)
-    if (repeats.allowed) {
+    if (repeatsAllowed) {
         sub <- function(n, r, v) {
             if (r == 1) {
                 matrix(v, n, 1)
@@ -146,21 +74,21 @@ permutations <- function(n, r, v = 1:n, set = TRUE, repeats.allowed = FALSE) {
 #' @export
 #'
 #' @examples
-#' Geno4<-generateMatrixGenotypes(4)
+#' generateMatrixGenotypes(4)
 generateMatrixGenotypes <- function(g) {
     if (g > 20) {
         stop("This would generate more than one million genotypes")
     }
     f1 <- function(n) {
-        lapply(seq.int(n), function(x) combinations(n = n, r = x))
+        lapply(seq.int(n), function(x) t(combn(n, x)))
     }
     genotNums <- f1(g)
-    list.of.vectors <- function(y) {
+    listOfVectors <- function(y) {
         lapply(unlist(lapply(y, function(x) {
             apply(x, 1, list)
         }), recursive = FALSE), function(m) m[[1]])
     }
-    genotNums <- list.of.vectors(genotNums)
+    genotNums <- listOfVectors(genotNums)
     v <- rep(0, g)
     mat <- matrix(unlist(lapply(genotNums, function(x) {
         v[x] <- 1
@@ -176,28 +104,28 @@ generateMatrixGenotypes <- function(g) {
 #' genotypeFeasibility
 #'
 #' @param genotypes the full set of potential binary genotypes of a given length.
-#' @param DAG matrix representing the DAG of restrictions.
+#' @param dag matrix representing the DAG of restrictions.
 #' @param x the number of mutations considered.
 #'
 #' @return a binary vector, which indicates feasibility or infeasibility of a set of genotypes
 #' @export
 #'
 #' @examples
-#' Geno4<-generateMatrixGenotypes(4)
-#' DAG<-matrix(c(4,4,4,1,2,3),3,2)
-#' x<-4
-#' GenoF4<-genotypeFeasibility(Geno4,DAG,x)
-genotypeFeasibility <- function(genotypes, DAG, x) {
+#' geno4 <- generateMatrixGenotypes(4)
+#' dag <- matrix(c(4, 4, 4, 1, 2, 3), 3, 2)
+#' x <- 4
+#' genoF4 <- genotypeFeasibility(geno4, dag, x)
+genotypeFeasibility <- function(genotypes, dag, x) {
     vec <- matrix(1, nrow = (2^x), ncol = 1)
-    D <- dim(DAG)[1]
-    if (D > 0) {
+    d <- dim(dag)[1]
+    if (d > 0) {
         for (i in 1:(2^x)) {
-            for (j in 1:D) {
-                xx <- DAG[j, 1]
-                yy <- DAG[j, 2]
+            for (j in 1:d) {
+                xx <- dag[j, 1]
+                yy <- dag[j, 2]
                 if ((genotypes[i, yy] == 1) && (genotypes[i, xx] == 0)) {
                     vec[i] <- 0
-                } ## if the mutation ordering is not respected the genotype is labelled as infeasible.
+                }
             }
         }
     }
@@ -208,28 +136,28 @@ genotypeFeasibility <- function(genotypes, DAG, x) {
 
 #' pathwayFeasibility
 #'
-#' @param DAG matrix representing the DAG of restrictions.
+#' @param dag matrix representing the DAG of restrictions.
 #' @param x the number of mutations considered.
 #'
 #' @return a binary vector, which indicates feasibility or infeasibility of a set of pathways
 #' @export
 #'
 #' @examples
-#' DAG<-matrix(c(4,4,4,1,2,3),3,2)
-#' x<-4
-#' pathwayFeasibility(DAG, x)
-pathwayFeasibility <- function(DAG, x) {
-    PERM <- permutations(x, x) ### all x! possible permutations (mutational pathways)
-    P <- dim(PERM)[1]
-    D <- dim(DAG)[1]
-    vec <- numeric(P) + 1
-    if (D > 0) {
-        for (i in 1:P) {
-            for (j in 1:D) {
-                a1 <- DAG[j, 1]
-                a2 <- DAG[j, 2]
-                b1 <- which(PERM[i, ] == a1)
-                b2 <- which(PERM[i, ] == a2)
+#' dag <- matrix(c(4, 4, 4, 1, 2, 3), 3, 2)
+#' x <- 4
+#' pathwayFeasibility(dag, x)
+pathwayFeasibility <- function(dag, x) {
+    perm <- permutations(x, x)
+    p <- dim(perm)[1]
+    d <- dim(dag)[1]
+    vec <- numeric(p) + 1
+    if (d > 0) {
+        for (i in 1:p) {
+            for (j in 1:d) {
+                a1 <- dag[j, 1]
+                a2 <- dag[j, 2]
+                b1 <- which(perm[i, ] == a1)
+                b2 <- which(perm[i, ] == a2)
                 if (b2 < b1) {
                     vec[i] <- 0
                 }
@@ -244,36 +172,36 @@ pathwayFeasibility <- function(DAG, x) {
 
 #' pathwayGenotypeCompatibility
 #'
-#' @param Pathway a vector representing the given pathway.
-#' @param Genotype a binary vector representing the given genotype.
+#' @param pathway a vector representing the given pathway.
+#' @param genotype a binary vector representing the given genotype.
 #'
 #' @return returns 1 (if the given genotype is compatible with the given pathway), and 0 otherwise
 #' @export
 #'
 #' @examples
-#' Geno1<-c(1,0,1,0)
-#' Geno2<-c(1,1,0,0)
-#' Path<-c(1,2,3,4)
-#' pathwayGenotypeCompatibility(Path,Geno1)
-#' pathwayGenotypeCompatibility(Path,Geno2)
-pathwayGenotypeCompatibility <- function(Pathway, Genotype) {
-    C <- 1 # by default compatible unless:
-    for (i in 1:(length(Pathway) - 1)) {
-        P <- Pathway[i]
-        if (Genotype[P] == 0) {
-            for (j in (i + 1):length(Pathway)) {
-                Q <- Pathway[j]
-                if (Genotype[Q] == 1) {
-                    C <- 0
+#' geno1 <- c(1, 0, 1, 0)
+#' geno2 <- c(1, 1, 0, 0)
+#' path <- c(1, 2, 3, 4)
+#' pathwayGenotypeCompatibility(path, geno1)
+#' pathwayGenotypeCompatibility(path, geno2)
+pathwayGenotypeCompatibility <- function(pathway, genotype) {
+    c <- 1
+    for (i in 1:(length(pathway) - 1)) {
+        p <- pathway[i]
+        if (genotype[p] == 0) {
+            for (j in (i + 1):length(pathway)) {
+                q <- pathway[j]
+                if (genotype[q] == 1) {
+                    c <- 0
                     break
                 }
             }
         }
-        if (C == 0) {
+        if (c == 0) {
             break
         }
     }
-    return(C)
+    return(c)
 }
 
 #' base2IndVec
@@ -284,16 +212,16 @@ pathwayGenotypeCompatibility <- function(Pathway, Genotype) {
 #' @export
 #'
 #' @examples
-#' vec<-c(0,1,0,1)
+#' vec <- c(0, 1, 0, 1)
 #' base2IndVec(vec)
-base2IndVec<-function(vec){
-  TOT<-0
-  for (i in 1:length(vec)){
-    if (vec[i]==1){
-      TOT<-TOT+(2^i)
+base2IndVec <- function(vec) {
+  tot <- 0
+  for (i in 1:length(vec)) {
+    if (vec[i] == 1) {
+      tot <- tot + (2^i)
     }
   }
-  return(TOT)
+  return(tot)
 }
 
 
@@ -307,140 +235,145 @@ base2IndVec<-function(vec){
 #'
 #' @examples
 #' set.seed(100)
-#' gMat<-matrix(sample(c(0,1),800,replace = TRUE),200,4)
+#' gMat <- matrix(sample(c(0, 1), 800, replace = TRUE), 200, 4)
 #' pathwayCompatibilityQuartet(gMat)
-pathwayCompatibilityQuartet<-function(gMat){
-  ### Establishing the genotype frequency matrix
-  G<-generateMatrixGenotypes(4)
-  INDXs<-numeric(16)
-  for (i in 1:16){
-    INDXs[i]<-base2IndVec(G[i,])
+pathwayCompatibilityQuartet <- function(gMat) {
+  g <- generateMatrixGenotypes(4)
+  indxs <- numeric(16)
+  for (i in 1:16) {
+    indxs[i] <- base2IndVec(g[i, ])
   }
-  D<-dim(gMat)[1]
-  V<-numeric(16)
-  for (i in 1:D){
-    vec<-gMat[i,]
-    INDX<-base2IndVec(vec)
-    g<-which(INDXs==INDX)
-    V[g]<-V[g]+1
+  d <- dim(gMat)[1]
+  v <- numeric(16)
+  for (i in 1:d) {
+    vec <- gMat[i, ]
+    indx <- base2IndVec(vec)
+    gIdx <- which(indxs == indx)
+    v[gIdx] <- v[gIdx] + 1
   }
-  V<-V/sum(V)
-
-  ### Establishing the pathway-geotype compatibility matrix
-  PERM<-permutations(4,4)
-  M<-matrix(0,24,16)
-  for (i in 1:24){
-    for (j in 1:16){
-      M[i,j]<-pathwayGenotypeCompatibility(PERM[i,],G[j,])
+  v <- v / sum(v)
+  perm <- permutations(4, 4)
+  m <- matrix(0, 24, 16)
+  for (i in 1:24) {
+    for (j in 1:16) {
+      m[i, j] <- pathwayGenotypeCompatibility(perm[i, ], g[j, ])
     }
   }
-
-  ### Calculating the pathway compatibility scores.
-  C<-as.numeric(M%*%V)
-
-  return(C)
+  c <- as.numeric(m %*% v)
+  return(c)
 }
 
 
 #' genotypeMatrixMutator
 #'
-#' @param mat The genotype matrix including sampled genotypes, which need to be muatated.
-#' @param FP False positive rate
-#' @param FN False negative rate
+#' @param mat The genotype matrix including sampled genotypes, which need to be mutated.
+#' @param fp False positive rate
+#' @param fn False negative rate
 #'
 #' @return The mutated version of the genotype matrix
 #' @export
 #'
 #' @examples
 #' set.seed(100)
-#' gMat<-matrix(sample(c(0,1),800,replace = TRUE),200,4)
-#' gMat_mut<-genotypeMatrixMutator(gMat,0.2,0.2)
-genotypeMatrixMutator<-function(mat,FP,FN){
-
-  d<-dim(mat)[1]
-  AllP<-which(mat==1)
-  AllN<-which(mat==0)
-  Sample_FP<-AllN[sample(1:length(AllN),round(FP*length(AllN)))]
-  Sample_FN<-AllP[sample(1:length(AllP),round(FN*length(AllP)))]
-
-  for (i in 1:length(Sample_FP)){
-    x<-Sample_FP[i]%%d
-    y<-ceiling(Sample_FP[i]/d)
-    mat[x,y]<-1
+#' gMat <- matrix(sample(c(0, 1), 800, replace = TRUE), 200, 4)
+#' gMatMut <- genotypeMatrixMutator(gMat, 0.2, 0.2)
+genotypeMatrixMutator <- function(mat, fp, fn) {
+  d <- dim(mat)[1]
+  allP <- which(mat == 1)
+  allN <- which(mat == 0)
+  sampleFp <- allN[sample(1:length(allN), round(fp * length(allN)))]
+  sampleFn <- allP[sample(1:length(allP), round(fn * length(allP)))]
+  for (i in 1:length(sampleFp)) {
+    x <- sampleFp[i] %% d
+    y <- ceiling(sampleFp[i] / d)
+    mat[x, y] <- 1
   }
-
-  for (i in 1:length(Sample_FN)){
-    x<-Sample_FN[i]%%d
-    y<-ceiling(Sample_FN[i]/d)
-    mat[x,y]<-0
+  for (i in 1:length(sampleFn)) {
+    x <- sampleFn[i] %% d
+    y <- ceiling(sampleFn[i] / d)
+    mat[x, y] <- 0
   }
-
   return(mat)
 }
 
 
 #' pathProbSSWM
 #'
-#' @param FITNESS A vector of length 2^x, each element of which representing the fitness assigned to one of the 2^x genotypes.
+#' @param fitness A vector of length 2^x, each element of which representing the fitness assigned to one of the 2^x genotypes.
 #' @param x The number of mutations considered.
 #'
 #' @return vector of probabilities assigned to all potential pathways of length x
 #' @export
 #'
 #' @examples
-#' F<-c(0,0.1,0.2,0.1,0.2,0.4,0.3,0.2,0.2,0.1,0,0.6,0.4,0.3,0.2,1)
-#' x<-4
-#' PathP<-pathProbSSWM(F,x)
-pathProbSSWM<-function(FITNESS,x){
-
-  ### Step1: genotypes
-  genotypes=generateMatrixGenotypes(x)## generates the genotype space
-  indx<-matrix(0,nrow=2^x,ncol=1)## indexing the genotypes for easier retrival
-  for (k in 1:(2^x)){for (j in 1:x){indx[k,1]=indx[k,1]+2^(j-1)*genotypes[k,j]}}
-
-  ### Step2: Pathway Probabilities
-  PERM<-permutations(x,x)## all x! possible permutations (mutational pathways)
-  Prob<-numeric(dim(PERM)[1])## pathway probabilities
-
-
-  TOT<-0 ##(the normalization factor)
-  for (i in 1:dim(PERM)[1]){# for each pathway
-    TEMP1=1;# temporarily stores the pathway probability [later needs to be normalized]
-    vec=PERM[i,]#pathway [specific permutation of the original vector]
-    GENO=matrix(0,nrow=(x+1),ncol=x)# vector of length (x+1) storing the genotypes associated with each step of the pathway
-    for (j in 1:x){for (k in (j+1):(x+1)){GENO[k,(vec[j])]=1}}
-    GENO_indx=matrix(0,nrow=(x+1),ncol=1)# storing the indices of the (x+1) genotypes in the genotype space.
-    for (j in 1:(x+1)){for (k in 1:x){GENO_indx[j,1]=GENO_indx[j,1]+2^(k-1)*GENO[j,k]}}
-    fitness=matrix(0,nrow=(x+1),ncol=1)# fitness vector for the (x+1) genotypes associated with the given pathway
-    for (j in 1:(x+1)){fitness[j]=FITNESS[which(indx==GENO_indx[j])]}# retrieving the fitness from the global fitness vector
-    flag=0;
-    for (j in 2:(x+1)){if (fitness[j]<fitness[(j-1)]){flag=1}}# if the fitness monotonically increases along the pathway, flag remains as 0, otherwise it will become 1
-    if (flag==0){# if flag remains zero (i.e. pathway is accessible)
-      for (j in 1:x){
-        SN=which(GENO[j,]==0)# possible remaining mutations in the j-th step
-        N=length(SN)
-        S=fitness[(j+1)]-fitness[j]# slective coefficient of the j-th step [the numerator of the equation (7) in the main text]
-        t=0;
-        for (k in 1:N){# checking the genotypes belonging to the exit set
-          ggeno=GENO[j,]
-          ggeno[(SN[k])]=1
-          ggeno_indx=0
-          for (l in 1:x){ggeno_indx=ggeno_indx+2^(l-1)*ggeno[l]}
-          fitness2=FITNESS[which(indx==ggeno_indx)]
-          S1=fitness2-fitness[j]
-          if (S1>0){t=t+S1}# sum of the selecive coefficient of the genotypes in the exit set [the denominator of the equation (7) in the main text]
-        }
-        TEMP1=TEMP1*(S/t)#the product in equation (7)
-      }
-      Prob[i]=TEMP1# probability of the i-th pathway
+#' f <- c(0, 0.1, 0.2, 0.1, 0.2, 0.4, 0.3, 0.2, 0.2, 0.1, 0, 0.6, 0.4, 0.3, 0.2, 1)
+#' x <- 4
+#' pathP <- pathProbSSWM(f, x)
+pathProbSSWM <- function(fitness, x) {
+  genotypes <- generateMatrixGenotypes(x)
+  indx <- matrix(0, nrow = 2^x, ncol = 1)
+  for (k in 1:(2^x)) {
+    for (j in 1:x) {
+      indx[k, 1] <- indx[k, 1] + 2^(j - 1) * genotypes[k, j]
     }
   }
-
-  GG=sum(Prob,na.rm=TRUE)#normalization factor (equation 8 in the main text)
-  Prob<-Prob/GG
-  Prob<-as.numeric(Prob)
-  Prob[which(is.na(Prob))]<-0
-  return(Prob)
+  perm <- permutations(x, x)
+  prob <- numeric(dim(perm)[1])
+  tot <- 0
+  for (i in 1:dim(perm)[1]) {
+    temp1 <- 1
+    vec <- perm[i, ]
+    geno <- matrix(0, nrow = (x + 1), ncol = x)
+    for (j in 1:x) {
+      for (k in (j + 1):(x + 1)) {
+        geno[k, (vec[j])] <- 1
+      }
+    }
+    genoIndx <- matrix(0, nrow = (x + 1), ncol = 1)
+    for (j in 1:(x + 1)) {
+      for (k in 1:x) {
+        genoIndx[j, 1] <- genoIndx[j, 1] + 2^(k - 1) * geno[j, k]
+      }
+    }
+    fitnessVec <- matrix(0, nrow = (x + 1), ncol = 1)
+    for (j in 1:(x + 1)) {
+      fitnessVec[j] <- fitness[which(indx == genoIndx[j])]
+    }
+    flag <- 0
+    for (j in 2:(x + 1)) {
+      if (fitnessVec[j] < fitnessVec[(j - 1)]) {
+        flag <- 1
+      }
+    }
+    if (flag == 0) {
+      for (j in 1:x) {
+        sn <- which(geno[j, ] == 0)
+        n <- length(sn)
+        s <- fitnessVec[(j + 1)] - fitnessVec[j]
+        t <- 0
+        for (k in 1:n) {
+          ggeno <- geno[j, ]
+          ggeno[(sn[k])] <- 1
+          ggenoIndx <- 0
+          for (l in 1:x) {
+            ggenoIndx <- ggenoIndx + 2^(l - 1) * ggeno[l]
+          }
+          fitness2 <- fitness[which(indx == ggenoIndx)]
+          s1 <- fitness2 - fitnessVec[j]
+          if (s1 > 0) {
+            t <- t + s1
+          }
+        }
+        temp1 <- temp1 * (s / t)
+      }
+      prob[i] <- temp1
+    }
+  }
+  gg <- sum(prob, na.rm = TRUE)
+  prob <- prob / gg
+  prob <- as.numeric(prob)
+  prob[which(is.na(prob))] <- 0
+  return(prob)
 }
 
 
@@ -449,88 +382,78 @@ pathProbSSWM<-function(FITNESS,x){
 
 #' pathProbCBN: quantifies pathway probabilities using the output of CT-CBN or H-CBN
 #'
-#' @param DAG matrix representing the DAG of restrictions.
-#' @param LAMBDA the lambda values, which are produced by the CBN model.
+#' @param dag matrix representing the DAG of restrictions.
+#' @param lambda the lambda values, which are produced by the CBN model.
 #' @param x the number of mutations considered.
 #'
 #' @return vector of probabilities assigned to all potential pathways of length x
 #' @export
 #'
 #' @examples
-#' DAG<-matrix(c(2,2,4,1,3,3),3,2)
-#' LAMBDA<-c(1,4,3,2.5,2)
-#' x<-4
-#' PathP<-pathProbCBN(DAG, LAMBDA, x)
-pathProbCBN<- function(DAG, LAMBDA, x) {
-    ### Step1: genotypes
-    genotypes <- generateMatrixGenotypes(x) ## generates the genotype space[requires "OncoSimulR" package--two lines above]
-    indx <- matrix(0, nrow = 2^x, ncol = 1) ## indexing the genotypes for easier retrival
+#' dag <- matrix(c(2, 2, 4, 1, 3, 3), 3, 2)
+#' lambda <- c(1, 4, 3, 2.5, 2)
+#' x <- 4
+#' pathP <- pathProbCBN(dag, lambda, x)
+pathProbCBN <- function(dag, lambda, x) {
+    genotypes <- generateMatrixGenotypes(x)
+    indx <- matrix(0, nrow = 2^x, ncol = 1)
     for (k in 1:(2^x)) {
         for (j in 1:x) {
             indx[k, 1] <- indx[k, 1] + 2^(j - 1) * genotypes[k, j]
         }
     }
-
-    ### Step2: Allowed genotypes according to the DAG of restrictions (DAG)
-    if (sum(is.na(DAG))>0){DAG<-matrix(0,0,0)}
-    allowed_set <- genotypeFeasibility(genotypes, DAG, x)
-
-    ### Step3: Pathway Probabilities
-    PERM <- permutations(x, x) ## all x! possible permutations (mutational pathways)
-    Prob <- numeric(dim(PERM)[1]) ## pathway probabilities
-    TOT <- 0 ## (the normalization factor)
-    for (i1 in 1:dim(PERM)[1]) {
-        TEMP1 <- 1 # temporarily stores the probability (later needs to be normalized)
-        vec <- PERM[i1, ] # (i1)-th pathway
-        GENO <- matrix(0, nrow = (x + 1), ncol = x) # constructing the possible x+1 genotypes, each corresponding to a given step of the given mutational pathway.
+    if (sum(is.na(dag)) > 0) { dag <- matrix(0, 0, 0) }
+    allowedSet <- genotypeFeasibility(genotypes, dag, x)
+    perm <- permutations(x, x)
+    prob <- numeric(dim(perm)[1])
+    tot <- 0
+    for (i1 in 1:dim(perm)[1]) {
+        temp1 <- 1
+        vec <- perm[i1, ]
+        geno <- matrix(0, nrow = (x + 1), ncol = x)
         for (j1 in 1:x) {
             for (k1 in (j1 + 1):(x + 1)) {
-                GENO[k1, (vec[j1])] <- 1
+                geno[k1, (vec[j1])] <- 1
             }
         }
-
         flag <- 1
         for (j1 in 1:(x + 1)) {
-            index <- 0 # index of the (j1-th) genotype in the mutational pathway.
+            index <- 0
             for (k1 in 1:x) {
-                index <- index + 2^(k1 - 1) * GENO[j1, k1]
+                index <- index + 2^(k1 - 1) * geno[j1, k1]
             }
-            final_index <- which(indx == index) # finding the index of the genotype in the genotype space
-            if (allowed_set[final_index] == 0) {
+            finalIndex <- which(indx == index)
+            if (allowedSet[finalIndex] == 0) {
                 flag <- 0
-            } # to check whether each genotype visited is allowed.
-        }
-
-        for (j1 in 1:x) {
-            set1 <- which(GENO[j1, ] == 1)
-            set2 <- which(GENO[j1 + 1, ] == 1)
-            indx_lambda <- setdiff(set2, set1) # the index of the (j1-th) genotype in the pathway to retrieve the corresponding Lambda value
-            SN <- which(GENO[j1, ] == 0) # the set of genotypes with one additional mutation than the current genotype
-            ###################################################
-            SN2 <- numeric(length(SN))
-            for (kaka in 1:length(SN)) {
-                TEMP_index <- 0
-                for (kk in 1:x) {
-                    TEMP_index <- TEMP_index + 2^(kk - 1) * GENO[j1, kk]
-                }
-                TEMP_index <- TEMP_index + 2^(SN[kaka] - 1)
-                FINAL_index <- which(indx == TEMP_index)
-
-                SN2[kaka] <- allowed_set[FINAL_index]
             }
-            SNN <- SN[which(SN2 == 1)] # THE EXIT SET: the set of (allowed) genotypes with one additional mutation than the current genotype
-            t <- sum(LAMBDA[(SNN + 1)]) # sum of the lambdas of the exit set [The denominator of the equation (10) in the main text]
-            ###################################################
-            S <- LAMBDA[(indx_lambda + 1)] # the lambda of the (j1-th mutation) [The numerator of the equation (10) in the main text]
-            TEMP1 <- TEMP1 * (S / t) # The multiplication in the equation (10) in the main text
+        }
+        for (j1 in 1:x) {
+            set1 <- which(geno[j1, ] == 1)
+            set2 <- which(geno[j1 + 1, ] == 1)
+            indxLambda <- setdiff(set2, set1)
+            sn <- which(geno[j1, ] == 0)
+            sn2 <- numeric(length(sn))
+            for (kaka in 1:length(sn)) {
+                tempIndex <- 0
+                for (kk in 1:x) {
+                    tempIndex <- tempIndex + 2^(kk - 1) * geno[j1, kk]
+                }
+                tempIndex <- tempIndex + 2^(sn[kaka] - 1)
+                finalIndex <- which(indx == tempIndex)
+                sn2[kaka] <- allowedSet[finalIndex]
+            }
+            snn <- sn[which(sn2 == 1)]
+            t <- sum(lambda[(snn + 1)])
+            s <- lambda[(indxLambda + 1)]
+            temp1 <- temp1 * (s / t)
         }
         if (flag == 0) {
-            TEMP1 <- 0
-        } # If the pathway is infeasible, its probability will be zero.
-        Prob[i1] <- TEMP1 # pathway probability
+            temp1 <- 0
+        }
+        prob[i1] <- temp1
     }
-    Prob <- as.numeric(Prob)
-    return(Prob)
+    prob <- as.numeric(prob)
+    return(prob)
 }
 
 
@@ -543,30 +466,29 @@ pathProbCBN<- function(DAG, LAMBDA, x) {
 #'
 #' @examples
 #' set.seed(100)
-#' gMat<-matrix(sample(c(0,1),12,replace = TRUE),3,4)
+#' gMat <- matrix(sample(c(0, 1), 12, replace = TRUE), 3, 4)
 #' pathProbQuartetCTCBN(gMat)
 pathProbQuartetCTCBN <- function(gMat) {
-    Posets <- readRDS(system.file("extdata", "Posets.rds", package = "CBN2Path"))
+    posets <- readRDS(system.file("extdata", "Posets.rds", package = "CBN2Path"))
     bc <- Spock$new(
-        poset = Posets,
+        poset = posets,
         numMutations = 4,
         genotypeMatrix = cbind(1, gMat)
     )
-    Results <- ctcbn(bc)
-    LogLik <- numeric(219)
+    results <- ctcbn(bc)
+    logLik <- numeric(219)
     for (i in 1:219) {
-        LogLik[i] <- as.numeric(Results[[i]]$summary[4])
+        logLik[i] <- as.numeric(results[[i]]$summary[4])
     }
-    INDX <- which.max(LogLik)
-    LAMBDA <- as.numeric(Results[[INDX]]$summary[5:9])
-
-    if (INDX == 1) {
-        DAG <- matrix(0, 0, 0)
+    indx <- which.max(logLik)
+    lambda <- as.numeric(results[[indx]]$summary[5:9])
+    if (indx == 1) {
+        dag <- matrix(0, 0, 0)
     } else {
-        DAG <- Posets[[INDX]]
+        dag <- posets[[indx]]
     }
-    PathProb <- pathProbCBN(DAG, LAMBDA, 4)
-    return(PathProb)
+    pathProb <- pathProbCBN(dag, lambda, 4)
+    return(pathProb)
 }
 
 
@@ -580,27 +502,26 @@ pathProbQuartetCTCBN <- function(gMat) {
 #'
 #' @examples
 #' set.seed(100)
-#' gMat<-matrix(sample(c(0,1),12,replace = TRUE),3,4)
+#' gMat <- matrix(sample(c(0, 1), 12, replace = TRUE), 3, 4)
 #' pathProbQuartetHCBN(gMat)
-pathProbQuartetHCBN<-function(gMat){
-   Posets<-readRDS(system.file("extdata","Posets.rds",package="CBN2Path"))
-   bc=Spock$new(
-     poset=Posets,
-     numMutations=4,
-     genotypeMatrix=cbind(1,gMat)
+pathProbQuartetHCBN <- function(gMat) {
+   posets <- readRDS(system.file("extdata", "Posets.rds", package = "CBN2Path"))
+   bc <- Spock$new(
+     poset = posets,
+     numMutations = 4,
+     genotypeMatrix = cbind(1, gMat)
    )
-   Results<-hcbn(bc)
-   LogLik<-numeric(219)
-   for (i in 1:219){
-     LogLik[i]<-as.numeric(Results[[i]]$summary[4])
+   results <- hcbn(bc)
+   logLik <- numeric(219)
+   for (i in 1:219) {
+     logLik[i] <- as.numeric(results[[i]]$summary[4])
    }
-   INDX<-which.max(LogLik)
-   LAMBDA<-as.numeric(Results[[INDX]]$summary[5:9])
-
-   if (INDX==1){DAG<-matrix(0,0,0)}
-   else {DAG<-Posets[[INDX]]}
-   PathProb<-pathProbCBN(DAG,LAMBDA,4)
-   return(PathProb)
+   indx <- which.max(logLik)
+   lambda <- as.numeric(results[[indx]]$summary[5:9])
+   if (indx == 1) { dag <- matrix(0, 0, 0) }
+   else { dag <- posets[[indx]] }
+   pathProb <- pathProbCBN(dag, lambda, 4)
+   return(pathProb)
 }
 
 #' posetWeightingRCBN
@@ -612,8 +533,8 @@ pathProbQuartetHCBN<-function(gMat){
 #'
 #' @examples
 #' set.seed(100)
-#' LogLik<-runif(219)
-#' W1<-posetWeightingRCBN(LogLik)
+#' logLik <- runif(219)
+#' w1 <- posetWeightingRCBN(logLik)
 posetWeightingRCBN <- function(vec) {
     w <- numeric(length(vec))
     for (i in 1:length(vec)) {
@@ -632,76 +553,76 @@ posetWeightingRCBN <- function(vec) {
 #' @export
 #'
 #' @examples
-#' PEmap<-pathEdgeMapper(4)
+#' peMap <- pathEdgeMapper(4)
 pathEdgeMapper <- function(x) {
-    PATH <- permutations(x, x)
-    EDGE <- permutations(x, 2)
-    P <- dim(PATH)[1]
-    E <- dim(EDGE)[1]
-    PEmap <- matrix(0, P, E)
-    for (i in 1:P) {
-        for (j in 1:E) {
-            x1 <- which(PATH[i, ] == EDGE[j, 1])
-            x2 <- which(PATH[i, ] == EDGE[j, 2])
+    path <- permutations(x, x)
+    edge <- permutations(x, 2)
+    p <- dim(path)[1]
+    e <- dim(edge)[1]
+    peMap <- matrix(0, p, e)
+    for (i in 1:p) {
+        for (j in 1:e) {
+            x1 <- which(path[i, ] == edge[j, 1])
+            x2 <- which(path[i, ] == edge[j, 2])
             if (x1 < x2) {
-                PEmap[i, j] <- 1
+                peMap[i, j] <- 1
             }
         }
     }
-    return(PEmap)
+    return(peMap)
 }
 
 
 #' edgeMarginalized
 #'
-#' @param PathProb The pathway probabilities returned in the step 3 of the R-CBN algorithm
+#' @param pathProb The pathway probabilities returned in the step 3 of the R-CBN algorithm
 #' @param x        The number of mutations to consider
 #'
 #' @return returns the marginal probability of all the potential edges
 #' @export
 #'
 #' @examples
-#' DAG<-matrix(c(2,2,4,1,3,3),3,2)
-#' LAMBDA<-c(1,4,3,2.5,2)
-#' x<-4
-#' PathP<-pathProbCBN(DAG, LAMBDA, x)
-#' edgeMarginalized(PathP,x)
-edgeMarginalized <- function(PathProb, x) {
-    PEmap <- pathEdgeMapper(x)
-    D <- dim(PEmap)[2]
-    EdgeProb <- numeric(D)
-    for (i in 1:D) {
-        INDX <- which(PEmap[, i] == 1)
-        EdgeProb[i] <- sum(PathProb[INDX])
+#' dag <- matrix(c(2, 2, 4, 1, 3, 3), 3, 2)
+#' lambda <- c(1, 4, 3, 2.5, 2)
+#' x <- 4
+#' pathP <- pathProbCBN(dag, lambda, x)
+#' edgeMarginalized(pathP, x)
+edgeMarginalized <- function(pathProb, x) {
+    peMap <- pathEdgeMapper(x)
+    d <- dim(peMap)[2]
+    edgeProb <- numeric(d)
+    for (i in 1:d) {
+        indx <- which(peMap[, i] == 1)
+        edgeProb[i] <- sum(pathProb[indx])
     }
-    return(EdgeProb)
+    return(edgeProb)
 }
 
 
 #' pathwayWeightingRCBN
 #'
-#' @param EdgeProb Marginal edge probabilities
-#' @param PEmap Pathway-edge compatibility matrix
+#' @param edgeProb Marginal edge probabilities
+#' @param peMap Pathway-edge compatibility matrix
 #'
 #' @return  The pathway weights (step 4 of the R-CBN algorithm)
 #' @export
 #'
 #' @examples
-#' DAG<-matrix(c(2,2,4,1,3,3),3,2)
-#' LAMBDA<-c(1,4,3,2.5,2)
-#' x<-4
-#' PathP<-pathProbCBN(DAG, LAMBDA, x)
-#' EdgeProb<-edgeMarginalized(PathP,x)
-#' PEmap<-pathEdgeMapper(4)
-#' pathwayWeightingRCBN(EdgeProb,PEmap)
-pathwayWeightingRCBN <- function(EdgeProb, PEmap) {
-    D <- dim(PEmap)[1]
-    w <- numeric(D)
-    for (i in 1:D) {
+#' dag <- matrix(c(2, 2, 4, 1, 3, 3), 3, 2)
+#' lambda <- c(1, 4, 3, 2.5, 2)
+#' x <- 4
+#' pathP <- pathProbCBN(dag, lambda, x)
+#' edgeProb <- edgeMarginalized(pathP, x)
+#' peMap <- pathEdgeMapper(4)
+#' pathwayWeightingRCBN(edgeProb, peMap)
+pathwayWeightingRCBN <- function(edgeProb, peMap) {
+    d <- dim(peMap)[1]
+    w <- numeric(d)
+    for (i in 1:d) {
         w[i] <- 1
-        INDX <- which(PEmap[i, ] == 1)
-        for (j in INDX) {
-            w[i] <- w[i] * EdgeProb[j]
+        indx <- which(peMap[i, ] == 1)
+        for (j in indx) {
+            w[i] <- w[i] * edgeProb[j]
         }
     }
     w <- w / sum(w)
@@ -712,26 +633,24 @@ pathwayWeightingRCBN <- function(EdgeProb, PEmap) {
 
 #' pathNormalization
 #'
-#' @param PathProb The pathway probabilities returned in the step 3 of the R-CBN algorithm
+#' @param pathProb The pathway probabilities returned in the step 3 of the R-CBN algorithm
 #' @param x        The number of mutations to consider
 #'
 #' @return  The updated pathway probabilities (the step 5 of the R-CBN algorithm)
 #' @export
 #'
 #' @examples
-#' DAG<-matrix(c(2,2,4,1,3,3),3,2)
-#' LAMBDA<-c(1,4,3,2.5,2)
-#' x<-4
-#' PathP<-pathProbCBN(DAG, LAMBDA, x)
-#' PathN<-pathNormalization(PathP, x)
-pathNormalization <- function(PathProb, x) {
-    ### Step 4 of the R-CBN algorithm
-    PEmap <- pathEdgeMapper(x)
-    EdgeProb <- edgeMarginalized(PathProb, x)
-    w <- pathwayWeightingRCBN(EdgeProb, PEmap)
-    ### Step 5 of the R-CBN algorithm
-    PathProbn <- ((w * PathProb) / sum(w * PathProb)) # The normalized pathway probability
-    return(PathProbn)
+#' dag <- matrix(c(2, 2, 4, 1, 3, 3), 3, 2)
+#' lambda <- c(1, 4, 3, 2.5, 2)
+#' x <- 4
+#' pathP <- pathProbCBN(dag, lambda, x)
+#' pathN <- pathNormalization(pathP, x)
+pathNormalization <- function(pathProb, x) {
+    peMap <- pathEdgeMapper(x)
+    edgeProb <- edgeMarginalized(pathProb, x)
+    w <- pathwayWeightingRCBN(edgeProb, peMap)
+    pathProbn <- ((w * pathProb) / sum(w * pathProb))
+    return(pathProbn)
 }
 
 
@@ -744,37 +663,32 @@ pathNormalization <- function(PathProb, x) {
 #'
 #' @examples
 #' set.seed(100)
-#' gMat<-matrix(sample(c(0,1),12,replace = TRUE),3,4)
+#' gMat <- matrix(sample(c(0, 1), 12, replace = TRUE), 3, 4)
 #' pathProbQuartetRCBN(gMat)
 pathProbQuartetRCBN <- function(gMat) {
-    ### Step 1: Constructing the P matrix
-    Posets <- readRDS(system.file("extdata", "Posets.rds", package = "CBN2Path"))
+    posets <- readRDS(system.file("extdata", "Posets.rds", package = "CBN2Path"))
     bc <- Spock$new(
-        poset = Posets,
+        poset = posets,
         numMutations = 4,
         genotypeMatrix = cbind(1, gMat)
     )
-    Results <- ctcbn(bc)
-    LogLik <- numeric(219)
-    P <- matrix(0, 219, 24)
+    results <- ctcbn(bc)
+    logLik <- numeric(219)
+    p <- matrix(0, 219, 24)
     for (i in 1:219) {
-        LogLik[i] <- as.numeric(Results[[i]]$summary[4])
-        LAMBDA <- as.numeric(Results[[i]]$summary[5:9])
+        logLik[i] <- as.numeric(results[[i]]$summary[4])
+        lambda <- as.numeric(results[[i]]$summary[5:9])
         if (i == 1) {
-            DAG <- matrix(0, 0, 0)
+            dag <- matrix(0, 0, 0)
         } else {
-            DAG <- Posets[[i]]
+            dag <- posets[[i]]
         }
-        P[i, ] <- pathProbCBN(DAG, LAMBDA, 4)
+        p[i, ] <- pathProbCBN(dag, lambda, 4)
     }
-    ### Step 2: Poset-Level weighting
-    w1 <- posetWeightingRCBN(LogLik)
-    ### Step 3: Aggregating the Probability Distributions
-    PathProb1 <- apply((w1 * P), 2, sum) / sum(w1)
-    ### Step 4: Pathway-level weighting && Step 5: Updating the pathway probabilities
-    PathProb2 <- pathNormalization(PathProb1, 4)
-
-    return(PathProb2)
+    w1 <- posetWeightingRCBN(logLik)
+    pathProb1 <- apply((w1 * p), 2, sum) / sum(w1)
+    pathProb2 <- pathNormalization(pathProb1, 4)
+    return(pathProb2)
 }
 
 
@@ -784,19 +698,19 @@ pathProbQuartetRCBN <- function(gMat) {
 #'
 #' @param mat A given poset represented by a binary matrix (in B-CBN)
 #'
-#' @return #Poset weight vectors based on the frequency of occurence in the BCBN MCMC-sampling scheme.
+#' @return #Poset weight vectors based on the frequency of occurrence in the BCBN MCMC-sampling scheme.
 #' @export
 #'
 #' @examples
 #' set.seed(100)
-#' mat<-matrix(sample(c(0,1),16,replace=TRUE),4,4)
+#' mat <- matrix(sample(c(0, 1), 16, replace = TRUE), 4, 4)
 #' base2Indexing(mat)
 base2Indexing <- function(mat) {
     count <- 0
     num <- 0
-    D <- dim(mat)[1]
-    for (i in 1:D) {
-        for (j in 1:D) {
+    d <- dim(mat)[1]
+    for (i in 1:d) {
+        for (j in 1:d) {
             count <- count + 1
             if (mat[i, j] == 1) {
                 num <- num + 2^count
@@ -816,59 +730,48 @@ base2Indexing <- function(mat) {
 #'
 #' @examples
 #' set.seed(100)
-#' gMat<-matrix(sample(c(0,1),12,replace = TRUE),3,4)
+#' gMat <- matrix(sample(c(0, 1), 12, replace = TRUE), 3, 4)
 #' pathProbQuartetBCBN(gMat)
 pathProbQuartetBCBN <- function(gMat) {
-    ### Step 1: Constructing the P matrix
     genotypeMatrix <- cbind(1, gMat)
-    Posets <- readRDS(system.file("extdata", "Posets.rds", package = "CBN2Path"))
+    posets <- readRDS(system.file("extdata", "Posets.rds", package = "CBN2Path"))
     bc <- Spock$new(
-      poset = Posets,
+      poset = posets,
       numMutations = 4,
       genotypeMatrix = cbind(1, gMat)
     )
-    Results <- ctcbn(bc)
-    P <- matrix(0, 219, 24)
+    results <- ctcbn(bc)
+    p <- matrix(0, 219, 24)
     for (i in 1:219) {
-        LAMBDA <- as.numeric(Results[[i]]$summary[5:9])
+        lambda <- as.numeric(results[[i]]$summary[5:9])
         if (i == 1) {
-            DAG <- matrix(0, 0, 0)
+            dag <- matrix(0, 0, 0)
         } else {
-            DAG <- Posets[[i]]
+            dag <- posets[[i]]
         }
-        P[i, ] <- pathProbCBN(DAG, LAMBDA, 4)
+        p[i, ] <- pathProbCBN(dag, lambda, 4)
     }
-
-
-    ### Step 2: Poset-Level weighting based on the MCMC sampling strategy in BCBN
-    Poset_Samples <- bcbn(gMat)
-
-    Poset_Index <- numeric(219)
+    posetSamples <- bcbn(gMat)
+    posetIndex <- numeric(219)
     for (i in 2:219) {
-        d <- dim(Posets[[i]])[1]
-        temp_mat <- matrix(0, 4, 4)
+        d <- dim(posets[[i]])[1]
+        tempMat <- matrix(0, 4, 4)
         for (j in 1:d) {
-            X1 <- Posets[[i]][j, 1]
-            X2 <- Posets[[i]][j, 2]
-            temp_mat[X1, X2] <- 1
+            x1 <- posets[[i]][j, 1]
+            x2 <- posets[[i]][j, 2]
+            tempMat[x1, x2] <- 1
         }
-        Poset_Index[i] <- base2Indexing(temp_mat)
+        posetIndex[i] <- base2Indexing(tempMat)
     }
-
     wB <- numeric(219)
     for (i in 1:100000) {
-        Sample_Index <- base2Indexing(Poset_Samples[[i]])
-        INDX <- which(Poset_Index == Sample_Index)
-        wB[INDX] <- wB[INDX] + 1
+        sampleIndex <- base2Indexing(posetSamples[[i]])
+        indx <- which(posetIndex == sampleIndex)
+        wB[indx] <- wB[indx] + 1
     }
-
     wB <- wB / sum(wB)
-
-
-    ### Step 3: Aggregating the Probability Distributions
-    PathProb <- apply((wB * P), 2, sum) / sum(wB)
-
-    return(PathProb)
+    pathProb <- apply((wB * p), 2, sum) / sum(wB)
+    return(pathProb)
 }
 
 
@@ -877,38 +780,36 @@ pathProbQuartetBCBN <- function(gMat) {
 
 #' jensenShannonDivergence
 #'
-#' @param Prob1 The first (discrete) probability distribution (vector)
-#' @param Prob2 The second (discrete) probability distribution (vector)
+#' @param prob1 The first (discrete) probability distribution (vector)
+#' @param prob2 The second (discrete) probability distribution (vector)
 #'
 #' @return Jensen Shannon Divergence between the two (discrete) probability distributions
 #' @export
 #'
 #' @examples
 #' set.seed(100)
-#' gMat<-matrix(sample(c(0,1),12,replace = TRUE),3,4)
-#' PathCT<-pathProbQuartetCTCBN(gMat)
-#' PathH<-pathProbQuartetHCBN(gMat)
-#' jensenShannonDivergence(PathCT,PathH)
-jensenShannonDivergence <- function(Prob1, Prob2) {
-    # Prob1: the first probability distribution
-    # Prob2: the second probability distribution
-    D <- 0
-    for (i in 1:length(Prob1)) {
-        if (Prob1[i] > 0) {
-            D <- D + Prob1[i] * log2(Prob1[i] / (0.5 * Prob1[i] + 0.5 * Prob2[i]))
+#' gMat <- matrix(sample(c(0, 1), 12, replace = TRUE), 3, 4)
+#' pathCT <- pathProbQuartetCTCBN(gMat)
+#' pathH <- pathProbQuartetHCBN(gMat)
+#' jensenShannonDivergence(pathCT, pathH)
+jensenShannonDivergence <- function(prob1, prob2) {
+    d <- 0
+    for (i in 1:length(prob1)) {
+        if (prob1[i] > 0) {
+            d <- d + prob1[i] * log2(prob1[i] / (0.5 * prob1[i] + 0.5 * prob2[i]))
         }
-        if (Prob2[i] > 0) {
-            D <- D + Prob2[i] * log2(Prob2[i] / (0.5 * Prob1[i] + 0.5 * Prob2[i]))
+        if (prob2[i] > 0) {
+            d <- d + prob2[i] * log2(prob2[i] / (0.5 * prob1[i] + 0.5 * prob2[i]))
         }
     }
-    Dv <- (D / 2)
-    return(Dv)
+    dv <- (d / 2)
+    return(dv)
 }
 
 
 #' predictability
 #'
-#' @param Prob Pathway probability vector
+#' @param prob Pathway probability vector
 #' @param x The length of genotype vectors
 #'
 #' @return predictability
@@ -916,20 +817,20 @@ jensenShannonDivergence <- function(Prob1, Prob2) {
 #'
 #' @examples
 #' set.seed(100)
-#' gMat<-matrix(sample(c(0,1),12,replace = TRUE),3,4)
-#' PathCT<-pathProbQuartetCTCBN(gMat)
-#' PathH<-pathProbQuartetHCBN(gMat)
-#' PredC<-predictability(PathCT,4)
-#' predictability(PathH,4)
-predictability <- function(Prob, x) {
-    TOT <- 0
-    for (i in 1:length(Prob)) {
-        if (sum(Prob[i], na.rm = TRUE) > 0) {
-            TOT <- TOT - Prob[i] * log(Prob[i])
+#' gMat <- matrix(sample(c(0, 1), 12, replace = TRUE), 3, 4)
+#' pathCT <- pathProbQuartetCTCBN(gMat)
+#' pathH <- pathProbQuartetHCBN(gMat)
+#' predC <- predictability(pathCT, 4)
+#' predictability(pathH, 4)
+predictability <- function(prob, x) {
+    tot <- 0
+    for (i in 1:length(prob)) {
+        if (sum(prob[i], na.rm = TRUE) > 0) {
+            tot <- tot - prob[i] * log(prob[i])
         }
     }
-    Pred <- 1 - (TOT / log(factorial(x))) ## computing the predictability
-    return(Pred)
+    pred <- 1 - (tot / log(factorial(x)))
+    return(pred)
 }
 
 

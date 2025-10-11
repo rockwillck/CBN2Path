@@ -1,39 +1,39 @@
 #' CT-CBN Single Batch
 #'
 #' @param dataset `Spock` object with poset and pattern/lambda data.
-#' @param bootstrap_samples  Number of bootstrap samples (requires `epsilon` > 0, `num_drawn_samples` = 0)
-#' @param random_seed Random seed.
-#' @param sampling_rate Sampling rate.
+#' @param bootstrapSamples Number of bootstrap samples (requires `epsilon` > 0, `numDrawnSamples` = 0)
+#' @param randomSeed Random seed.
+#' @param samplingRate Sampling rate.
 #' @param epsilon If between 0 and 1, the fraction of violations allowed per edge. If negative, the interval 0 to 0.5 will be sampled equidistantly with N points.
-#' @param num_drawn_samples If > 0, the number of samples to draw from the model. If zero (default), the model will be learned from data.
-#' @param num_em_runs Number of em runs.
+#' @param numDrawnSamples If > 0, the number of samples to draw from the model. If zero (default), the model will be learned from data.
+#' @param numEmRuns Number of em runs.
 #'
 #' @return A list of output data.
 #' @export
 #'
 #' @examples
-#' example_path <- getExamples()[1]
+#' examplePath <- getExamples()[1]
 #' bc <- Spock$new(
-#'     poset = readPoset(example_path)$sets,
-#'     numMutations = readPoset(example_path)$mutations,
-#'     genotypeMatrix = readPattern(example_path)
+#'     poset = readPoset(examplePath)$sets,
+#'     numMutations = readPoset(examplePath)$mutations,
+#'     genotypeMatrix = readPattern(examplePath)
 #' )
 #' ctcbnSingle(bc)
 ctcbnSingle <- function(dataset,
-                         bootstrap_samples = 0,
-                         random_seed = 1,
-                         sampling_rate = 1.0,
-                         epsilon = 0.0,
-                         num_drawn_samples = 0,
-                         num_em_runs = 1) {
+                         bootstrapSamples = 0,
+                         randomSeed = 1,
+                         samplingRate = 1.0,
+                         epsilon = 2,
+                         numDrawnSamples = 0,
+                         numEmRuns = 1) {
 
-    if (bootstrap_samples != 0 && !(epsilon > 0 && num_drawn_samples == 0)) {
-      stop("bootstrap_samples == 0 requires epsilon > 0 and num_drawn_samples == 0")
+    if (bootstrapSamples != 0 && !(epsilon > 0 && numDrawnSamples == 0)) {
+      stop("bootstrapSamples == 0 requires epsilon > 0 and numDrawnSamples == 0")
     }
-    bootstrap_mode = bootstrap_samples != 0
+    bootstrapMode = bootstrapSamples != 0
 
     outputStem <- tempfile("output")
-    secondPath <- dataset$getSecond(num_drawn_samples)
+    secondPath <- dataset$getSecond(numDrawnSamples)
     outputs <- list()
     for (i in 1:dataset$getSize()) {
         posetPath <- dataset$getPoset(i)
@@ -43,19 +43,19 @@ ctcbnSingle <- function(dataset,
             outputStem,
             posetPath,
             secondPath,
-            as.integer(bootstrap_mode),
-            as.integer(bootstrap_samples),
-            as.integer(random_seed),
-            as.double(sampling_rate),
+            as.integer(bootstrapMode),
+            as.integer(bootstrapSamples),
+            as.integer(randomSeed),
+            as.double(samplingRate),
             as.double(epsilon),
-            as.integer(num_drawn_samples),
-            as.integer(num_em_runs)
+            as.integer(numDrawnSamples),
+            as.integer(numEmRuns)
         )
 
         splitted <- unlist(strsplit(outputStem, "/"))
 
         outDir <- paste(splitted[1:(length(splitted) - 1)], collapse = "/")
-        outFiles <- (filter_strings_by_start(list.files(outDir), splitted[[length(splitted)]]))
+        outFiles <- (filterStringsByStart(list.files(outDir), splitted[[length(splitted)]]))
 
         outputList <- list()
         for (f in outFiles) {
@@ -75,7 +75,7 @@ ctcbnSingle <- function(dataset,
             # suppressWarnings(file.remove(f))
         }
 
-        if (num_drawn_samples == 0) {
+        if (numDrawnSamples == 0) {
           r <- as.numeric(unlist(strsplit(x, " ")))
           labels <- c(c("Poset", "Eps", "Alpha", "Loglike", "lambda_s"), paste0("lambda_", seq(1, length(r) - 5)))
           names(r) <- labels
@@ -95,56 +95,64 @@ ctcbnSingle <- function(dataset,
         # suppressWarnings(file.remove(paste(secondPath, "pat", sep = ".")))
     }
 
+    if (length(outputs) == 1) {
+      return(outputs[[1]])
+    }
+
     return(outputs)
 }
 
 #' CT-CBN
 #'
 #' @param datasets Vector of `Spock` objects with poset and pattern/lambda data or a `Spock` object (alias of ctcbnSingle).
-#' @param bootstrap_samples  Number of bootstrap samples (requires `epsilon` > 0, `num_drawn_samples` = 0)
-#' @param random_seed Random seed.
-#' @param sampling_rate Sampling rate.
+#' @param bootstrapSamples Number of bootstrap samples (requires `epsilon` > 0, `numDrawnSamples` = 0)
+#' @param randomSeed Random seed.
+#' @param samplingRate Sampling rate.
 #' @param epsilon If between 0 and 1, the fraction of violations allowed per edge. If negative, the interval 0 to 0.5 will be sampled equidistantly with N points.
-#' @param num_drawn_samples If > 0, the number of samples to draw from the model. If zero (default), the model will be learned from data.
-#' @param num_em_runs Number of em runs.
-#' @param n_cores Maximum number of threads to use to parallelize.
+#' @param numDrawnSamples If > 0, the number of samples to draw from the model. If zero (default), the model will be learned from data.
+#' @param numEmRuns Number of em runs.
+#' @param nCores Maximum number of threads to use to parallelize.
 #'
 #' @return A matrix of results.
 #' @export
 #'
 #' @examples
-#' example_path <- getExamples()[1]
+#' examplePath <- getExamples()[1]
 #' bc <- Spock$new(
-#'     poset = readPoset(example_path)$sets,
-#'     numMutations = readPoset(example_path)$mutations,
-#'     genotypeMatrix = readPattern(example_path)
+#'     poset = readPoset(examplePath)$sets,
+#'     numMutations = readPoset(examplePath)$mutations,
+#'     genotypeMatrix = readPattern(examplePath)
 #' )
 #' ctcbn(bc)
 ctcbn <- function(datasets,
-                  bootstrap_samples = 0,
-                  random_seed = 1,
-                  sampling_rate = 1.0,
+                  bootstrapSamples = 0,
+                  randomSeed = 1,
+                  samplingRate = 1.0,
                   epsilon = 2,
-                  num_drawn_samples = 0,
-                  num_em_runs = 1,
-                  n_cores = 1) {
-    if (length(datasets) < n_cores) {
-        message(paste("Number of datasets was less than number of cores. Using number of datasets (", length(datasets), ") as thread count.", sep = ""))
+                  numDrawnSamples = 0,
+                  numEmRuns = 1,
+                  nCores = 1) {
+    if (inherits(datasets, "Spock") && length(datasets$poset) == 1) {
+      return(ctcbnSingle(datasets, bootstrapSamples, randomSeed, samplingRate, epsilon, numDrawnSamples, numEmRuns))
+    } else if (inherits(datasets, "Spock")) {
+      datasets = sapply(datasets$poset, \(poset) Spock$new(
+        poset = poset,
+        numMutations = datasets$numMutations,
+        genotypeMatrix = datasets$genotypeMatrix
+      ))
     }
-    registerDoMC(cores = min(length(datasets), n_cores))
 
-    if (inherits(datasets, "Spock")) {
-        return(ctcbnSingle(datasets, bootstrap_samples, random_seed, sampling_rate, epsilon, num_drawn_samples, num_em_runs))
+    if (length(datasets) < nCores) {
+      message(paste("Number of datasets was less than number of cores. Using number of datasets (", length(datasets), ") as thread count.", sep = ""))
     }
-    output_stems <- replicate(length(datasets), tempfile("output"))
+
+    outputStems <- replicate(length(datasets), tempfile("output"))
     rowLength <- -1
     done <- 0
     outMatrixBuf <- vector("list", length(datasets))
-    dataI <- 1
-    rets <- foreach(dataI = 1:length(datasets)) %dopar% {
-        out <- ctcbnSingle(datasets[[dataI]], bootstrap_samples, random_seed, sampling_rate, epsilon, num_drawn_samples, num_em_runs)
-        list(i = dataI, row = out)
-    }
+
+    p <- MulticoreParam(workers = min(length(datasets), nCores))
+    rets <- bplapply(datasets, \(x) ctcbnSingle(x, bootstrapSamples, randomSeed, samplingRate, epsilon, numDrawnSamples, numEmRuns), BPOPTIONS = bpoptions(progressbar = TRUE), BPPARAM = p)
 
     return(rets)
 }

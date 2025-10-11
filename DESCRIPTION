@@ -26,7 +26,9 @@ Imports:
     grDevices,
     coda,
     graphics,
-    stats
+    stats,
+    TCGAbiolinks,
+    BiocParallel
 Suggests: 
     testthat (>= 3.0.0), BiocStyle, knitr, rmarkdown
 Depends:

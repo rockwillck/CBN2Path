@@ -4,12 +4,12 @@
 \alias{pathProbCBN}
 \title{pathProbCBN: quantifies pathway probabilities using the output of CT-CBN or H-CBN}
 \usage{
-pathProbCBN(DAG, LAMBDA, x)
+pathProbCBN(dag, lambda, x)
 }
 \arguments{
-\item{DAG}{matrix representing the DAG of restrictions.}
+\item{dag}{matrix representing the DAG of restrictions.}
 
-\item{LAMBDA}{the lambda values, which are produced by the CBN model.}
+\item{lambda}{the lambda values, which are produced by the CBN model.}
 
 \item{x}{the number of mutations considered.}
 }
@@ -20,8 +20,8 @@ vector of probabilities assigned to all potential pathways of length x
 pathProbCBN: quantifies pathway probabilities using the output of CT-CBN or H-CBN
 }
 \examples{
-DAG<-matrix(c(2,2,4,1,3,3),3,2)
-LAMBDA<-c(1,4,3,2.5,2)
-x<-4
-PathP<-pathProbCBN(DAG, LAMBDA, x)
+dag <- matrix(c(2, 2, 4, 1, 3, 3), 3, 2)
+lambda <- c(1, 4, 3, 2.5, 2)
+x <- 4
+pathP <- pathProbCBN(dag, lambda, x)
 }

@@ -30,7 +30,7 @@ Plot (gg object) visualization of fitness landscape
 Visualize Fitness Landscape
 }
 \examples{
-Genotypes <- c(
+genotypes <- c(
     "0000",
     "1000",
     "0100",
@@ -49,6 +49,6 @@ Genotypes <- c(
     "1111"
 )
 #
-COLintensity <- c(0, rep(0.25, 4), rep(0.5, 6), rep(0.75, 4), 1)
-visualizeFitnessLandscape(COLintensity)
+colIntensity <- c(0, rep(0.25, 4), rep(0.5, 6), rep(0.75, 4), 1)
+visualizeFitnessLandscape(colIntensity)
 }

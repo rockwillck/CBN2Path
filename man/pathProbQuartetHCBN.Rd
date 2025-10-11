@@ -17,6 +17,6 @@ pathProbQuartetHCBN
 }
 \examples{
 set.seed(100)
-gMat<-matrix(sample(c(0,1),800,replace = TRUE),200,4)
-PathH<-pathProbQuartetHCBN(gMat)
+gMat <- matrix(sample(c(0, 1), 12, replace = TRUE), 3, 4)
+pathProbQuartetHCBN(gMat)
 }

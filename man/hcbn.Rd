@@ -8,9 +8,9 @@ hcbn(
   datasets,
   anneal = FALSE,
   temp = 0,
-  annealing_steps = 0,
+  annealingSteps = 0,
   epsilon = 2,
-  n_cores = 1
+  nCores = 1
 )
 }
 \arguments{
@@ -20,11 +20,11 @@ hcbn(
 
 \item{temp}{Temperature of simulated annealing.}
 
-\item{annealing_steps}{Number of simulated annealing steps.}
+\item{annealingSteps}{Number of simulated annealing steps.}
 
 \item{epsilon}{Value of eps for CT-CBN model selection. Requires both pattern and lambda data in input \code{Spock}.}
 
-\item{n_cores}{Maximum number of threads to use to parallelize.}
+\item{nCores}{Maximum number of threads to use to parallelize.}
 }
 \value{
 A matrix of results.
@@ -33,11 +33,11 @@ A matrix of results.
 H-CBN
 }
 \examples{
-example_path <- getExamples()[1]
+examplePath <- getExamples()[1]
 bc <- Spock$new(
-    poset = readPoset(example_path)$sets,
-    numMutations = readPoset(example_path)$mutations,
-    genotypeMatrix = readPattern(example_path)
+    poset = readPoset(examplePath)$sets,
+    numMutations = readPoset(examplePath)$mutations,
+    genotypeMatrix = readPattern(examplePath)
 )
 hcbn(bc)
 hcbn(c(bc, bc, bc))

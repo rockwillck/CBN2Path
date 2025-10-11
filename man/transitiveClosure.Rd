@@ -17,7 +17,6 @@ Transitive Closure
 }
 \examples{
 poset <- matrix(0, 10, 10)
-
 poset[1, 2] <- 1
 poset[2, 3] <- 1
 poset[3, 4] <- 1

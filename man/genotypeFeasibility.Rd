@@ -4,12 +4,12 @@
 \alias{genotypeFeasibility}
 \title{genotypeFeasibility}
 \usage{
-genotypeFeasibility(genotypes, DAG, x)
+genotypeFeasibility(genotypes, dag, x)
 }
 \arguments{
 \item{genotypes}{the full set of potential binary genotypes of a given length.}
 
-\item{DAG}{matrix representing the DAG of restrictions.}
+\item{dag}{matrix representing the DAG of restrictions.}
 
 \item{x}{the number of mutations considered.}
 }
@@ -20,8 +20,8 @@ a binary vector, which indicates feasibility or infeasibility of a set of genoty
 genotypeFeasibility
 }
 \examples{
-Geno4<-generateMatrixGenotypes(4)
-DAG<-matrix(c(4,4,4,1,2,3),3,2)
-x<-4
-GenoF4<-genotypeFeasibility(Geno4,DAG,x)
+geno4 <- generateMatrixGenotypes(4)
+dag <- matrix(c(4, 4, 4, 1, 2, 3), 3, 2)
+x <- 4
+genoF4 <- genotypeFeasibility(geno4, dag, x)
 }

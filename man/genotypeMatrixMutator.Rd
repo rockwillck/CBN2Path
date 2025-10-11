@@ -4,14 +4,14 @@
 \alias{genotypeMatrixMutator}
 \title{genotypeMatrixMutator}
 \usage{
-genotypeMatrixMutator(mat, FP, FN)
+genotypeMatrixMutator(mat, fp, fn)
 }
 \arguments{
-\item{mat}{The genotype matrix including sampled genotypes, which need to be muatated.}
+\item{mat}{The genotype matrix including sampled genotypes, which need to be mutated.}
 
-\item{FP}{False positive rate}
+\item{fp}{False positive rate}
 
-\item{FN}{False negative rate}
+\item{fn}{False negative rate}
 }
 \value{
 The mutated version of the genotype matrix
@@ -21,6 +21,6 @@ genotypeMatrixMutator
 }
 \examples{
 set.seed(100)
-gMat<-matrix(sample(c(0,1),800,replace = TRUE),200,4)
-gMat_mut<-genotypeMatrixMutator(gMat,0.2,0.2)
+gMat <- matrix(sample(c(0, 1), 800, replace = TRUE), 200, 4)
+gMatMut <- genotypeMatrixMutator(gMat, 0.2, 0.2)
 }

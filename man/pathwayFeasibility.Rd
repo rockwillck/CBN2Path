@@ -4,10 +4,10 @@
 \alias{pathwayFeasibility}
 \title{pathwayFeasibility}
 \usage{
-pathwayFeasibility(DAG, x)
+pathwayFeasibility(dag, x)
 }
 \arguments{
-\item{DAG}{matrix representing the DAG of restrictions.}
+\item{dag}{matrix representing the DAG of restrictions.}
 
 \item{x}{the number of mutations considered.}
 }
@@ -18,7 +18,7 @@ a binary vector, which indicates feasibility or infeasibility of a set of pathwa
 pathwayFeasibility
 }
 \examples{
-DAG<-matrix(c(4,4,4,1,2,3),3,2)
-x<-4
-PathF<-pathwayFeasibility(DAG, x)
+dag <- matrix(c(4, 4, 4, 1, 2, 3), 3, 2)
+x <- 4
+pathwayFeasibility(dag, x)
 }

@@ -4,12 +4,12 @@
 \alias{pathwayWeightingRCBN}
 \title{pathwayWeightingRCBN}
 \usage{
-pathwayWeightingRCBN(EdgeProb, PEmap)
+pathwayWeightingRCBN(edgeProb, peMap)
 }
 \arguments{
-\item{EdgeProb}{Marginal edge probabilities}
+\item{edgeProb}{Marginal edge probabilities}
 
-\item{PEmap}{Pathway-edge compatibility matrix}
+\item{peMap}{Pathway-edge compatibility matrix}
 }
 \value{
 The pathway weights (step 4 of the R-CBN algorithm)
@@ -18,11 +18,11 @@ The pathway weights (step 4 of the R-CBN algorithm)
 pathwayWeightingRCBN
 }
 \examples{
-DAG<-matrix(c(2,2,4,1,3,3),3,2)
-LAMBDA<-c(1,4,3,2.5,2)
-x<-4
-PathP<-pathProbCBN(DAG, LAMBDA, x)
-EdgeProb<-edgeMarginalized(PathP,x)
-PEmap<-pathEdgeMapper(4)
-W2<-pathwayWeightingRCBN(EdgeProb,PEmap)
+dag <- matrix(c(2, 2, 4, 1, 3, 3), 3, 2)
+lambda <- c(1, 4, 3, 2.5, 2)
+x <- 4
+pathP <- pathProbCBN(dag, lambda, x)
+edgeProb <- edgeMarginalized(pathP, x)
+peMap <- pathEdgeMapper(4)
+pathwayWeightingRCBN(edgeProb, peMap)
 }

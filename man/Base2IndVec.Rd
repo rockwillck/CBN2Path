@@ -16,6 +16,6 @@ a number used for indexing a given genotype
 base2IndVec
 }
 \examples{
-vec<-c(0,1,0,1)
+vec <- c(0, 1, 0, 1)
 base2IndVec(vec)
 }

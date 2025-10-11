@@ -4,10 +4,10 @@
 \alias{predictability}
 \title{predictability}
 \usage{
-predictability(Prob, x)
+predictability(prob, x)
 }
 \arguments{
-\item{Prob}{Pathway probability vector}
+\item{prob}{Pathway probability vector}
 
 \item{x}{The length of genotype vectors}
 }
@@ -19,9 +19,9 @@ predictability
 }
 \examples{
 set.seed(100)
-gMat<-matrix(sample(c(0,1),800,replace = TRUE),200,4)
-PathCT<-pathProbQuartetCTCBN(gMat)
-PathH<-pathProbQuartetHCBN(gMat)
-PredC<-predictability(PathCT,4)
-PredH<-predictability(PathH,4)
+gMat <- matrix(sample(c(0, 1), 12, replace = TRUE), 3, 4)
+pathCT <- pathProbQuartetCTCBN(gMat)
+pathH <- pathProbQuartetHCBN(gMat)
+predC <- predictability(pathCT, 4)
+predictability(pathH, 4)
 }

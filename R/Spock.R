@@ -7,11 +7,11 @@
 #' @export
 #'
 #' @examples
-#' example_path <- getExamples()[1]
+#' examplePath <- getExamples()[1]
 #' bc <- Spock$new(
-#'     poset = readPoset(example_path)$sets,
-#'     numMutations = readPoset(example_path)$mutations,
-#'     genotypeMatrix = readPattern(example_path)
+#'     poset = readPoset(examplePath)$sets,
+#'     numMutations = readPoset(examplePath)$mutations,
+#'     genotypeMatrix = readPattern(examplePath)
 #' )
 Spock <- R6::R6Class("Spock", list(
 
@@ -66,7 +66,7 @@ Spock <- R6::R6Class("Spock", list(
             as.character(self$numMutations), output,
             sep = "\n"
         ), "0", sep = ""))
-        return(temp_file(ext = ".poset", fileC = fileC))
+        return(tempFile(ext = ".poset", fileC = fileC))
     },
 
     #' @description Write pattern/lambda data to a tempfile.
@@ -85,11 +85,11 @@ Spock <- R6::R6Class("Spock", list(
     getPattern = function() {
         fileC <- (paste(
             paste(as.character(nrow(self$genotypeMatrix)), as.character(ncol(self$genotypeMatrix)), sep = " "),
-            matrix_to_string(self$genotypeMatrix),
+            matrixToString(self$genotypeMatrix),
             sep = "\n"
         ))
 
-        return(temp_file(ext = ".pat", fileC = fileC))
+        return(tempFile(ext = ".pat", fileC = fileC))
     },
 
     #' @description Write lambda data to a tempfile.
@@ -110,6 +110,20 @@ Spock <- R6::R6Class("Spock", list(
             }
             fileC <- (output)
         }
-        return(temp_file(ext = ".lambda", fileC = fileC))
+        return(tempFile(ext = ".lambda", fileC = fileC))
+    },
+
+    #' @description Print summary information to console.
+    #' @param verbose Method prints contents as well as dimensions to console if `TRUE`.
+    #' @return Nothing.
+    show = function(verbose=FALSE) {
+      print(sprintf("Poset: %d x 2", self$getSize()))
+      if (verbose) {
+        print(self$poset)
+      }
+      print(sprintf("Genotype Matrix: %d x %d", nrow(self$genotypeMatrix), ncol(self$genotypeMatrix)))
+      if (verbose) {
+        print(self$genotypeMatrix)
+      }
     }
 ))

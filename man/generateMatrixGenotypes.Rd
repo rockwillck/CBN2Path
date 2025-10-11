@@ -16,5 +16,5 @@ a genotype matrix with ncol=g and nrow=2^g
 generateMatrixGenotypes
 }
 \examples{
-Geno4<-generateMatrixGenotypes(4)
+generateMatrixGenotypes(4)
 }

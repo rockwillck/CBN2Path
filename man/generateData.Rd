@@ -4,16 +4,16 @@
 \alias{generateData}
 \title{Generate Data}
 \usage{
-generateData(poset, thetas, eps, N)
+generateData(poset, theta, eps, n)
 }
 \arguments{
 \item{poset}{Poset matrix}
 
-\item{thetas}{Vector of theta values}
+\item{theta}{Vector of theta values}
 
 \item{eps}{Epsilon}
 
-\item{N}{N}
+\item{n}{N}
 }
 \value{
 A matrix
@@ -23,7 +23,6 @@ Generate Data
 }
 \examples{
 poset <- matrix(0, 10, 10)
-
 poset[1, 2] <- 1
 poset[2, 3] <- 1
 poset[3, 4] <- 1
@@ -32,11 +31,9 @@ poset[6, 7] <- 1
 poset[8, 9] <- 1
 poset[8, 10] <- 1
 poset[6, 9] <- 1
-
 tr <- transitiveClosure(poset)
 theta <- c(0.8, 0.7, 0.6, 0.7, 0.4, 0.25, 0.6, 0.75, 0.5, 0.2)
 eps <- 0.1
-N <- 400
-
-generateData(tr, theta, eps, N)
+n <- 400
+generateData(tr, theta, eps, n)
 }

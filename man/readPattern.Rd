@@ -4,10 +4,10 @@
 \alias{readPattern}
 \title{Read a .pat file}
 \usage{
-readPattern(filestem)
+readPattern(fileStem)
 }
 \arguments{
-\item{filestem}{The filename of the .pat file without the .pat suffix.}
+\item{fileStem}{The filename of the .pat file without the .pat suffix.}
 }
 \value{
 A matrix.

@@ -32,16 +32,18 @@ getRawTCGAData <- function(project) {
 #' generateTCGAMatrix()
 generateTCGAMatrix <- function(rawData=suppressMessages(getRawTCGAData("TCGA-BLCA")), genes=c("TP53","ARID1A","KDM6A","PIK3CA","RB1","EP300","FGFR3","CREBBP","STAG2","ATM")) {
   geneSet = list()
+  tempSet = list()
   allIDs = c()
   for (gene in genes) {
     rows = rawData[rawData$Hugo_Symbol == gene,]
+    tempSet[[gene]] = rows[!duplicated(rows$Tumor_Sample_UUID),]
     rows = rows[rows$Variant_Classification %in% c("Missense_Mutation", "Nonsense_Mutation"),]
     geneSet[[gene]] = rows[!duplicated(rows$Tumor_Sample_UUID),]
-    allIDs = c(allIDs, geneSet[[gene]]$Tumor_Sample_UUID)
+    allIDs = c(allIDs, tempSet[[gene]]$Tumor_Sample_UUID)
   }
-
+  
   allIDs = unique(allIDs)
-
+  
   mat = matrix(nrow = 0, ncol = length(geneSet))
   for (id in allIDs) {
     patientV = c()
@@ -54,8 +56,10 @@ generateTCGAMatrix <- function(rawData=suppressMessages(getRawTCGAData("TCGA-BLC
     }
     mat = rbind(mat, patientV)
   }
-
+  
   rownames(mat) = NULL
-
+  
   cbind(1,mat)
 }
+
+

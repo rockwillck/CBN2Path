@@ -83,9 +83,10 @@ Spock <- R6::R6Class("Spock", list(
     #' @description Write pattern data to a tempfile.
     #' @return File path to tempfile.
     getPattern = function() {
+        buffer <- cbind(1,self$genotypeMatrix)
         fileC <- (paste(
-            paste(as.character(nrow(self$genotypeMatrix)), as.character(ncol(self$genotypeMatrix)), sep = " "),
-            matrixToString(self$genotypeMatrix),
+            paste(as.character(nrow(buffer)), as.character(ncol(buffer)), sep = " "),
+            matrixToString(buffer),
             sep = "\n"
         ))
 

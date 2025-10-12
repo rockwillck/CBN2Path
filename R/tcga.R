@@ -54,6 +54,4 @@ generateTCGAMatrix <- function(rawData=suppressMessages(getRawTCGAData("TCGA-BLC
   }
   
   rownames(mat) = NULL
-  
-  cbind(1,mat)
 }

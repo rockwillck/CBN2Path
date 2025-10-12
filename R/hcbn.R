@@ -136,8 +136,13 @@ hcbn <- function(datasets,
     done <- 0
     outMatrixBuf <- vector("list", length(datasets))
 
-    p <- MulticoreParam(workers = min(length(datasets), nCores))
-    rets <- bplapply(datasets, \(x) hcbnSingle(x, anneal, temp, annealingSteps, epsilon), BPOPTIONS = bpoptions(progressbar = TRUE), BPPARAM = p)
-
+    if (exists("MulticoreParam", mode = "function")) {
+      p <- MulticoreParam(workers = min(length(datasets), nCores))
+      rets <- bplapply(datasets, \(x) hcbnSingle(x, anneal, temp, annealingSteps, epsilon), BPOPTIONS = bpoptions(progressbar = TRUE), BPPARAM = p)
+    } else {
+      message("MulticoreParam not found — running sequentially.")
+      rets <- lapply(datasets, \(x) hcbnSingle(x, anneal, temp, annealingSteps, epsilon))
+    }
+    
     return(rets)
 }

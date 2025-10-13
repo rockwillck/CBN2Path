@@ -9,7 +9,7 @@ ctcbnSingle(
   bootstrapSamples = 0,
   randomSeed = 1,
   samplingRate = 1,
-  epsilon = 0,
+  epsilon = 2,
   numDrawnSamples = 0,
   numEmRuns = 1
 )
@@ -23,7 +23,7 @@ ctcbnSingle(
 
 \item{samplingRate}{Sampling rate.}
 
-\item{epsilon}{If between 0 and 1, the fraction of violations allowed per edge. If negative, the interval 0 to 0.5 will be sampled equidistantly with N points.}
+\item{epsilon}{If between 0 and 1, the fraction of violations allowed per edge. If negative, the interval 0 to 0.5 will be sampled equidistantly with N points and the output \code{Spock} will include multiple resulting posets.}
 
 \item{numDrawnSamples}{If > 0, the number of samples to draw from the model. If zero (default), the model will be learned from data.}
 

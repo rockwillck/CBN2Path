@@ -4,7 +4,7 @@
 #' @param bootstrapSamples Number of bootstrap samples (requires `epsilon` > 0, `numDrawnSamples` = 0)
 #' @param randomSeed Random seed.
 #' @param samplingRate Sampling rate.
-#' @param epsilon If between 0 and 1, the fraction of violations allowed per edge. If negative, the interval 0 to 0.5 will be sampled equidistantly with N points.
+#' @param epsilon If between 0 and 1, the fraction of violations allowed per edge. If negative, the interval 0 to 0.5 will be sampled equidistantly with N points and the output `Spock` will include multiple resulting posets.
 #' @param numDrawnSamples If > 0, the number of samples to draw from the model. If zero (default), the model will be learned from data.
 #' @param numEmRuns Number of em runs.
 #'
@@ -58,10 +58,11 @@ ctcbnSingle <- function(dataset,
         outFiles <- (filterStringsByStart(list.files(outDir), splitted[[length(splitted)]]))
 
         outputList <- list()
+        outputList$poset <- list()
         for (f in outFiles) {
             f <- paste(c(outDir, f), collapse = "/")
             if (endsWith(f, ".poset")) {
-                outputList$poset <- readPoset(substring(f, 1, nchar(f) - 6))
+                outputList$poset <- c(outputList$poset, list(readPoset(substring(f, 1, nchar(f) - 6))))
             }
             if (endsWith(f, ".pat")) {
                 outputList$pattern <- readPattern(substring(f, 1, nchar(f) - 4))
@@ -73,6 +74,10 @@ ctcbnSingle <- function(dataset,
               outputList$time <- readTime(substring(f, 1, nchar(f) - 5))
             }
             # suppressWarnings(file.remove(f))
+        }
+
+        if (length(outputList$poset) == 1) {
+          outputList$poset = outputList$poset[[1]]
         }
 
         if (numDrawnSamples == 0) {
@@ -108,7 +113,7 @@ ctcbnSingle <- function(dataset,
 #' @param bootstrapSamples Number of bootstrap samples (requires `epsilon` > 0, `numDrawnSamples` = 0)
 #' @param randomSeed Random seed.
 #' @param samplingRate Sampling rate.
-#' @param epsilon If between 0 and 1, the fraction of violations allowed per edge. If negative, the interval 0 to 0.5 will be sampled equidistantly with N points.
+#' @param epsilon If between 0 and 1, the fraction of violations allowed per edge. If negative, the interval 0 to 0.5 will be sampled equidistantly with N points and the output `Spock` will include multiple resulting posets.
 #' @param numDrawnSamples If > 0, the number of samples to draw from the model. If zero (default), the model will be learned from data.
 #' @param numEmRuns Number of em runs.
 #' @param nCores Maximum number of threads to use to parallelize.
@@ -158,6 +163,6 @@ ctcbn <- function(datasets,
       message("MulticoreParam not found — running sequentially.")
       rets <- lapply(datasets, \(x) ctcbnSingle(x, bootstrapSamples, randomSeed, samplingRate, epsilon, numDrawnSamples, numEmRuns))
     }
-    
+
     return(rets)
 }

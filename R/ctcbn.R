@@ -59,6 +59,7 @@ ctcbnSingle <- function(dataset,
 
         outputList <- list()
         outputList$poset <- list()
+        # print(outFiles)
         for (f in outFiles) {
             f <- paste(c(outDir, f), collapse = "/")
             if (endsWith(f, ".poset")) {
@@ -73,6 +74,10 @@ ctcbnSingle <- function(dataset,
             if (endsWith(f, ".time")) {
               outputList$time <- readTime(substring(f, 1, nchar(f) - 5))
             }
+
+            if (endsWith(f, ".summary")) {
+              x <- readLines(f)
+            }
             # suppressWarnings(file.remove(f))
         }
 
@@ -81,10 +86,14 @@ ctcbnSingle <- function(dataset,
         }
 
         if (numDrawnSamples == 0) {
-          r <- as.numeric(unlist(strsplit(x, " ")))
-          labels <- c(c("Poset", "Eps", "Alpha", "Loglike", "lambda_s"), paste0("lambda_", seq(1, length(r) - 5)))
-          names(r) <- labels
-          outputList$summary <- r
+
+          r <- lapply(x, \(row) as.numeric(unlist(strsplit(row, " "))))
+          labels <- c(c("Poset", "Eps", "Alpha", "Loglike", "lambda_s"), paste0("lambda_", seq(1, length(r[[1]]) - 5)))
+
+          df <- as.data.frame(do.call(rbind, r))
+          colnames(df) <- labels
+
+          outputList$summary <- df
         }
 
         if (file.exists(paste(posetPath, "poset", sep = "."))) {

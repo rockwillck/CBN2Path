@@ -33,6 +33,9 @@ BiocManager::install("CBN2Path")
 
 ```{r}
 library(CBN2Path)
+```
+
+```{r include=FALSE}
 library(TCGAbiolinks)
 ```
 

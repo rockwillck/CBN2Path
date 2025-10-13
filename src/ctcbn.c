@@ -216,14 +216,31 @@ SEXP ctcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP mb, SEXP bs, SEXP rs, SEXP sr, SE
     {
       double epsilon;
       int k;
+
+      FILE *summaryFile;
+
+      char summaryFileName[255];
+      snprintf(summaryFileName, sizeof(summaryFileName), "%s.summary", ofilestem);
+
+      summaryFile = fopen(summaryFileName, "w");
+
+      output = "multi";
+
       for (k = 0; k < N; k++)
       {
         epsilon = (double)k / (2.0 * (double)N);
-        output = select_poset(k, epsilon, &M, lambda, D, N_u, R, LEARN_BOTH, 1);
+        if (summaryFile == NULL) {
+        } else {
+          fprintf(summaryFile, select_poset(k, epsilon, &M, lambda, D, N_u, R, LEARN_BOTH, 1));
+          fprintf(summaryFile, "\n");
+        }
+
         if (e_flag) {
           write_poset(k, ofilestem, M.P, M.n, -1);
         }
       }
+
+      fclose(summaryFile);
     }
     free_data(D, N_u, M.n);
     free_poset(&M);

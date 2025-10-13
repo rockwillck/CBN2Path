@@ -33,13 +33,32 @@ BiocManager::install("CBN2Path")
 
 ```{r}
 library(CBN2Path)
+library(TCGAbiolinks)
 ```
 
 ## Cite our work
 
 If you use the CBN2Path package, please cite the paper formally as follows:
 
-William Choi-Kim and Sayed-Rzgar Hosseini. CBN2Path: an R/Bioconductor package for the analysis of cancer progression pathways using Conjunctive Bayesian Networks. F1000Research (In Submission).
+Choi-Kim W and Hosseini SR. CBN2Path: an R/Bioconductor package for the analysis of cancer progression pathways using Conjunctive Bayesian Networks. F1000Research 2025, 14:834 (https://doi.org/10.12688/f1000research.168810.1) 
+
+
+## Preparing the genotype matrix
+
+The genotype matrix is a binary matrix in which each row represents a sample and each column represents a gene. The element (i,j) of the matrix is 1 if the i-th sample contains a nonsense or missense mutation in the j-th gene, and zero otherwise. In the example below, a genotype matrix is generated for 414 Bladder Urothelial Carcinoma samples in the "TCGA-BLCA" data. Note that we in this example we have used "TP53", "ARID1A", "KDM6A" and "PIK3CA" as our genes of interest to genotype the samples. 
+
+```{r}
+# Obtaining the "TCGA-BLCA" data
+RawData<-getRawTCGAData("TCGA-BLCA")
+
+# Specifying the genes
+genes=c("TP53","ARID1A","KDM6A","PIK3CA")
+
+# Generating the genotype matrix
+gMat<-generateTCGAMatrix(RawData,genes)
+
+```
+
 
 ## The CT-CBN model
 
@@ -49,24 +68,18 @@ CT-CBN needs the following three inputs:
 
 1.  **`numMutations`:** The number of mutations to be considered.
 
-2.  **`poset`:** The partially ordered set (poset), which is represented as a two-column matrix each row of which indicate that mutation in the first column must occur before the mutation in the second column.
+2.  **`poset`:** The partially ordered set (poset), which is represented as a two-column matrix each row of which indicates that mutation in the first column must occur before the mutation in the second column.
 
-3.  **`genotypeMatrix`:** a binary matrix with **n** rows and **m** columns. Each row corresponds to a given genotype in the sample. The first column must be always 1 and each of the other columns corresponds to a given mutation. Thus, **m** equals `numMutations` plus one.
+3.  **`genotypeMatrix`:** a binary matrix with **n** rows and **m** columns. Each row corresponds to a given genotype in the sample.
 
 Below, you can see an example on how these inputs are prepared to be used in the original implementation of the ctcbn model (**`ctcbnSingle`**):
 
 ```{r}
 # The poset
-dag <- matrix(c(3, 3, 4, 4, 1, 2, 1, 2), 4, 2)
+dag <- matrix(c(1, 1, 1, 4, 2, 3, 4, 3), 4, 2)
 
-# The genotype matrix
-set.seed(100)
-gen1 <- c(rep(0, 150), sample(c(0, 1), 25, replace = TRUE), rep(0, 25))
-gen2 <- c(rep(0, 175), sample(c(0, 1), 25, replace = TRUE))
-gen3 <- c(rep(0, 50), sample(c(0, 1), 100, replace = TRUE), rep(1, 50))
-gen4 <- c(sample(c(0, 1), 100, replace = TRUE), rep(0, 50), rep(1, 50))
-gMat <- matrix(c(gen1, gen2, gen3, gen4), 200, 4)
-gMat <- cbind(1, gMat)
+# The genotype matrix: 
+# gMat, which was generated using the generateTCGAMatrix function (see above). 
 
 # Preparing input of the ct-cbn/h-cbn methods
 bc <- Spock$new(
@@ -79,9 +92,6 @@ bc <- Spock$new(
 resultsC <- ctcbn(bc)
 ```
 
-Note that in the above example, we have generated a genotype matrix that perfectly matches the constraints specified in the given poset. In other words, in all genotypes in this sample of size 200, mutations 1 and 2 occur only if mutations 3 and 4 are already present.
-
-It is important to note that in the above example, we have used the `cbind` function to make sure to have the first column always is 1 in all genotypes, and the other four columns respectively represent the mutations 1 to 4.
 
 The maximum likelihood poset that the ct-cbn model outputs can be obtained as:
 
@@ -102,19 +112,17 @@ mlLambda <- resultsC$lambda
 logLikelihood <- resultsC$summary["Loglike"]
 ```
 
-You can repeat the above analysis using an imperfect genotype matrix (`gMatMut`) for which some of the genotypes violate the pre-specified constraints in the mutational orders. For this purpose, we use the **`genotypeMatrixMutator`** function, which subjects the original perfect genotype matrix (`gMat`) to false-positive and false-negative error rates of **0.3** and **0.2**, respectively:
+The **`genotypeMatrixMutator`** function generates a modified genotype matrix (`gMatMut`) by subjecting the original  genotype matrix (`gMat`) to false-positive and false-negative error rates of **0.3** and **0.2**, respectively:
 
 ```{r}
-temp <- gMat[,2:5]
-tempMut <- genotypeMatrixMutator(temp, 0.3, 0.2)
-gMatMut <- cbind(1, tempMut)
+gMatMut <- genotypeMatrixMutator(gMat, 0.3, 0.2)
 ```
 
 and then you can rerun the ct-cbn model using the mutated genotype matrix as follows:
 
 ```{r}
 # The poset
-dag <- matrix(c(3, 3, 4, 4, 1, 2, 1, 2), 4, 2)
+dag <- matrix(c(1, 1, 1, 4, 2, 3, 4, 3), 4, 2)
 # Preparing the inputs of the ct-cbn method
 bc <- Spock$new(
      poset = dag,
@@ -125,7 +133,7 @@ bc <- Spock$new(
 resultsCMut <- ctcbnSingle(bc)
 ```
 
-You can check whether the ML poset now is different from the original one obtained using the perfect genotype matrix:
+You can check whether the ML poset now is different from the previous one obtained using the original genotype matrix:
 
 ```{r}
 mlPosetMut <- resultsCMut$poset$sets
@@ -146,7 +154,7 @@ bc <- Spock$new(
 resultsC2 <- ctcbnSingle(bc)
 ```
 
-Finally, you can obtain and store the results using a list of posets (instead of a single poset) as the input of the model using the **`ctcbn`** function. In the example below, we will consider all 219 unique (transitively-closed) DAGs as our list of posets that we use as the input of the `ctcbn` function:
+Finally, you can obtain and store the results using a list of posets (instead of a single poset) as the input of the model using the **`ctcbn`** function. In the example below, we will consider the set of all potential (transitively-closed) DAGs of size four (219 unique posets) as our list of posets that we use as the input of the `ctcbn` function:
 
 ```{r}
 posets <- readRDS(system.file("extdata", "Posets.rds", package = "CBN2Path"))
@@ -181,7 +189,7 @@ The input/output structure of the H-CBN model (**`hcbnSingle`** and **`hcbn`**) 
 
 ```{r}
 # The poset
-dag <- matrix(c(3, 3, 4, 4, 1, 2, 1, 2), 4, 2)
+dag <- matrix(c(1, 1, 1, 4, 2, 3, 4, 3), 4, 2)
 
 # Preparing the inputs of the h-cbn method
 bc <- Spock$new(
@@ -280,17 +288,14 @@ prob_h <- pathProbCBN(dag_h, lambda_h, 10)
 
 Note that in the above code, probabilities of 10!=3,628,800 pathways need to be calculated, which is extremely time-consuming, so we have not executed this chunk of the code.
 
-Now, let's try the second approach using both the `gMat` and `gMatMut` genotype matrices. Note that in these functions, the number of columns in the input genotype matrix must always be four, and the first column does not need to be an all-one column. Therefore, we must first eliminate the first column from the `gMat` and `gMatMut` matrices.
+Now, let's try the second approach using both the `gMat` and `gMatMut` genotype matrices. Note that in these functions, the number of columns in the input genotype matrix must always be four.
 
 ```{r}
-gMat2 <- gMat[,2:5]
-gMat2Mut <- gMatMut[,2:5]
+probC1 <- pathProbQuartetCTCBN(gMat)
+probC2 <- pathProbQuartetCTCBN(gMatMut)
 
-probC1 <- pathProbQuartetCTCBN(gMat2)
-probC2 <- pathProbQuartetCTCBN(gMat2Mut)
-
-probH1 <- pathProbQuartetHCBN(gMat2)
-probH2 <- pathProbQuartetHCBN(gMat2Mut)
+probH1 <- pathProbQuartetHCBN(gMat)
+probH2 <- pathProbQuartetHCBN(gMatMut)
 ```
 
 You can visualize the 24 pathways and their associated probabilities using **`visualizeProbabilities`** function. In the figures below, you can compare the pathway probability distributions (quantified using CT-CBN model) before and after errors:
@@ -302,11 +307,10 @@ visualizeProbabilities(probC2)
 
 You can see before adding errors (`probC1`), only four pathways are feasible with non-zero probabilities, but in the presence of error (`probC2`) all pathways are feasible and so the probability is more uniformly distributed among the pathways.
 
-Now, let's assume that the four genes in consideration are: "KRAS", "TP53", "CDKN2A", "RREB1". We can now visualize the pathways with gene names and their probability distributions (`probC2`) as follows:
+We can now visualize the pathways with gene names and their probability distributions (`probC2`) as follows:
 
 ```{r}
-geneNames <- c("KRAS", "TP53", "CDKN2A", "RREB1")
-visualizeProbabilities(probC2, geneNames=geneNames)
+visualizeProbabilities(probC2, geneNames=genes)
 ```
 
 Similarly, in the figures below, we can compare the pathway probability distributions (quantified using H-CBN model) before (`probH1`) and after errors (`probH2`):
@@ -345,11 +349,11 @@ predH2
 predH1 - predH2
 ```
 
-Finally, we can compute the pathway compatibility scores both for `gMat2` and `gMat2Mut`genotype matrices using the`pathwayCompatibilityQuartet` function as follows:
+Finally, we can compute the pathway compatibility scores both for `gMat` and `gMatMut`genotype matrices using the`pathwayCompatibilityQuartet` function as follows:
 
 ```{r}
-pathwayC1 <- pathwayCompatibilityQuartet(gMat2)
-pathwayC2 <- pathwayCompatibilityQuartet(gMat2Mut)
+pathwayC1 <- pathwayCompatibilityQuartet(gMat)
+pathwayC2 <- pathwayCompatibilityQuartet(gMatMut)
 ```
 
 The Spearman's correlation coefficient between the pathway compatibility and the pathway probabilities quantified under CT-CBN or H-CBN can be quantified as follows:
@@ -372,11 +376,8 @@ The R-CBN algorithm [5] for quantifying pathway probability distributions is imp
 The **`pathProbQuartetRCBN`** function also receives a four-column binary genotype matrix as the only input, and outputs the corresponding pathway probability distribution. Let's quantify the pathway probability distributions before and after adding errors:
 
 ```{r}
-gMat2 <- gMat[,2:5]
-gMat2Mut <- gMatMut[,2:5]
-
-probR1 <- pathProbQuartetRCBN(gMat2)
-probR2 <- pathProbQuartetRCBN(gMat2Mut)
+probR1 <- pathProbQuartetRCBN(gMat)
+probR2 <- pathProbQuartetRCBN(gMatMut)
 ```
 
 In the figures below, you can compare the pathway probability distributions (quantified using R-CBN model) before and after errors:
@@ -420,31 +421,28 @@ The workflow for the B-CBN algorithm [4], which is implemented in the **`pathPro
 
 The **`pathProbQuartetBCBN`** function also receives a four-column binary genotype matrix as the only input, and outputs the corresponding pathway probability distribution. Again, let's quantify the pathway probability distributions before and after the errors:
 
-```{r, warning=FALSE, results='hide'}
-gMat2 <- gMat[,2:5]
-gMat2Mut <- gMatMut[,2:5]
-
-probB1 <- pathProbQuartetBCBN(gMat2)
-probB2 <- pathProbQuartetBCBN(gMat2Mut)
+```{r, warning=FALSE, results='hide',eval=FALSE}
+probB1 <- pathProbQuartetBCBN(gMat)
+probB2 <- pathProbQuartetBCBN(gMatMut)
 ```
 
 In the figures below, you can compare the pathway probability distributions (quantified using B-CBN model) before and after errors:
 
-```{r}
+```{r,eval=FALSE}
 visualizeProbabilities(probB1)
 visualizeProbabilities(probB2)
 ```
 
 Similar to what we described before, the Jensen-Shannon Divergence between the two distributions can be quantified as:
 
-```{r}
+```{r,eval=FALSE}
 jsdB <- jensenShannonDivergence(probB1, probB2)
 jsdB
 ```
 
 The predictability values can also be compared as follows:
 
-```{r}
+```{r,eval=FALSE}
 predB1 <- predictability(probB1, 4)
 predB2 <- predictability(probB2, 4)
 predB1
@@ -454,7 +452,7 @@ predB1 - predB2
 
 Finally, the Spearman's correlation coefficient between the pathway compatibility and the pathway probabilities quantified under B-CBN can be quantified as follows:
 
-```{r}
+```{r,eval=FALSE}
 rhoB1 <- cor(pathwayC1, probB1, method="spearman")
 rhoB2 <- cor(pathwayC2, probB2, method="spearman")
 rhoB1

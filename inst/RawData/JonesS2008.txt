@@ -1,0 +1,262 @@
+Tumor	Gene	Transcript Accession ID 	Nucleotide (genomic)#	Nucleotide (cDNA)¤	Amino acid (protein)¦	Mutation Type										Mountains
+Pa017C	KRAS	CCDS8702.1	g.chr12:25289551G>A	c.35G>A	p.G12D	Missense										
+Pa017C	TP53	CCDS11118.1	g.chr17:7518273G>A	c.733G>A	p.G245S	Missense										
+Pa019C	CDKN2A	CCDS6510.1	g.chr9:21961123_21961117delACCCGAC (homozygous)	c.235_241delACCCGAC	fs	INDEL										1
+Pa019C	KRAS	CCDS8702.1	g.chr12:25289551G>A	c.35G>A	p.G12D	Missense										1
+Pa019C	SN	CCDS13060.1	g.chr20:3623468G>A	c.2786G>A	p.R929H	Missense										1
+Pa022C	KRAS	CCDS8702.1	g.chr12:25289552G>C	c.34G>C	p.G12R	Missense										1
+Pa022C	SMAD4	CCDS11950.1	g.chr18:46829207C>T (homozygous)	c.403C>T	p.R135X	Nonsense										1
+Pa022C	TP53	CCDS11118.1	g.chr17:7518300T>C (homozygous)	c.706T>C	p.Y236H	Missense										1
+Pa032X	CDKN2A	CCDS6510.1	g.chr9:21961186C>T (homozygous)	c.172C>T	p.R58X	Nonsense										1
+Pa032X	KRAS	CCDS8702.1	g.chr12:25289551G>A	c.35G>A	p.G12D	Missense										1
+Pa032X	TGFBR2	CCDS2648.1	g.chr3:30688857G>T (homozygous)	c.1178G>T	p.C393F	Missense										1
+Pa032X	TP53	CCDS11118.1	g.chr17:7517747C>T (homozygous)	c.916C>T	p.R306X	Nonsense										1
+Pa033X	KRAS	CCDS8702.1	g.chr12:25289551G>A	c.35G>A	p.G12D	Missense										1
+Pa033X	TNR	CCDS1318.1	g.chr1:172092196C>T	c.1392C>T	p.S464S	Synonymous										1
+Pa033X	TP53	CCDS11118.1	g.chr17:7518272G>A (homozygous)	c.734G>A	p.G245D	Missense										1
+Pa044X	KRAS	CCDS8702.1	g.chr12:25289551G>T	c.35G>T	p.G12V	Missense										1
+Pa044X	TP53	CCDS11118.1	g.chr17:7520121_7520117delCCCTT (homozygous)	c.291_295delCCCTT	fs	INDEL										1
+Pa101C	KRAS	CCDS8702.1	g.chr12:25289551G>T	c.35G>T	p.G12V	Missense										1
+Pa101C	SMAD4	CCDS11950.1	g.chr18:46838603_46838604insT (homozygous)	c.779__780insT	fs	INDEL										1
+Pa101C	TP53	CCDS11118.1	g.chr17:7517761dupC (homozygous)	c.902dupC	fs	INDEL										1
+Pa102C	KRAS	CCDS8702.1	g.chr12:25289551G>A	c.35G>A	p.G12D	Missense										1
+Pa102C	TP53	CCDS11118.1	g.chr17:7517842T>C (homozygous)	c.821T>C	p.V274A	Missense										1
+Pa104C	CDKN2A	CCDS6510.1	g.chr9:21961120C>T (homozygous)	c.238C>T	p.R80X	Nonsense										1
+Pa104C	KRAS	CCDS8702.1	g.chr12:25289551G>A	c.35G>A	p.G12D	Missense										1
+Pa104C	TP53	CCDS11118.1	g.chr17:7518273G>A (homozygous)	c.733G>A	p.G245S	Missense										1
+Pa112C	KRAS	CCDS8702.1	g.chr12:25271542A>C	c.183A>C	p.Q61H	Missense										1
+Pa112C	TGFBR2	CCDS2648.1	g.chr3:30708000C>T (homozygous)	c.1609C>T	p.R537C	Missense										1
+Pa112C	TP53	CCDS11118.1	g.chr17:7514746G>T	c.1006G>T	p.E336X	Nonsense										1
+Pa113C	KRAS	CCDS8702.1	g.chr12:25289551G>T (homozygous)	c.35G>T	p.G12V	Missense										
+Pa113C	PXDN	ENST00000252804	g.chr2:1622968C>T	c.2932C>T	p.R978W	Missense										
+Pa113C	TP53	CCDS11118.1	g.chr17:7514728C>T (homozygous)	c.1024C>T	p.R342X	Nonsense										
+Pa116X	KRAS	CCDS8702.1	g.chr12:25289551G>T (homozygous)	c.35G>T	p.G12V	Missense										
+Pa116X	TP53	CCDS11118.1	g.chr17:7519166C>A (homozygous)	c.489C>A	p.Y163X	Nonsense										
+Pa118X	KRAS	CCDS8702.1	g.chr12:25271542A>C	c.183A>C	p.Q61H	Missense										1
+Pa119X	TP53	CCDS11118.1	g.chr17:7518264C>T (homozygous)	c.742C>T	p.R248W	Missense										1
+Pa119X	TPO	CCDS1642.1	g.chr2:1486761delC	c.2421delC	fs	INDEL										1
+Pa120X	FLJ39155	CCDS3924.1	g.chr5:38406312C>T	c.703C>T	p.R235W	Missense										1
+Pa120X	KRAS	CCDS8702.1	g.chr12:25289551G>T	c.35G>T	p.G12V	Missense										1
+Pa120X	SMAD4	CCDS11950.1	g.chr18:46857030C>T	c.1333C>T	p.R445X	Nonsense										1
+Pa120X	SMAD4	CCDS11950.1	g.chr18:46838707G>T	IVS5-1G>T	Splice Site	Splice Site										1
+Pa120X	SMARCA4	CCDS12253.1	g.chr19:10999473C>T	c.3229C>T	p.R1077X	Nonsense										1
+Pa120X	TP53	CCDS11118.1	g.chr17:7519125C>G (homozygous)	c.530C>G	p.P177R	Missense										1
+Pa121X	CDKN2A	CCDS6510.1	g.chr9:21961068T>G (homozygous)	c.290T>G	p.L97R	Missense										1
+Pa121X	KRAS	CCDS8702.1	g.chr12:25289551G>A	c.35G>A	p.G12D	Missense										1
+Pa121X	PXDN	ENST00000252804	g.chr2:1622859G>A	c.3041G>A	p.R1014H	Missense										1
+Pa121X	SMAD4	CCDS11950.1	g.chr18:46838517dupG (homozygous)	c.692dupG	fs	INDEL										1
+Pa121X	TP53	CCDS11118.1	g.chr17:7518270A>G (homozygous)	c.736A>G	p.M246V	Missense										1
+Pa122X	CDKN2A	CCDS6510.1	g.chr9:21960971C>G	c.387C>G	p.Y129X	Nonsense										1
+Pa122X	KRAS	CCDS8702.1	g.chr12:25289551G>A	c.35G>A	p.G12D	Missense										1
+Pa122X	TP53	CCDS11118.1	g.chr17:7517839G>T (homozygous)	c.824G>T	p.C275F	Missense										1
+Pa124X	KRAS	CCDS8702.1	g.chr12:25289551G>A	c.35G>A	p.G12D	Missense										1
+Pa124X	TP53	CCDS11118.1	g.chr17:7518933A>G (homozygous)	c.641A>G	p.H214R	Missense										1
+Pa125X	KRAS	CCDS8702.1	g.chr12:25289551G>A	c.35G>A	p.G12D	Missense										1
+Pa125X	TP53	CCDS11118.1	g.chr17:7518264C>T (homozygous)	c.742C>T	p.R248W	Missense										1
+Pa126X	KRAS	CCDS8702.1	g.chr12:25289551G>A (homozygous)	c.35G>A	p.G12D	Missense										1
+Pa126X	TP53	CCDS11118.1	g.chr17:7519131G>A (homozygous)	c.524G>A	p.R175H	Missense										1
+Pa127X	GPR133	CCDS9272.1	g.chr12:130115199A>C	c.1796A>C	p.N599T	Missense										1
+Pa127X	KRAS	CCDS8702.1	g.chr12:25289552G>C	c.34G>C	p.G12R	Missense										1
+Pa127X	ST6GAL2	CCDS2073.1	g.chr2:106918317T>G	c.635T>G	p.V212G	Missense										1
+Pa127X	TP53	CCDS11118.1	g.chr17:7519131G>A (homozygous)	c.524G>A	p.R175H	Missense										1
+Pa131X	KRAS	CCDS8702.1	g.chr12:25289551G>A	c.35G>A	p.G12D	Missense										1
+Pa131X	PPP1R3A	CCDS5759.1	g.chr7:113116159C>T	c.852C>T	p.I284I	Synonymous										1
+Pa131X	SMAD4	CCDS11950.1	g.chr18:46858776delC (homozygous)	c.1600delC	fs	INDEL										1
+Pa131X	SN	CCDS13060.1	g.chr20:3620108G>A	c.4470G>A	p.A1490A	Synonymous										1
+Pa131X	TP53	CCDS11118.1	g.chr17:7517846C>T (homozygous)	c.817C>T	p.R273C	Missense										1
+Pa132X	KRAS	CCDS8702.1	g.chr12:25289551G>T (homozygous)	c.35G>T	p.G12V	Missense										1
+Pa132X	PCDH15	CCDS7248.1	g.chr10:55614980G>A	c.1360G>A	p.V454I	Missense										1
+Pa132X	SMAD4	CCDS11950.1	g.chr18:46829150C>T (homozygous)	c.346C>T	p.Q116X	Nonsense										1
+Pa132X	TP53	CCDS11118.1	g.chr17:7518960A>T (homozygous)	c.614A>T	p.Y205F	Missense										1
+Pa133X	GPR133	CCDS9272.1	g.chr12:130012615C>T	c.1032C>T	p.S344S	Synonymous										1
+Pa133X	KRAS	CCDS8702.1	g.chr12:25289552G>C	c.34G>C	p.G12R	Missense										1
+Pa133X	TGFBR2	CCDS2648.1	g.chr3:30704964delA (homozygous)	c.1481delA	fs	INDEL										1
+Pa133X	TP53	CCDS11118.1	g.chr17:7519236delC (homozygous)	c.419delC	fs	INDEL										1
+Pa135X	KRAS	CCDS8702.1	g.chr12:25289551G>A (homozygous)	c.35G>A	p.G12D	Missense										1
+Pa135X	SMAD4	CCDS11950.1	g.chr18:46858657A>G (homozygous)	c.1481A>G	p.D494G	Missense										1
+Pa135X	SMARCA4	CCDS12253.1	g.chr19:11002492C>T	c.3469C>T	p.R1157W	Missense										1
+Pa135X	TP53	CCDS11118.1	g.chr17:7517819C>T (homozygous)	c.844C>T	p.R282W	Missense										1
+Pa136X	CDKN2A	CCDS6510.1	g.chr9:21961153G>T (homozygous)	c.205G>T	p.E69X	Nonsense										1
+Pa136X	KRAS	CCDS8702.1	g.chr12:25289551G>A	c.35G>A	p.G12D	Missense										1
+Pa136X	TP53	CCDS11118.1	g.chr17:7518293G>A (homozygous)	c.713G>A	p.C238Y	Missense										1
+Pa138X	KRAS	CCDS8702.1	g.chr12:25289551G>T	c.35G>T	p.G12V	Missense										1
+Pa139X	CDKN2A	CCDS6510.1	g.chr9:21961111C>T (homozygous)	c.247C>T	p.H83Y	Missense										1
+Pa139X	KRAS	CCDS8702.1	g.chr12:25289551G>T	c.35G>T	p.G12V	Missense										1
+Pa139X	SLC1A6	CCDS12321.1	g.chr19:14943649C>T (homozygous)	c.243C>T	p.L81L	Synonymous										1
+Pa139X	TP53	CCDS11118.1	g.chr17:7518283delC (homozygous)	c.723delC	fs	INDEL										1
+Pa140X	CDKN2A	CCDS6510.1	g.chr9:21961176_21961151delAGCTGCTGCTGCTCCACGGCGCGGAG (homozygous)	c.182_207delAGCTGCTGCTGCTCCACGGCGCGGAG	fs	INDEL										1
+Pa140X	KRAS	CCDS8702.1	g.chr12:25289552G>C	c.34G>C	p.G12R	Missense										1
+Pa140X	SMAD4	CCDS11950.1	g.chr18:46827661C>T (homozygous)	c.247C>T	p.Q83X	Nonsense										1
+Pa141X	KRAS	CCDS8702.1	g.chr12:25289551G>A (homozygous)	c.35G>A	p.G12D	Missense										1
+Pa141X	TP53	CCDS11118.1	g.chr17:7518981_7518973delAAGGAAATT (homozygous)	c.593_601delAAGGAAATT	indel	INDEL										1
+Pa144X	KRAS	CCDS8702.1	g.chr12:25289551G>A	c.35G>A	p.G12D	Missense										1
+Pa144X	TP53	CCDS11118.1	g.chr17:7519131G>A	c.524G>A	p.R175H	Missense										1
+Pa145X	CTNNA2	NM_004389	g.chr2:80008655G>A	c.524G>A	p.R175H	Missense										1
+Pa145X	KRAS	CCDS8702.1	g.chr12:25289551G>A	c.35G>A	p.G12D	Missense										1
+Pa145X	MLL3	CCDS5931.1	g.chr7:151316658_151316654delCCCAA	c.5935_5939delCCCAA	fs	INDEL										1
+Pa145X	ST6GAL2	CCDS2073.1	g.chr2:106918900G>A	c.52G>A	p.A18T	Missense										1
+Pa145X	TGFBR2	CCDS2648.1	g.chr3:30707961G>T (homozygous)	c.1570G>T	p.D524Y	Missense										1
+Pa145X	TP53	CCDS11118.1	g.chr17:7519263A>T (homozygous)	c.392A>T	p.N131I	Missense										1
+Pa146X	KRAS	CCDS8702.1	g.chr12:25289551G>A (homozygous)	c.35G>A	p.G12D	Missense										1
+Pa146X	SMAD4	CCDS11950.1	g.chr18:46845931C>T (homozygous)	c.1096C>T	p.Q366X	Nonsense										1
+Pa146X	TP53	CCDS11118.1	g.chr17:7517747C>T (homozygous)	c.916C>T	p.R306X	Nonsense										1
+Pa147X	CDKN2A	CCDS6510.1	g.chr9:21961111C>T (homozygous)	c.247C>T	p.H83Y	Missense										1
+Pa147X	KRAS	CCDS8702.1	g.chr12:25289552G>C	c.34G>C	p.G12R	Missense										1
+Pa147X	TP53	CCDS11118.1	g.chr17:7517866G>T (homozygous)	c.797G>T	p.G266V	Missense										1
+Pa148X	KRAS	CCDS8702.1	g.chr12:25289551G>T	c.35G>T	p.G12V	Missense										1
+Pa148X	TP53	CCDS11118.1	g.chr17:7518300T>G (homozygous)	c.706T>G	p.Y236D	Missense										1
+Pa149X	CDKN2A	CCDS6510.1	g.chr9:21961120C>T (homozygous)	c.238C>T	p.R80X	Nonsense										1
+Pa149X	KRAS	CCDS8702.1	g.chr12:25289551G>T	c.35G>T	p.G12V	Missense										1
+Pa149X	TP53	CCDS11118.1	g.chr17:7519002_7518993delCTCAGCATCT (homozygous)	c.572_581delCTCAGCATCT	fs	INDEL										1
+Pa151X	KRAS	CCDS8702.1	g.chr12:25289551G>T (homozygous)	c.35G>T	p.G12V	Missense										1
+Pa151X	TP53	CCDS11118.1	g.chr17:7517846C>T (homozygous)	c.817C>T	p.R273C	Missense										1
+Pa152X	CDKN2A	CCDS6510.1	g.chr9:21961029G>A (homozygous)	c.329G>A	p.W110X	Nonsense										1
+Pa152X	KRAS	CCDS8702.1	g.chr12:25289551G>A (homozygous)	c.35G>A	p.G12D	Missense										1
+Pa152X	TP53	CCDS11118.1	g.chr17:7517846C>T (homozygous)	c.817C>T	p.R273C	Missense										1
+Pa153X	CDKN2A	CCDS6510.1	g.chr9:21961029G>A (homozygous)	c.329G>A	p.W110X	Nonsense										1
+Pa153X	KRAS	CCDS8702.1	g.chr12:25289551G>A	c.35G>A	p.G12D	Missense										1
+Pa154X	KRAS	CCDS8702.1	g.chr12:25289551G>T	c.35G>T	p.G12V	Missense										1
+Pa154X	SMAD4	CCDS11950.1	g.chr18:46845907G>T (homozygous)	c.1072G>T	p.G358X	Nonsense										1
+Pa154X	TP53	CCDS11118.1	g.chr17:7518293_7518282delGTAACAGTTCCT (homozygous)	c.713_724delGTAACAGTTCCT	indel	INDEL										1
+Pa155X	CDKN2A	CCDS6510.1	g.chr9:21961040_21961022delGCGCGATGCCTGGGGCCGT (homozygous)	c.318_336delGCGCGATGCCTGGGGCCGT	fs	INDEL										1
+Pa155X	CDKN2A	CCDS6510.1	g.chr9:21961044A>T (homozygous)	c.314A>T	p.D105V	Missense										1
+Pa155X	CDKN2A	CCDS6510.1	g.chr9:21961016C>G (homozygous)	c.508C>G	p.R170G	Missense										1
+Pa155X	KRAS	CCDS8702.1	g.chr12:25289551G>T	c.35G>T	p.G12V	Missense										1
+Pa155X	TP53	CCDS11118.1	g.chr17:7514728C>T (homozygous)	c.1024C>T	p.R342X	Nonsense										
+Pa156X	KRAS	CCDS8702.1	g.chr12:25289551G>A	c.35G>A	p.G12D	Missense										
+Pa156X	SMAD4	CCDS11950.1	g.chr18:46857145G>A (homozygous)	IVS10+1G>A	Splice Site	Splice Site										
+Pa156X	TP53	CCDS11118.1	g.chr17:7518988C>T (homozygous)	c.586C>T	p.R196X	Nonsense										
+Pa157X	CDKN2A	CCDS6510.1	g.chr9:21961111C>T (homozygous)	c.247C>T	p.H83Y	Missense										
+Pa157X	KRAS	CCDS8702.1	g.chr12:25289552G>C	c.34G>C	p.G12R	Missense										
+Pa157X	MLL3	CCDS5931.1	g.chr7:151315577A>T	c.7016A>T	p.N2339I	Missense										
+Pa157X	TP53	CCDS11118.1	g.chr17:7520038C>A (homozygous)	c.374C>A	p.T125K	Missense										
+Pa158X	KRAS	CCDS8702.1	g.chr12:25289551G>T	c.35G>T	p.G12V	Missense										
+Pa159X	KRAS	CCDS8702.1	g.chr12:25289551G>T	c.35G>T	p.G12V	Missense										
+Pa159X	TP53	CCDS11118.1	g.chr17:7519128G>T (homozygous)	c.527G>T	p.C176F	Missense										
+Pa160X	KRAS	CCDS8702.1	g.chr12:25289551G>A	c.35G>A	p.G12D	Missense										
+Pa160X	TP53	CCDS11118.1	g.chr17:7519255T>G (homozygous)	c.400T>G	p.F134V	Missense										
+Pa161X	CDKN2A	CCDS6510.1	g.chr9:21961120C>T (homozygous)	c.238C>T	p.R80X	Nonsense										
+Pa161X	KRAS	CCDS8702.1	g.chr12:25289551G>A	c.35G>A	p.G12D	Missense										
+Pa161X	TP53	CCDS11118.1	g.chr17:7517852G>A (homozygous)	c.811G>A	p.E271K	Missense										
+Pa163X	KRAS	CCDS8702.1	g.chr12:25289552G>C	c.34G>C	p.G12R	Missense										
+Pa163X	SMAD4	CCDS11950.1	g.chr18:46847483C>G (homozygous)	c.1236C>G	p.Y412X	Nonsense										
+Pa163X	TP53	CCDS11118.1	g.chr17:7518264C>T (homozygous)	c.742C>T	p.R248W	Missense										1
+Pa165X	KRAS	CCDS8702.1	g.chr12:25289551G>T	c.35G>T	p.G12V	Missense										1
+Pa165X	SMAD4	CCDS11950.1	g.chr18:46858653G>C	c.1477G>C	p.D493H	Missense										1
+Pa165X	TP53	CCDS11118.1	g.chr17:7519186_7519182delGTCCG (homozygous)	c.469_473delGTCCG	fs	INDEL										1
+Pa166X	KRAS	CCDS8702.1	g.chr12:25289551G>A	c.35G>A	p.G12D	Missense										1
+Pa166X	MLL3	CCDS5931.1	g.chr7:151283731C>T	c.12929C>T	p.P4310L	Missense										1
+Pa166X	TP53	CCDS11118.1	g.chr17:7519255T>C (homozygous)	c.400T>C	p.F134L	Missense										1
+Pa167X	KRAS	CCDS8702.1	g.chr12:25289551G>A	c.35G>A	p.G12D	Missense										1
+Pa167X	PPP1R3A	CCDS5759.1	g.chr7:113113617C>T	c.1481C>T	p.S494L	Missense										1
+Pa168X	KRAS	CCDS8702.1	g.chr12:25289551G>A	c.35G>A	p.G12D	Missense										1
+Pa168X	SMAD4	CCDS11950.1	g.chr18:46838601_46838602delCT (homozygous)	c.776_777delCT	fs	INDEL										1
+Pa168X	TP53	CCDS11118.1	g.chr17:7518276G>A (homozygous)	c.730G>A	p.G244S	Missense										1
+Pa169X	KRAS	CCDS8702.1	g.chr12:25289551G>A	c.35G>A	p.G12D	Missense										1
+Pa169X	TP53	CCDS11118.1	g.chr17:7517845G>A (homozygous)	c.818G>A	p.R273H	Missense										1
+Pa170X	KRAS	CCDS8702.1	g.chr12:25289552G>C	c.34G>C	p.G12R	Missense										1
+Pa170X	PPP1R3A	CCDS5759.1	g.chr7:113111921T>G	c.3177T>G	p.S1059R	Missense										1
+Pa170X	SMAD4	CCDS11950.1	g.chr18:46858724_46858731delGAGCATCA	c.1548_1555delGAGCATCA	fs	INDEL										1
+Pa170X	TP53	CCDS11118.1	g.chr17:7517846C>G (homozygous)	c.817C>G	p.R273G	Missense										1
+Pa172X	CDKN2A	CCDS6510.1	g.chr9:21961025_21961019delCCGTCTG (homozygous)	c.332_339delCCGTCTG	fs	INDEL										1
+Pa172X	KRAS	CCDS8702.1	g.chr12:25289551G>A	c.35G>A	p.G12D	Missense										1
+Pa172X	TP53	CCDS11118.1	g.chr17:7518242T>A (homozygous)	c.764T>A	p.I255N	Missense										1
+Pa173X	KRAS	CCDS8702.1	g.chr12:25289551G>A	c.35G>A	p.G12D	Missense										1
+Pa173X	TP53	CCDS11118.1	g.chr17:7518293G>A (homozygous)	c.713G>A	p.C238Y	Missense										1
+Pa174X	KRAS	CCDS8702.1	g.chr12:25289552G>C	c.34G>C	p.G12R	Missense										1
+Pa174X	TP53	CCDS11118.1	g.chr17:7517747C>T (homozygous)	c.916C>T	p.R306X	Nonsense										
+Pa176X	KRAS	CCDS8702.1	g.chr12:25289551G>A	c.35G>A	p.G12D	Missense										
+Pa176X	TP53	CCDS11118.1	g.chr17:7517866G>T (homozygous)	c.797G>T	p.G266V	Missense										
+Pa177X	KRAS	CCDS8702.1	g.chr12:25289551G>A	c.35G>A	p.G12D	Missense										
+Pa177X	PCDH18	NM_019035	g.chr4:138810580G>A	c.268G>A	p.A90T	Missense										
+Pa177X	TP53	CCDS11118.1	g.chr17:7519259G>T (homozygous)	c.396G>T	p.K132N	Missense										
+Pa178X	CDKN2A	CCDS6510.1	g.chr9:21961186C>T	c.172C>T	p.R58X	Nonsense										
+Pa178X	CDKN2A	CCDS6510.1	g.chr9:21961208G>C	IVS1-1G>C	Splice Site	Splice Site										
+Pa178X	KRAS	CCDS8702.1	g.chr12:25289551G>A	c.35G>A	p.G12D	Missense										
+Pa178X	SMAD4	CCDS11950.1	g.chr18:46829157C>T (homozygous)	c.353C>T	p.A118V	Missense										
+Pa178X	TP53	CCDS11118.1	g.chr17:7517819C>T (homozygous)	c.844C>T	p.R282W	Missense										
+Pa182X	KRAS	CCDS8702.1	g.chr12:25289552G>A (homozygous)	c.34G>A	p.G12S	Missense										
+Pa182X	ST6GAL2	CCDS2073.1	g.chr2:106918716C>T	c.236C>T	p.A79V	Missense										
+Pa183X	CDKN2A	CCDS6510.1	g.chr9:21961000G>T (homozygous)	c.358G>T	p.E120X	Nonsense										
+Pa183X	KRAS	CCDS8702.1	g.chr12:25289551G>T	c.35G>T	p.G12V	Missense										
+Pa183X	TP53	CCDS11118.1	g.chr17:7517846C>T (homozygous)	c.817C>T	p.R273C	Missense										1
+Pa184X	KRAS	CCDS8702.1	g.chr12:25289551G>T	c.35G>T	p.G12V	Missense										1
+Pa184X	TP53	CCDS11118.1	g.chr17:7519121_7519117delCCATG (homozygous)	c.534_538delCCATG	fs	INDEL										1
+Pa184X	TP53	CCDS11118.1	g.chr17:7519116A>G (homozygous)	c.539A>G	p.E180G	Missense										1
+Pa185X	KRAS	CCDS8702.1	g.chr12:25289551G>T	c.35G>T	p.G12V	Missense										1
+Pa185X	KRAS	CCDS8702.1	g.chr12:25289549G>T	c.37G>T	p.G13C	Missense										1
+Pa185X	TP53	CCDS11118.1	g.chr17:7520246delG (homozygous)	c.166delG	fs	INDEL										1
+Pa187X	CDKN2A	CCDS6510.1	g.chr9:21961117C>A (homozygous)	c.241C>A	p.P81T	Missense										1
+Pa187X	CDKN2A	CCDS6510.1	g.chr9:21961116C>T (homozygous)	c.242C>T	p.P81L	Missense										1
+Pa187X	KRAS	CCDS8702.1	g.chr12:25271543A>G	c.182A>G	p.Q61R	Missense										1
+Pa187X	MYH2	CCDS11156.1	g.chr17:10383575C>A (homozygous)	c.1177C>A	p.L393M	Missense										1
+Pa187X	TP53	CCDS11118.1	g.chr17:7518928G>A (homozygous)	c.646G>A	p.V216M	Missense										1
+Pa192X	CDKN2A	CCDS6510.1	g.chr9:21961171_21961147delCTGCTGCTCCACGGCGCGGAGCCCA (homozygous)	c.187_211delCTGCTGCTCCACGGCGCGGAGCCCA	fs	INDEL										1
+Pa192X	KRAS	CCDS8702.1	g.chr12:25289551G>T	c.35G>T	p.G12V	Missense										1
+Pa192X	TGFBR2	CCDS2648.1	g.chr3:30707953G>A	c.1562G>A	p.W521X	Nonsense										1
+Pa194X	CDKN2A	CCDS6510.1	g.chr9:21961127_21961126delTC (homozygous)	c.231_232delTC	fs	INDEL										1
+Pa194X	KRAS	CCDS8702.1	g.chr12:25289551G>T	c.35G>T	p.G12V	Missense										1
+Pa194X	SMAD4	CCDS11950.1	g.chr18:46857030C>T (homozygous)	c.1333C>T	p.R445X	Nonsense										1
+Pa194X	TP53	CCDS11118.1	g.chr17:7517642dupA (homozygous)	c.926dupA	fs	INDEL										1
+Pa196X	KRAS	CCDS8702.1	g.chr12:25289552G>C	c.34G>C	p.G12R	Missense										1
+Pa196X	MYH2	CCDS11156.1	g.chr17:10379170C>T	c.2125C>T	p.R709C	Missense										1
+Pa197X	KRAS	CCDS8702.1	g.chr12:25289551G>T (homozygous)	c.35G>T	p.G12V	Missense										1
+Pa197X	SMAD4	CCDS11950.1	g.chr18:46829061G>T (homozygous)	c.257G>T	p.G86V	Missense										1
+Pa197X	TP53	CCDS11118.1	g.chr17:7518263G>A (homozygous)	c.743G>A	p.R248Q	Missense										1
+Pa198X	KRAS	CCDS8702.1	g.chr12:25289551G>A	c.35G>A	p.G12D	Missense										1
+Pa198X	TGFBR2	CCDS2648.1	g.chr3:30688926dupG (homozygous)	c.1247dupG	fs	INDEL										1
+Pa198X	TP53	CCDS11118.1	g.chr17:7517820C>G (homozygous)	c.843C>G	p.D281E	Missense										1
+Pa199X	KRAS	CCDS8702.1	g.chr12:25289551G>T (homozygous)	c.35G>T	p.G12V	Missense										1
+Pa199X	PPP1R3A	CCDS5759.1	g.chr7:113113596C>T	c.1502C>T	p.T501I	Missense										1
+Pa199X	TP53	CCDS11118.1	g.chr17:7517839G>A (homozygous)	c.824G>A	p.C275Y	Missense										1
+Pa200X	KRAS	CCDS8702.1	g.chr12:25289551G>T	c.35G>T	p.G12V	Missense										1
+Pa200X	SMAD4	CCDS11950.1	g.chr18:46829124dupA (homozygous)	c.320dupA	fs	INDEL										1
+Pa200X	TP53	CCDS11118.1	g.chr17:7519249C>T (homozygous)	c.406C>T	p.Q136X	Nonsense										1
+Pa201X	KRAS	CCDS8702.1	g.chr12:25289551G>A	c.35G>A	p.G12D	Missense										1
+Pa201X	PXDN	ENST00000252804	g.chr2:1658204C>G	c.484C>G	p.Q162E	Missense										1
+Pa201X	TP53	CCDS11118.1	g.chr17:7518263G>A (homozygous)	c.743G>A	p.R248Q	Missense										1
+Pa202X	KRAS	CCDS8702.1	g.chr12:25289552G>C	c.34G>C	p.G12R	Missense										1
+Pa203X	KRAS	CCDS8702.1	g.chr12:25289551G>T	c.35G>T	p.G12V	Missense										1
+Pa203X	MLL3	CCDS5931.1	g.chr7:151279445G>A	IVS55+1G>A	Splice Site	Splice Site										1
+Pa204X	KRAS	CCDS8702.1	g.chr12:25289551G>T	c.35G>T	p.G12V	Missense										1
+Pa204X	TP53	CCDS11118.1	g.chr17:7517863G>C (homozygous)	c.800G>C	p.R267P	Missense										1
+Pa204X	TP53	CCDS11118.1	g.chr17:7517862G>T (homozygous)	c.801G>T	p.R267R	Synonymous										1
+Pa205X	ABLIM2	NM_032432	g.chr4:8180849G>A	c.679G>A	p.G227R	Missense										1
+Pa205X	KRAS	CCDS8702.1	g.chr12:25289551G>A	c.35G>A	p.G12D	Missense										1
+Pa205X	SMAD4	CCDS11950.1	g.chr18:46858672G>A (homozygous)	c.1496G>A	p.C499Y	Missense										1
+Pa205X	TP53	CCDS11118.1	g.chr17:7514736_7514738delATG (homozygous)	c.1018_1020delATG	p.M340del	INDEL										1
+Pa206X	KRAS	CCDS8702.1	g.chr12:25289552G>C	c.34G>C	p.G12R	Missense										1
+Pa206X	TP53	CCDS11118.1	g.chr17:7520441delC (homozygous)	c.80delC	fs	INDEL										1
+Pa209X	GLTSCR1	NM_015711	g.chr19:52890135C>T	c.3062C>T	p.P1021L	Missense										1
+Pa209X	KRAS	CCDS8702.1	g.chr12:25289551G>A	c.35G>A	p.G12D	Missense										1
+Pa209X	TP53	CCDS11118.1	g.chr17:7517845G>A (homozygous)	c.818G>A	p.R273H	Missense										1
+Pa210X	KRAS	CCDS8702.1	g.chr12:25289551G>A	c.35G>A	p.G12D	Missense										1
+Pa210X	TP53	CCDS11118.1	g.chr17:7517849G>A (homozygous)	c.814G>A	p.V272M	Missense										1
+Pa211X	KRAS	CCDS8702.1	g.chr12:25289551G>A	c.35G>A	p.G12D	Missense										1
+Pa212X	KRAS	CCDS8702.1	g.chr12:25289551G>A	c.35G>A	p.G12D	Missense										1
+Pa212X	PXDN	ENST00000252804	g.chr2:1657784C>A	c.552C>A	p.N184K	Missense										1
+Pa214X	CDKN2A	CCDS6510.1	g.chr9:21961186C>T (homozygous)	c.172C>T	p.R58X	Nonsense										1
+Pa214X	KRAS	CCDS8702.1	g.chr12:25289551G>A	c.35G>A	p.G12D	Missense										1
+Pa214X	TP53	CCDS11118.1	g.chr17:7519191_7519174delCCCGCGTCCGCGCCATGG (homozygous)	c.464_481delCCCGCGTCCGCGCCATGG	indel	INDEL										1
+Pa216X	KRAS	CCDS8702.1	g.chr12:25289551G>T	c.35G>T	p.G12V	Missense										1
+Pa216X	TP53	CCDS11118.1	g.chr17:7517845G>A (homozygous)	c.818G>A	p.R273H	Missense										1
+Pa217X	KRAS	CCDS8702.1	g.chr12:25289551G>A	c.35G>A	p.G12D	Missense										1
+Pa217X	TNR	CCDS1318.1	g.chr1:172065829_172065827AGC>TG	c.2561_2563AGC>TG	indel	INDEL										1
+Pa217X	TP53	CCDS11118.1	g.chr17:7519221T>A (homozygous)	c.434T>A	p.L145Q	Missense										1
+Pa217X	TPO	CCDS1642.1	g.chr2:1476677T>A	c.1865T>A	p.I622N	Missense										1
+Pa218X	KRAS	CCDS8702.1	g.chr12:25289552G>C	c.34G>C	p.G12R	Missense										1
+Pa218X	SMAD4	CCDS11950.1	g.chr18:46845790G>A (homozygous)	IVS7-1G>A	Splice Site	Splice Site										1
+Pa218X	TP53	CCDS11118.1	g.chr17:7519275C>A (homozygous)	c.380C>A	p.S127Y	Missense										1
+Pa220X	CDH10	CCDS3892.1	g.chr5:24523983G>A	c.1913G>A	p.R638Q	Missense										1
+Pa220X	KRAS	CCDS8702.1	g.chr12:25289552G>C	c.34G>C	p.G12R	Missense										1
+Pa220X	SMAD4	CCDS11950.1	g.chr18:46847475_46847476dupCA (homozygous)	c.1228_1229dupCA	fs	INDEL										1
+Pa220X	TP53	CCDS11118.1	g.chr17:7520083G>T (homozygous)	c.329G>T	p.R110L	Missense										1
+Pa221C	KRAS	CCDS8702.1	g.chr12:25289551G>A	c.35G>A	p.G12D	Missense										1
+Pa221C	SMAD4	CCDS11950.1	g.chr18:46829196A>G (homozygous)	c.392A>G	p.Y131C	Missense										1
+Pa221C	TP53	CCDS11118.1	g.chr17:7517588dupT (homozygous)	c.983dupT	fs	INDEL										1
+Pa222C	KRAS	CCDS8702.1	g.chr12:25289551G>A	c.35G>A	p.G12D	Missense										1
+Pa222C	TP53	CCDS11118.1	g.chr17:7514738_7514735delCGAG (homozygous)	c.1014_1017delCGAG	fs	INDEL										1
+Pa222C	TP53	CCDS11118.1	g.chr17:7514734A>G (homozygous)	c.1018A>G	p.M340V	Missense										1
+Pa223C	KRAS	CCDS8702.1	g.chr12:25289551G>A	c.35G>A	p.G12D	Missense										1
+Pa223C	MLL3	CCDS5931.1	g.chr7:151297494_151297484delAGAACAAGAAA	c.10816_10826delAGAACAAGAAA	fs	INDEL										
+Pa223C	TP53	CCDS11118.1	g.chr17:7518293G>A (homozygous)	c.713G>A	p.C238Y	Missense										

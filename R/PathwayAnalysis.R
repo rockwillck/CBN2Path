@@ -473,7 +473,7 @@ pathProbQuartetCTCBN <- function(gMat) {
     bc <- Spock$new(
         poset = posets,
         numMutations = 4,
-        genotypeMatrix = cbind(1, gMat)
+        genotypeMatrix = gMat
     )
     results <- ctcbn(bc)
     logLik <- numeric(219)
@@ -509,7 +509,7 @@ pathProbQuartetHCBN <- function(gMat) {
    bc <- Spock$new(
      poset = posets,
      numMutations = 4,
-     genotypeMatrix = cbind(1, gMat)
+     genotypeMatrix = gMat
    )
    results <- hcbn(bc)
    logLik <- numeric(219)
@@ -670,7 +670,7 @@ pathProbQuartetRCBN <- function(gMat) {
     bc <- Spock$new(
         poset = posets,
         numMutations = 4,
-        genotypeMatrix = cbind(1, gMat)
+        genotypeMatrix = gMat
     )
     results <- ctcbn(bc)
     logLik <- numeric(219)
@@ -733,12 +733,12 @@ base2Indexing <- function(mat) {
 #' gMat <- matrix(sample(c(0, 1), 12, replace = TRUE), 3, 4)
 #' pathProbQuartetBCBN(gMat)
 pathProbQuartetBCBN <- function(gMat) {
-    genotypeMatrix <- cbind(1, gMat)
+    genotypeMatrix <- gMat
     posets <- readRDS(system.file("extdata", "Posets.rds", package = "CBN2Path"))
     bc <- Spock$new(
       poset = posets,
       numMutations = 4,
-      genotypeMatrix = cbind(1, gMat)
+      genotypeMatrix = gMat
     )
     results <- ctcbn(bc)
     p <- matrix(0, 219, 24)

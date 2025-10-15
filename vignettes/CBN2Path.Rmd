@@ -162,7 +162,7 @@ You can obtain the log likelihood corresponding to each poset as follows:
 logLik <- sapply(resultsC3, \(x) x$summary["Loglike"])
 ```
 
-You can see that the maximum-likelihood poset according to the CT-CBN model in this example is the empty poset.
+Below, you can see that the maximum-likelihood poset according to the CT-CBN model in this example is the empty poset.
 
 ```{r}
 indx <- which.max(logLik)
@@ -244,7 +244,7 @@ You can obtain the log likelihood corresponding to each poset as follows:
 logLikH <- sapply(resultsH3, \(x) x$summary["Loglike"])
 ```
 
-You can see that in this example, the maximum-likelihood poset based on H-CBN contains an edge in contrast to the CT-CBN model, which outputs an empty poset.
+Below, you can see that in this example, the maximum-likelihood poset based on H-CBN contains an edge in contrast to the CT-CBN model, which outputs an empty poset as the MLE poset:
 
 ```{r}
 indx <- which.max(logLikH)
@@ -504,7 +504,7 @@ sessionInfo()
 
 [4] Sakoparnig and Beerenwinkel. Efficient sampling for Bayesian inference of conjunctive Bayesian networks. Bioinformatics, 28(18):2318–2324, September 2012. ISSN 1367-4811, 1367-4803. doi: <https://doi.org/10.1093/bioinformatics/bts433>.
 
-[5] Hosseini. Robust inference of cancer progression pathways using Conjunctive Bayesian Networks, BioRxiv. July 2025. doi: <https://doi.org/10.1101/2025.07.15.663924>.
+[5] Hosseini. Robust inference of cancer progression pathways using Conjunctive Bayesian Networks. BioRxiv, July 2025. doi: <https://doi.org/10.1101/2025.07.15.663924>.
 
 [6] Diaz-Uriarte and Herrera-Nieto. EvAM-Tools: tools for evolutionary accumulation and cancer progression models. Bioinformatics, 38(24): 5457–5459, December 2022. ISSN 1367-4803, 1367-4811. doi: <https://doi.org/10.1093/bioinformatics/btac710>.
 

@@ -169,6 +169,10 @@ indx <- which.max(logLik)
 mlPosetC <- posets[[indx]]
 ```
 
+```{r fig.width=4.25, fig.height=4.25}
+visualizeCBNModel(mlPosetC)
+```
+
 ## The H-CBN model
 
 The input/output structure of the H-CBN model (**`hcbnSingle`** and **`hcbn`**) [3] is exactly the same as in the CT-CBN model (**`ctcbnSingle`** and **`ctcbn`**) described above.
@@ -240,11 +244,16 @@ You can obtain the log likelihood corresponding to each poset as follows:
 logLikH <- sapply(resultsH3, \(x) x$summary["Loglike"])
 ```
 
-You can see that the maximum-likelihood poset based on H-CBN contains an edge in contrast to the CT-CBN model, which outputs an empty poset in this example.
+You can see that in this example, the maximum-likelihood poset based on H-CBN contains an edge in contrast to the CT-CBN model, which outputs an empty poset.
 
 ```{r}
 indx <- which.max(logLikH)
 mlPosetH <- posets[[indx]]
+```
+
+
+```{r fig.width=4.25, fig.height=4.25}
+visualizeCBNModel(mlPosetH)
 ```
 
 ## Analysis of cancer progression pathways

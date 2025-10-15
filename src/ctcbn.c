@@ -231,8 +231,7 @@ SEXP ctcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP mb, SEXP bs, SEXP rs, SEXP sr, SE
         epsilon = (double)k / (2.0 * (double)N);
         if (summaryFile == NULL) {
         } else {
-          fprintf(summaryFile, select_poset(k, epsilon, &M, lambda, D, N_u, R, LEARN_BOTH, 1));
-          fprintf(summaryFile, "\n");
+          fprintf(summaryFile, "%s\n", select_poset(k, epsilon, &M, lambda, D, N_u, R, LEARN_BOTH, 1));
         }
 
         if (e_flag) {

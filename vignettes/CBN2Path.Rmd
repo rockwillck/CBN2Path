@@ -92,20 +92,13 @@ bc <- Spock$new(
 )
 
 # Running the ct-cbn model
-resultsC <- ctcbn(bc)
+resultsC <- ctcbnSingle(bc)
 ```
 
-
-The maximum likelihood poset that the ct-cbn model outputs can be obtained as:
-
-```{r}
-mlPoset <- resultsC$poset$sets
-```
-
-The directed acyclic graph representation of the ML poset can be visualized using the **`visualizeCBNModel`** function as follows:
+The directed acyclic graph representation of the input poset can be visualized using the **`visualizeCBNModel`** function as follows:
 
 ```{r fig.width=4.25, fig.height=4.25}
-visualizeCBNModel(mlPoset)
+visualizeCBNModel(dag)
 ```
 
 Furthermore, the Lambda parameters and the corresponding log likelihood can be obtained as:
@@ -135,15 +128,6 @@ bc <- Spock$new(
 # Running the ct-cbn model
 resultsCMut <- ctcbnSingle(bc)
 ```
-
-You can check whether the ML poset now is different from the previous one obtained using the original genotype matrix:
-
-```{r}
-mlPosetMut <- resultsCMut$poset$sets
-visualizeCBNModel(mlPosetMut)
-```
-
-As you can see in the message above that the ML poset is an empty poset now, meaning that after adding the errors, the model is no longer able to detect any restrictions between the mutations.
 
 Note that if the posets and genotype data are stored in the original format needed in the C implementation of the CBN models, you can preprocess those files using **`readPoset`** and **`readPattern`** functions in the CBN2Path package. You can see an example below, where the number of mutations is **10**:
 
@@ -178,12 +162,11 @@ You can obtain the log likelihood corresponding to each poset as follows:
 logLik <- sapply(resultsC3, \(x) x$summary["Loglike"])
 ```
 
-You can verify that the maximum-likelihood poset is the same as the poset that `ctcbnSingle` outputs as the inferred poset (using the error-free `gMat` genotype matrix).
+You can see that the maximum-likelihood poset according to the CT-CBN model in this example is the empty poset.
 
 ```{r}
 indx <- which.max(logLik)
-mlPoset2 <- posets[[indx]]
-identical(mlPoset2, mlPoset)
+mlPosetC <- posets[[indx]]
 ```
 
 ## The H-CBN model
@@ -257,14 +240,11 @@ You can obtain the log likelihood corresponding to each poset as follows:
 logLikH <- sapply(resultsH3, \(x) x$summary["Loglike"])
 ```
 
-You can verify that the maximum-likelihood poset is the same as the poset that `hcbnSingle` outputs as the inferred poset (using the error-free `gMat` genotype matrix).
+You can see that the maximum-likelihood poset based on H-CBN contains an edge in contrast to the CT-CBN model, which outputs an empty poset in this example.
 
 ```{r}
-mlPosetH <- resultsHMut$poset$sets
-
 indx <- which.max(logLikH)
-mlPosetH2 <- posets[[indx]]
-identical(mlPosetH2, mlPosetH)
+mlPosetH <- posets[[indx]]
 ```
 
 ## Analysis of cancer progression pathways

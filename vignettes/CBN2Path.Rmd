@@ -10,7 +10,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}  
 ---
 
-```{r setup, include = FALSE}
+```{r setup, include=FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -269,13 +269,13 @@ ii) The second approach works only for mutational quartets (**n=4**) and uses th
 As examples for the first approach, let's use the `resultsC2` and `resultsH2` that we obtained in the previous section by learning respectively, ct-cbn and h-cbn models on genotypic data with **n=10** mutations. First, we need to obtain the estimated lambda parameters and the inferred DAG and then use them as the input of the **`pathProbCBN`** function as follows:
 
 ```{r,eval=FALSE}
-lambda_c <- as.numeric(resultsC2$lambda)
-lambda_h <- as.numeric(resultsH2$lambda)
-dag_c <- resultsC2$poset$sets
-dag_h <- resultsH2$poset$sets
+lambdaC <- as.numeric(resultsC2$lambda)
+lambdaH <- as.numeric(resultsH2$lambda)
+dagC <- resultsC2$poset$sets
+dagH <- resultsH2$poset$sets
 
-prob_c <- pathProbCBN(dag_c, lambda_c, 10)
-prob_h <- pathProbCBN(dag_h, lambda_h, 10)
+probC <- pathProbCBN(dagC, lambdaC, 10)
+probH <- pathProbCBN(dagH, lambdaH, 10)
 ```
 
 Note that in the above code, probabilities of 10!=3,628,800 pathways need to be calculated, which is extremely time-consuming, so we have not executed this chunk of the code.
@@ -302,7 +302,7 @@ You can see before adding errors (`probC1`), only four pathways are feasible wit
 We can now visualize the pathways with gene names and their probability distributions (`probC2`) as follows:
 
 ```{r}
-visualizeProbabilities(probC2, geneNames=genes)
+visualizeProbabilities(probC2, geneNames = genes)
 ```
 
 Similarly, in the figures below, we can compare the pathway probability distributions (quantified using H-CBN model) before (`probH1`) and after errors (`probH2`):
@@ -351,12 +351,12 @@ pathwayC2 <- pathwayCompatibilityQuartet(gMatMut)
 The Spearman's correlation coefficient between the pathway compatibility and the pathway probabilities quantified under CT-CBN or H-CBN can be quantified as follows:
 
 ```{r}
-rhoC1 <- cor(pathwayC1, probC1, method="spearman")
-rhoC2 <- cor(pathwayC2, probC2, method="spearman")
+rhoC1 <- cor(pathwayC1, probC1, method = "spearman")
+rhoC2 <- cor(pathwayC2, probC2, method = "spearman")
 rhoC1
 rhoC2
-rhoH1 <- cor(pathwayC1, probH1, method="spearman")
-rhoH2 <- cor(pathwayC2, probH2, method="spearman")
+rhoH1 <- cor(pathwayC1, probH1, method = "spearman")
+rhoH2 <- cor(pathwayC2, probH2, method = "spearman")
 rhoH1
 rhoH2
 ```
@@ -401,8 +401,8 @@ predR1 - predR2
 Finally, the Spearman's correlation coefficient between the pathway compatibility and the pathway probabilities quantified under R-CBN can be quantified as follows:
 
 ```{r}
-rhoR1 <- cor(pathwayC1, probR1, method="spearman")
-rhoR2 <- cor(pathwayC2, probR2, method="spearman")
+rhoR1 <- cor(pathwayC1, probR1, method = "spearman")
+rhoR2 <- cor(pathwayC2, probR2, method = "spearman")
 rhoR1
 rhoR2
 ```
@@ -445,8 +445,8 @@ predB1 - predB2
 Finally, the Spearman's correlation coefficient between the pathway compatibility and the pathway probabilities quantified under B-CBN can be quantified as follows:
 
 ```{r,eval=FALSE}
-rhoB1 <- cor(pathwayC1, probB1, method="spearman")
-rhoB2 <- cor(pathwayC2, probB2, method="spearman")
+rhoB1 <- cor(pathwayC1, probB1, method = "spearman")
+rhoB2 <- cor(pathwayC2, probB2, method = "spearman")
 rhoB1
 rhoB2
 ```
@@ -462,7 +462,7 @@ fitnessVector <- c(0, 0.1, 0.2, 0.1, 0.2, 0.4, 0.3, 0.2, 0.2, 0.1, 0, 0.6, 0.4, 
 g <- generateMatrixGenotypes(4)
 ```
 
-The 7-th genotype in the `g` vector is "1 0 1 0" and its corresponding fitness is `fitness_vector[7]=0.3`.
+The 7-th genotype in the `g` vector is "1 0 1 0" and its corresponding fitness is `fitnessVector[7] = 0.3`.
 
 The fitness landscape can be visualized as follows:
 

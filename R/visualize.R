@@ -44,7 +44,7 @@ visualizeFitnessLandscape <- function(fitness,
   allStrings <- lapply(0:(2^nGenes - 1), function(x) {
     toBin(x, nGenes)
   })
-  
+
   countOnes <- function(s) {
     sum(unlist(gregexpr("1", s)) > 0)
   }
@@ -52,7 +52,7 @@ visualizeFitnessLandscape <- function(fitness,
     rev(allStrings[sapply(allStrings, countOnes) == num])
   }
   columns <- lapply(0:nGenes, getColumn)
-  
+
   # Construct edges
   edges <- list()
   for (i in 1:(length(allStrings) - 1)) {
@@ -66,31 +66,31 @@ visualizeFitnessLandscape <- function(fitness,
       }
     }
   }
-  
+
   nodes <- unlist(columns)
-  
+
   # Create data frame for nodes and positions
   layoutDf <- data.frame(name = nodes, stringsAsFactors = FALSE)
-  
+
   # Assign x/y layout
   colStart <- 1
   xVals <- numeric(length(nodes))
   yVals <- numeric(length(nodes))
-  
+
   for (columnNodes in columns) {
     columnHeight <- length(columnNodes)
-    
+
     ys <- seq((columnHeight - 1) / 2, -(columnHeight - 1) / 2)
-    
+
     for (j in seq_along(columnNodes)) {
       idx <- which(layoutDf$name == columnNodes[j])
       xVals[idx] <- colStart
       yVals[idx] <- ys[j]
     }
-    
+
     colStart <- colStart + 1
   }
-  
+
   getFitness <- function(name) {
     if (is.null(selectNodes)) {
       fitness[match(name, nodes)]
@@ -100,23 +100,23 @@ visualizeFitnessLandscape <- function(fitness,
       NA
     }
   }
-  
+
   layoutDf$x <- xVals
   layoutDf$y <- yVals
   layoutDf$fitness <- unlist(lapply(layoutDf$name, getFitness))
-  
+
   # Convert edge list to data frame
   edgeDf <- do.call(rbind, edges)
   colnames(edgeDf) <- c("from", "to")
   edgeDf <- as.data.frame(edgeDf, stringsAsFactors = FALSE)
-  
+
   # Create tidygraph object
   gTbl <- tbl_graph(
     nodes = layoutDf,
     edges = edgeDf,
     directed = FALSE
   )
-  
+
   # Plot with ggraph
   ggraph(gTbl,
          layout = "manual",
@@ -151,6 +151,7 @@ visualizeFitnessLandscape <- function(fitness,
 #'
 #' @param poset Poset object to visualize
 #' @param nodeColor Color of nodes in resulting graph
+#' @param numNodes Number of nodes (default is the larger number between 4 and the largest index given in the poset)
 #'
 #' @return Plot (gg object) visualization of CBN model
 #' @export
@@ -158,54 +159,61 @@ visualizeFitnessLandscape <- function(fitness,
 #' @examples
 #' poset <- readPoset(getExamples()[1])
 #' visualizeCBNModel(poset$sets)
-visualizeCBNModel <- function(poset, nodeColor = "darkgreen") {
-  if (dim(poset)[2]<2){print("This is an empty poset, so no need for visualization.")}
-  else {
-    nodes <- data.frame(name = sort(unlist(unique(as.list(
-      poset
-    )))))
+visualizeCBNModel <- function(poset, nodeColor = "darkgreen", numNodes=min(4, max(poset))) {
+  if (dim(poset)[2]<2) {
+    numNodes = 4
+  } else {
     edges <- as.data.frame(poset)
     colnames(edges) <- c("from", "to")
-    
+  }
+  nodes <- data.frame(name = 1:numNodes)
+
+  if (dim(poset)[2]<2) {
+    gTbl <- tbl_graph(
+      nodes = nodes,
+      directed = TRUE
+    )
+  } else {
     gTbl <- tbl_graph(
       nodes = nodes,
       edges = edges,
       directed = TRUE
     )
-    ggraph(gTbl) +
-      geom_edge_link(
-        colour = "black",
-        arrow = arrow(length = unit(16, "pt")),
-        end_cap = circle(12, "pt")
-      ) +
-      geom_node_point(
-        fill = nodeColor,
-        shape = 21,
-        size = 12,
-        stroke = 0.3,
-        color = "black"
-      ) +
-      geom_node_text(aes(label = name), color = "white", size = 5) +
-      theme_void() +
-      theme(plot.title = element_text(hjust = 0.5)) +
-      ggtitle("CBN Model")
   }
+
+  ggraph(gTbl) +
+    geom_edge_link(
+      colour = "black",
+      arrow = arrow(length = unit(16, "pt")),
+      end_cap = circle(12, "pt")
+    ) +
+    geom_node_point(
+      fill = nodeColor,
+      shape = 21,
+      size = 12,
+      stroke = 0.3,
+      color = "black"
+    ) +
+    geom_node_text(aes(label = name), color = "white", size = 5) +
+    theme_void() +
+    theme(plot.title = element_text(hjust = 0.5)) +
+    ggtitle("CBN Model")
 }
 
 inverseFactorial <- function(n) {
   if (n < 1) {
     return(NA)
   }
-  
+
   logN <- log(n)
   logFact <- 0
   k <- 1
-  
+
   while (logFact <= logN) {
     k <- k + 1
     logFact <- logFact + log(k)
   }
-  
+
   return(k - 1)
 }
 
@@ -254,16 +262,16 @@ variableCapSize <- function(gTbl, nodeSizes, arrowColor) {
   gTbl <- gTbl %>%
     activate(edges) %>%
     mutate(cap_size = 1:gsize(gTbl))
-  
+
   graph <- ggraph(gTbl,
                   layout = "manual",
                   x = x,
                   y = y
   ) + theme_void()
-  
+
   for (i in 2:(gsize(gTbl) - 1)) {
     filterExpr <- call2("==", sym("cap_size"), i)
-    
+
     graph <- graph + geom_edge_link(
       aes(filter = !!filterExpr),
       colour = arrowColor,
@@ -272,7 +280,7 @@ variableCapSize <- function(gTbl, nodeSizes, arrowColor) {
       start_cap = circle(nodeSizes[[i]] + 5, "pt")
     )
   }
-  
+
   graph
 }
 
@@ -309,13 +317,13 @@ visualizeProbabilities <- function(probabilities,
   } else {
     numCol <- ncol(probabilities)
   }
-  
+
   pathwayLength <- inverseFactorial(nrow(probabilities))
-  
+
   if (factorial(pathwayLength) != nrow(probabilities)) {
     stop("Length of probabilities is not a factorial.")
   }
-  
+
   perms <- permutations(pathwayLength, pathwayLength)
   labels <- sprintf("Pi[%d]", 1:length(probabilities))
   if (numCol == 1) {
@@ -323,7 +331,7 @@ visualizeProbabilities <- function(probabilities,
     # labels = labels[order(probabilities, decreasing = TRUE)]
     probabilities <- matrix(sort(probabilities, decreasing = TRUE), ncol = 1)
   }
-  
+
   generateRow <- function(row, padding = FALSE) {
     row <- unlist(lapply(row, function(x) {
       geneNames[[x]]
@@ -352,16 +360,16 @@ visualizeProbabilities <- function(probabilities,
       )
     }
     edges <- data.frame(from = row[-length(row)], to = row[-1])
-    
+
     list(tbl_graph(
       nodes = nodes,
       edges = edges,
       directed = TRUE
     ), widthMiddle)
   }
-  
+
   elements <- vector("list", (factorial(pathwayLength) + 1) * (2 + numCol))
-  
+
   if (columnTitles) {
     elements[[1]] <- generateGgText("pi", "lightgray")
     for (i in 1:numCol) {
@@ -369,24 +377,24 @@ visualizeProbabilities <- function(probabilities,
     }
     elements[[2]] <- generateGgText("Pathways", "lightgray")
   }
-  
+
   for (i in 1:factorial(pathwayLength)) {
     if (i %% 2 == 0) {
       bgCol <- "floralwhite"
     } else {
       bgCol <- "white"
     }
-    
+
     textColor <- "black"
     if (probabilities[[i]] == 0 & numCol == 1) {
       textColor <- "lightgray"
     }
     elements[[(i) * (2 + numCol) + 1]] <- generateGgText(labels[[i]], bgCol, textColor)
-    
+
     genRow <- generateRow(perms[i, ], TRUE)
     gra <- genRow[[1]]
     widthMiddle <- genRow[[2]]
-    
+
     if (all(unlist(lapply(as.list(geneNames), function(x) {
       nchar(x) == 1
     })))) {
@@ -406,24 +414,24 @@ visualizeProbabilities <- function(probabilities,
         })), name, textColor)
       }
     }
-    
+
     elements[[(i) * (2 + numCol) + 2]] <- gra +
       theme(panel.background = element_rect(fill = bgCol))
-    
+
     for (colI in 1:numCol) {
       elements[[(i) * (2 + numCol) + 2 + colI]] <- generateGgText(sprintf("%.2f", probabilities[i, colI]), bgCol, textColor)
     }
   }
-  
+
   if (!columnTitles) {
     elements <- elements[-(1:(2 + numCol))]
   }
-  
+
   out <- wrap_plots(elements,
                     ncol = 2 + numCol,
                     widths = c(24, widthMiddle * 2, rep(32, numCol))
   )
-  
+
   if (is.null(outputFile)) {
     plot(out)
   } else {

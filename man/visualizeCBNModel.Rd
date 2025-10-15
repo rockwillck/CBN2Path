@@ -4,12 +4,18 @@
 \alias{visualizeCBNModel}
 \title{Visualize CBN Model}
 \usage{
-visualizeCBNModel(poset, nodeColor = "darkgreen")
+visualizeCBNModel(
+  poset,
+  nodeColor = "darkgreen",
+  numNodes = min(4, max(poset))
+)
 }
 \arguments{
 \item{poset}{Poset object to visualize}
 
 \item{nodeColor}{Color of nodes in resulting graph}
+
+\item{numNodes}{Number of nodes (default is the larger number between 4 and the largest index given in the poset)}
 }
 \value{
 Plot (gg object) visualization of CBN model

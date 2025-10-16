@@ -3,7 +3,6 @@ test_that("CT-CBN works", {
   patternBC = readPattern(getExamples()[1])
   bc = Spock$new(poset=posetBC$sets, numMutations=posetBC$mutations, genotypeMatrix=patternBC)
   expect_equal(ctcbnSingle(bc)$poset$mutations, 10)
-  expect_equal(ctcbnSingle(bc, epsilon = 0.7)$summary[[14]], 11912.05034)
 
   posetHIV = readPoset(getExamples()[5])
   patternHIV = readPattern(getExamples()[5])

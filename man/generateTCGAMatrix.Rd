@@ -22,5 +22,6 @@ A genotype matrix where each row is a patient and each column is a gene
 Generate TCGA Genotype Matrix
 }
 \examples{
-generateTCGAMatrix()
+generateTCGAMatrix(rawData = data.frame())
+# generateTCGAMatrix()
 }

@@ -45,6 +45,7 @@
 #' @importFrom TCGAbiolinks GDCdownload
 #' @importFrom TCGAbiolinks GDCprepare
 #' @importFrom TCGAbiolinks GDCquery
+#' @importFrom TCGAbiolinks getGDCprojects
 #' @importFrom tidygraph activate
 #' @importFrom tidygraph mutate
 #' @importFrom tidygraph pull

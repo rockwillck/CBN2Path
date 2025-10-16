@@ -7,7 +7,7 @@
 getRawTCGAData(project)
 }
 \arguments{
-\item{project}{TCGA project ID}
+\item{project}{TCGA project ID; pass "help" to see list of all project IDs}
 }
 \value{
 data frame of TCGA data for given project
@@ -16,5 +16,5 @@ data frame of TCGA data for given project
 Get Raw TCGA Data
 }
 \examples{
-getRawTCGAData("TCGA-BLCA")
+getRawTCGAData("help")
 }

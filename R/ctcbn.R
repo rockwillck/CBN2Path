@@ -169,7 +169,7 @@ ctcbn <- function(datasets,
       p <- MulticoreParam(workers = min(length(datasets), nCores))
       rets <- bplapply(datasets, \(x) ctcbnSingle(x, bootstrapSamples, randomSeed, samplingRate, epsilon, numDrawnSamples, numEmRuns), BPOPTIONS = bpoptions(progressbar = TRUE), BPPARAM = p)
     } else {
-      message("MulticoreParam not found — running sequentially.")
+      message("MulticoreParam not found - running sequentially.")
       rets <- lapply(datasets, \(x) ctcbnSingle(x, bootstrapSamples, randomSeed, samplingRate, epsilon, numDrawnSamples, numEmRuns))
     }
 

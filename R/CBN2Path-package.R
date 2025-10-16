@@ -2,6 +2,9 @@
 "_PACKAGE"
 
 ## usethis namespace: start
+#' @importFrom BiocParallel bplapply
+#' @importFrom BiocParallel bpoptions
+#' @importFrom BiocParallel MulticoreParam
 #' @importFrom coda gelman.diag
 #' @importFrom coda mcmc
 #' @importFrom coda mcmc.list
@@ -39,6 +42,9 @@
 #' @importFrom rlang sym
 #' @importFrom stats rbinom
 #' @importFrom stats runif
+#' @importFrom TCGAbiolinks GDCdownload
+#' @importFrom TCGAbiolinks GDCprepare
+#' @importFrom TCGAbiolinks GDCquery
 #' @importFrom tidygraph activate
 #' @importFrom tidygraph mutate
 #' @importFrom tidygraph pull

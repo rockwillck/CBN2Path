@@ -7,7 +7,7 @@
 visualizeCBNModel(
   poset,
   nodeColor = "darkgreen",
-  numNodes = min(4, max(poset))
+  numNodes = max(4, max(poset))
 )
 }
 \arguments{

@@ -37,10 +37,10 @@ toBin <- function(n, nG) {
 #' colIntensity <- c(0, rep(0.25, 4), rep(0.5, 6), rep(0.75, 4), 1)
 #' visualizeFitnessLandscape(colIntensity)
 visualizeFitnessLandscape <- function(fitness,
-                                        selectNodes = NULL,
-                                        nGenes = 4,
-                                        lowColor = "white",
-                                        highColor = "blue") {
+                                      selectNodes = NULL,
+                                      nGenes = 4,
+                                      lowColor = "white",
+                                      highColor = "blue") {
   allStrings <- lapply(0:(2^nGenes - 1), function(x) {
     toBin(x, nGenes)
   })
@@ -159,7 +159,7 @@ visualizeFitnessLandscape <- function(fitness,
 #' @examples
 #' poset <- readPoset(getExamples()[1])
 #' visualizeCBNModel(poset$sets)
-visualizeCBNModel <- function(poset, nodeColor = "darkgreen", numNodes=min(4, max(poset))) {
+visualizeCBNModel <- function(poset, nodeColor = "darkgreen", numNodes=max(4, max(poset))) {
   if (dim(poset)[2]<2) {
     numNodes = 4
   } else {
@@ -307,10 +307,10 @@ ptToMm <- function(pts) {
 #' mat <- matrix(c(0.1, 0.3, 0, 0.2, 0.4, 0, 0.2, 0.2, 0.1, 0, 0.2, 0.3), ncol = 2)
 #' visualizeProbabilities(mat, columnTitles = TRUE)
 visualizeProbabilities <- function(probabilities,
-                                    outputFile = NULL,
-                                    geneNames = as.character(1:inverseFactorial(length(probabilities))),
-                                    geneColors = rainbow(length(geneNames), v = 0.5),
-                                    columnTitles = TRUE) {
+                                   outputFile = NULL,
+                                   geneNames = as.character(1:inverseFactorial(length(probabilities))),
+                                   geneColors = rainbow(length(geneNames), v = 0.5),
+                                   columnTitles = TRUE) {
   numCol <- 1
   if (!is.matrix(probabilities)) {
     probabilities <- matrix(probabilities, ncol = 1)

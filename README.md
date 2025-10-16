@@ -4,6 +4,7 @@
 # CBN2Path
 
 <!-- badges: start -->
+[![DOI](https://zenodo.org/badge/834694658.svg)](https://zenodo.org/badge/latestdoi/834694658)
 <!-- badges: end -->
 
 ## Authors

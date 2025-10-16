@@ -131,13 +131,14 @@ ctcbnSingle <- function(dataset,
 #' @export
 #'
 #' @examples
-#' examplePath <- getExamples()[1]
+#' examplePath <- getExamples()[3]
 #' bc <- Spock$new(
 #'     poset = readPoset(examplePath)$sets,
 #'     numMutations = readPoset(examplePath)$mutations,
 #'     genotypeMatrix = readPattern(examplePath)
 #' )
 #' ctcbn(bc)
+#' ctcbn(c(bc, bc, bc))
 ctcbn <- function(datasets,
                   bootstrapSamples = 0,
                   randomSeed = 1,

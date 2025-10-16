@@ -9,10 +9,10 @@
 #' bcPath <- getExamples()[1]
 #' readPattern(bcPath)
 readPattern <- function(fileStem) {
-    lines <- readLines(paste(suppressWarnings(normalizePath(fileStem)),
+    lines <- suppressWarnings(readLines(paste(suppressWarnings(normalizePath(fileStem)),
         ".pat",
         sep = ""
-    ))
+    )))
 
     # Parse dimensions from the first line
     dimensions <- as.numeric(strsplit(lines[1], "\\s+")[[1]][2:3])
@@ -40,21 +40,21 @@ readPattern <- function(fileStem) {
 #' bcPath <- getExamples()[1]
 #' readPattern(bcPath)
 readTime <- function(fileStem) {
-  lines <- readLines(paste(suppressWarnings(normalizePath(fileStem)),
+  lines <- suppressWarnings(readLines(paste(suppressWarnings(normalizePath(fileStem)),
                            ".time",
                            sep = ""
-  ))
-  
+  )))
+
   # Parse dimensions from the first line
   dimensions <- as.numeric(strsplit(lines[1], "\\s+")[[1]][2:3])
   numRows <- dimensions[1]
   numCols <- dimensions[2]
-  
+
   # Read matrix data from subsequent lines
   matrixData <- sapply(lines[2:length(lines)], function(line) {
     as.numeric(strsplit(line, "\\s+")[[1]])
   })
-  
+
   # Convert matrix data into a matrix
   matrixData <- matrix(matrixData, nrow = numRows, byrow = FALSE)
   return(t(matrixData))
@@ -71,10 +71,10 @@ readTime <- function(fileStem) {
 #' bcPath <- getExamples()[1]
 #' readPoset(bcPath)
 readPoset <- function(fileStem) {
-    lines <- readLines(paste(suppressWarnings(normalizePath(fileStem)), ".poset",
-        sep =
-            ""
-    ))
+    lines <- suppressWarnings(readLines(paste(suppressWarnings(normalizePath(fileStem)),
+                                              ".poset",
+                                              sep = ""
+    )))
     if (trimws(lines[[2]]) == "0") {
         return(list(mutations = as.numeric(lines[[1]]), sets = matrix()))
     }
@@ -102,9 +102,11 @@ readPoset <- function(fileStem) {
 #' bcPath <- getExamples()[1]
 #' readLambda(bcPath)
 readLambda <- function(fileStem) {
-    lines <- unlist(as.numeric(readLines(
-        paste(suppressWarnings(normalizePath(fileStem)), ".lambda", sep = "")
+    lines <- suppressWarnings(
+      unlist(as.numeric(readLines(
+        paste(normalizePath(fileStem), ".lambda", sep = "")
     )))
+    )
     return(matrix(lines, ncol = 1))
 }
 

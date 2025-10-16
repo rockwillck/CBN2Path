@@ -33,11 +33,12 @@ A matrix of results.
 H-CBN
 }
 \examples{
-examplePath <- getExamples()[1]
+examplePath <- getExamples()[3]
 bc <- Spock$new(
     poset = readPoset(examplePath)$sets,
     numMutations = readPoset(examplePath)$mutations,
     genotypeMatrix = readPattern(examplePath)
 )
 hcbn(bc)
+hcbn(c(bc, bc, bc))
 }

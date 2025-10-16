@@ -39,11 +39,12 @@ A matrix of results.
 CT-CBN
 }
 \examples{
-examplePath <- getExamples()[1]
+examplePath <- getExamples()[3]
 bc <- Spock$new(
     poset = readPoset(examplePath)$sets,
     numMutations = readPoset(examplePath)$mutations,
     genotypeMatrix = readPattern(examplePath)
 )
 ctcbn(bc)
+ctcbn(c(bc, bc, bc))
 }

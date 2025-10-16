@@ -109,7 +109,6 @@ hcbnSingle <- function(datasetObj,
 #'     genotypeMatrix = readPattern(examplePath)
 #' )
 #' hcbn(bc)
-#' hcbn(c(bc, bc, bc))
 hcbn <- function(datasets,
                  anneal = FALSE,
                  temp = 0,

@@ -40,5 +40,4 @@ bc <- Spock$new(
     genotypeMatrix = readPattern(examplePath)
 )
 hcbn(bc)
-hcbn(c(bc, bc, bc))
 }

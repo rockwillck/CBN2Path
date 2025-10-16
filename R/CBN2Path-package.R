@@ -4,6 +4,7 @@
 ## usethis namespace: start
 #' @importFrom BiocParallel bplapply
 #' @importFrom BiocParallel bpoptions
+#' @importFrom BiocParallel bpprogressbar
 #' @importFrom BiocParallel MulticoreParam
 #' @importFrom coda gelman.diag
 #' @importFrom coda mcmc

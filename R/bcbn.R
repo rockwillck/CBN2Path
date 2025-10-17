@@ -54,7 +54,11 @@ bcbn <- function(data = defaultData(), nSamples = 25000, theta = 0, epsilon = 0.
     }
 
     if (exists("MulticoreParam", mode = "function")) {
-      p <- MulticoreParam(workers = min(nChains, nCores))
+      if(Sys.info()["sysname"] == "Windows") {
+        p <- SnowParam(workers = min(nChains, nCores))
+      } else {
+        p <- MulticoreParam(workers = min(nChains, nCores))
+      }
       rets <- bplapply(1:nChains, retWorker, BPOPTIONS = bpoptions(progressbar = TRUE), BPPARAM = p)
     } else {
       message("MulticoreParam not found - running sequentially.")

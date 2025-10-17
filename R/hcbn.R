@@ -137,7 +137,11 @@ hcbn <- function(datasets,
     outMatrixBuf <- vector("list", length(datasets))
 
     if (exists("MulticoreParam", mode = "function")) {
-      p <- MulticoreParam(workers = min(length(datasets), nCores))
+      if(Sys.info()["sysname"] == "Windows") {
+        p <- SnowParam(workers = min(length(datasets), nCores))
+      } else {
+        p <- MulticoreParam(workers = min(length(datasets), nCores))
+      }
       rets <- bplapply(datasets, \(x) hcbnSingle(x, anneal, temp, annealingSteps, epsilon), BPOPTIONS = bpoptions(progressbar = TRUE), BPPARAM = p)
     } else {
       message("MulticoreParam not found - running sequentially.")

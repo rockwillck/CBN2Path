@@ -29,7 +29,6 @@ bcbn <- function(data = defaultData(), nSamples = 25000, theta = 0, epsilon = 0.
   if (nChains < nCores) {
     message(paste("Number of chains was less than number of cores. Using number of chains (", nChains, ") as thread count.", sep = ""))
   }
-  registerDoMC(cores = min(nChains, nCores))
   n <- dim(data)[2]
   nCases <- dim(data)[1]
   mList <- list()
@@ -39,9 +38,10 @@ bcbn <- function(data = defaultData(), nSamples = 25000, theta = 0, epsilon = 0.
   converged2 <- 0
   repeat {
     l <- l + 1
-    rets <- foreach(i = 1:nChains) %dopar% {
-      print(paste("chain:", i))
-      print(theta)
+
+    retWorker <- function(i) {
+      message(paste("chain:", i))
+      message(theta)
       if (all(theta == 0)) { theta <- as.double(runif(n)) }
       if (length(mList) != 0) {
         edgesIn <- c(t(edgeList[[i]][nSamples][[1]]))
@@ -52,6 +52,15 @@ bcbn <- function(data = defaultData(), nSamples = 25000, theta = 0, epsilon = 0.
       }
       ret <- .C("sample_full_cbn_", theta, as.integer(n), as.double(epsilon), edgesIn, as.integer(nSamples), as.integer(thin), as.integer(c(t(data))), as.integer(nCases), thetaOut = as.double(rep(0, n * nSamples)), epsilonOut = as.double(rep(0, nSamples)), edgesOut = as.integer(rep(0, nSamples * n * n)), logPosteriorOut = as.double(rep(0, nSamples)))
     }
+
+    if (exists("MulticoreParam", mode = "function")) {
+      p <- MulticoreParam(workers = min(nChains, nCores))
+      rets <- bplapply(1:nChains, retWorker, BPOPTIONS = bpoptions(progressbar = TRUE), BPPARAM = p)
+    } else {
+      message("MulticoreParam not found - running sequentially.")
+      rets <- lapply(datasets, retWorker)
+    }
+
     mList <- list()
     mcmcList <- list()
     edgeList <- list()

@@ -53,15 +53,15 @@ bcbn <- function(data = defaultData(), nSamples = 25000, theta = 0, epsilon = 0.
       ret <- .C("sample_full_cbn_", theta, as.integer(n), as.double(epsilon), edgesIn, as.integer(nSamples), as.integer(thin), as.integer(c(t(data))), as.integer(nCases), thetaOut = as.double(rep(0, n * nSamples)), epsilonOut = as.double(rep(0, nSamples)), edgesOut = as.integer(rep(0, nSamples * n * n)), logPosteriorOut = as.double(rep(0, nSamples)))
     }
 
-    if (exists("MulticoreParam", mode = "function")) {
+    if (exists("MulticoreParam", mode = "function") || exists("SnowParam", mode = "function")) {
       if(Sys.info()["sysname"] == "Windows") {
         p <- SnowParam(workers = min(nChains, nCores))
       } else {
         p <- MulticoreParam(workers = min(nChains, nCores))
       }
-      rets <- bplapply(1:nChains, retWorker, BPOPTIONS = bpoptions(progressbar = TRUE), BPPARAM = p)
+      rets <- bplapply(1:nChains, retWorker, BPPARAM = p)
     } else {
-      message("MulticoreParam not found - running sequentially.")
+      message("Parallelization not found - running sequentially.")
       rets <- lapply(datasets, retWorker)
     }
 

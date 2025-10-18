@@ -166,7 +166,8 @@ ctcbn <- function(datasets,
     done <- 0
     outMatrixBuf <- vector("list", length(datasets))
 
-    if (exists("MulticoreParam", mode = "function")) {
+
+    if (exists("MulticoreParam", mode = "function") || exists("SnowParam", mode = "function")) {
       if(Sys.info()["sysname"] == "Windows") {
         p <- SnowParam(workers = min(length(datasets), nCores))
       } else {
@@ -174,7 +175,7 @@ ctcbn <- function(datasets,
       }
       rets <- bplapply(datasets, \(x) ctcbnSingle(x, bootstrapSamples, randomSeed, samplingRate, epsilon, numDrawnSamples, numEmRuns), BPOPTIONS = bpoptions(progressbar = TRUE), BPPARAM = p)
     } else {
-      message("MulticoreParam not found - running sequentially.")
+      message("Parallelization not found - running sequentially.")
       rets <- lapply(datasets, \(x) ctcbnSingle(x, bootstrapSamples, randomSeed, samplingRate, epsilon, numDrawnSamples, numEmRuns))
     }
 

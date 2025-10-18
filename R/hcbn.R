@@ -136,7 +136,7 @@ hcbn <- function(datasets,
     done <- 0
     outMatrixBuf <- vector("list", length(datasets))
 
-    if (exists("MulticoreParam", mode = "function")) {
+    if (exists("MulticoreParam", mode = "function") || exists("SnowParam", mode = "function")) {
       if(Sys.info()["sysname"] == "Windows") {
         p <- SnowParam(workers = min(length(datasets), nCores))
       } else {
@@ -144,7 +144,7 @@ hcbn <- function(datasets,
       }
       rets <- bplapply(datasets, \(x) hcbnSingle(x, anneal, temp, annealingSteps, epsilon), BPOPTIONS = bpoptions(progressbar = TRUE), BPPARAM = p)
     } else {
-      message("MulticoreParam not found - running sequentially.")
+      message("Parallelization not found - running sequentially.")
       rets <- lapply(datasets, \(x) hcbnSingle(x, anneal, temp, annealingSteps, epsilon))
     }
 

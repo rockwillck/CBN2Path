@@ -12,7 +12,8 @@ bcbn(
   nChains = 4,
   thin = 10,
   maxL = 1000,
-  nCores = 1
+  nCores = 1,
+  progressBar = FALSE
 )
 }
 \arguments{
@@ -31,6 +32,8 @@ bcbn(
 \item{maxL}{The maximum number of iteration <def: 1000>}
 
 \item{nCores}{Number of parallelized cores <def: 1>}
+
+\item{progressBar}{Print out progress bar; default is FALSE}
 }
 \value{
 A matrix

@@ -12,7 +12,8 @@ ctcbn(
   epsilon = 2,
   numDrawnSamples = 0,
   numEmRuns = 1,
-  nCores = 1
+  nCores = 1,
+  progressBar = FALSE
 )
 }
 \arguments{
@@ -31,6 +32,8 @@ ctcbn(
 \item{numEmRuns}{Number of em runs.}
 
 \item{nCores}{Maximum number of threads to use to parallelize.}
+
+\item{progressBar}{Print out progress bar; default is FALSE}
 }
 \value{
 A matrix of results.

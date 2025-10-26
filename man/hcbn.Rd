@@ -10,7 +10,8 @@ hcbn(
   temp = 0,
   annealingSteps = 0,
   epsilon = 2,
-  nCores = 1
+  nCores = 1,
+  progressBar = FALSE
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ hcbn(
 \item{epsilon}{Value of eps for CT-CBN model selection. Requires both pattern and lambda data in input \code{Spock}.}
 
 \item{nCores}{Maximum number of threads to use to parallelize.}
+
+\item{progressBar}{Print out progress bar; default is FALSE}
 }
 \value{
 A matrix of results.

@@ -3,7 +3,7 @@
 \docType{package}
 \name{CBN2Path-package}
 \alias{CBN2Path-package}
-\title{CBN2Path: Conjunctive Bayesian Networks}
+\title{CBN2Path: "CBN2Path: an R/Bioconductor package for the analysis of cancer progression pathways using Conjunctive Bayesian Networks}
 \description{
 CBN2Path package provides a unifying interface to facilitate CBN-based quantification, analysis and visualization of cancer progression pathways.
 

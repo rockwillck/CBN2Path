@@ -126,6 +126,7 @@ ctcbnSingle <- function(dataset,
 #' @param numDrawnSamples If > 0, the number of samples to draw from the model. If zero (default), the model will be learned from data.
 #' @param numEmRuns Number of em runs.
 #' @param nCores Maximum number of threads to use to parallelize.
+#' @param progressBar Print out progress bar; default is FALSE
 #'
 #' @return A matrix of results.
 #' @export
@@ -146,7 +147,8 @@ ctcbn <- function(datasets,
                   epsilon = 2,
                   numDrawnSamples = 0,
                   numEmRuns = 1,
-                  nCores = 1) {
+                  nCores = 1,
+                  progressBar = FALSE) {
     if (inherits(datasets, "Spock") && length(datasets$poset) == 1) {
       return(ctcbnSingle(datasets, bootstrapSamples, randomSeed, samplingRate, epsilon, numDrawnSamples, numEmRuns))
     } else if (inherits(datasets, "Spock")) {
@@ -173,7 +175,7 @@ ctcbn <- function(datasets,
       } else {
         p <- MulticoreParam(workers = min(length(datasets), nCores))
       }
-      rets <- bplapply(datasets, \(x) ctcbnSingle(x, bootstrapSamples, randomSeed, samplingRate, epsilon, numDrawnSamples, numEmRuns), BPOPTIONS = bpoptions(progressbar = TRUE), BPPARAM = p)
+      rets <- bplapply(datasets, \(x) ctcbnSingle(x, bootstrapSamples, randomSeed, samplingRate, epsilon, numDrawnSamples, numEmRuns), BPOPTIONS = bpoptions(progressbar = progressBar), BPPARAM = p)
     } else {
       message("Parallelization not found - running sequentially.")
       rets <- lapply(datasets, \(x) ctcbnSingle(x, bootstrapSamples, randomSeed, samplingRate, epsilon, numDrawnSamples, numEmRuns))

@@ -5,7 +5,7 @@ package: CBN2Path
 output: 
   BiocStyle::html_document
 vignette: >
-  %\VignetteIndexEntry{B-CBN Vignette}
+  %\VignetteIndexEntry{CBN2Path Vignette}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}  
 ---
@@ -37,6 +37,7 @@ library(CBN2Path)
 
 ```{r include=FALSE}
 library(TCGAbiolinks)
+library(BiocParallel)
 ```
 
 ## Cite our work
@@ -50,7 +51,7 @@ Choi-Kim W and Hosseini SR. CBN2Path: an R/Bioconductor package for the analysis
 
 The genotype matrix is a binary matrix in which each row represents a sample and each column represents a gene. The element (i,j) of the matrix is 1 if the i-th sample contains a nonsense or missense mutation in the j-th gene, and zero otherwise. In the example below, a genotype matrix is generated for 414 Bladder Urothelial Carcinoma samples in the "TCGA-BLCA" data. Note that we in this example we have used "TP53", "ARID1A", "KDM6A" and "PIK3CA" as our genes of interest to genotype the samples. 
 
-```{r}
+```{r message=FALSE}
 # Obtaining the "TCGA-BLCA" data
 rawData <- getRawTCGAData("TCGA-BLCA")
 
@@ -143,7 +144,7 @@ resultsC2 <- ctcbnSingle(bc)
 
 Finally, you can obtain and store the results using a list of posets (instead of a single poset) as the input of the model using the **`ctcbn`** function. In the example below, we will consider the set of all potential (transitively-closed) DAGs of size four (219 unique posets) as our list of posets that we use as the input of the `ctcbn` function:
 
-```{r}
+```{r message=FALSE}
 posets <- readRDS(system.file("extdata", "Posets.rds", package = "CBN2Path"))
 
 bc <-  Spock$new(
@@ -227,7 +228,7 @@ resultsH2 <- hcbnSingle(bc)
 
 Finally, you can obtain and store the results using a list of posets (instead of a single poset) as the input of the model using the **`hcbn`** function.
 
-```{r}
+```{r message=FALSE}
 posets <- readRDS(system.file("extdata", "Posets.rds", package = "CBN2Path"))
 
 bc <- Spock$new(
@@ -282,7 +283,7 @@ Note that in the above code, probabilities of 10!=3,628,800 pathways need to be 
 
 Now, let's try the second approach using both the `gMat` and `gMatMut` genotype matrices. Note that in these functions, the number of columns in the input genotype matrix must always be four.
 
-```{r}
+```{r message=FALSE}
 probC1 <- pathProbQuartetCTCBN(gMat)
 probC2 <- pathProbQuartetCTCBN(gMatMut)
 
@@ -367,7 +368,7 @@ The R-CBN algorithm [5] for quantifying pathway probability distributions is imp
 
 The **`pathProbQuartetRCBN`** function also receives a four-column binary genotype matrix as the only input, and outputs the corresponding pathway probability distribution. Let's quantify the pathway probability distributions before and after adding errors:
 
-```{r}
+```{r message=FALSE}
 probR1 <- pathProbQuartetRCBN(gMat)
 probR2 <- pathProbQuartetRCBN(gMatMut)
 ```

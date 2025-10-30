@@ -51,7 +51,7 @@ Choi-Kim W and Hosseini SR. CBN2Path: an R/Bioconductor package for the analysis
 
 The genotype matrix is a binary matrix in which each row represents a sample and each column represents a gene. The element (i,j) of the matrix is 1 if the i-th sample contains a nonsense or missense mutation in the j-th gene, and zero otherwise. In the example below, a genotype matrix is generated for 414 Bladder Urothelial Carcinoma samples in the "TCGA-BLCA" data. Note that we in this example we have used "TP53", "ARID1A", "KDM6A" and "PIK3CA" as our genes of interest to genotype the samples. 
 
-```{r message=FALSE}
+```{r message=FALSE, include=FALSE}
 # Obtaining the "TCGA-BLCA" data
 rawData <- getRawTCGAData("TCGA-BLCA")
 
@@ -60,7 +60,6 @@ genes <- c("TP53","ARID1A","KDM6A","PIK3CA")
 
 # Generating the genotype matrix
 gMat <- generateTCGAMatrix(rawData, genes)
-
 ```
 
 

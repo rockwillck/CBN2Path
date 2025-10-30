@@ -1,9 +1,9 @@
 Package: CBN2Path
 Title:  CBN2Path: an R/Bioconductor package for the analysis of cancer progression pathways using Conjunctive Bayesian Networks
-Version: 0.99.19
+Version: 1.1.3
 Authors@R: 
     c(person("William", "Choi-Kim", email = "william@williamck.com", role = c("aut", "cre"), comment = c(ORCID = "0009-0000-3902-4745")),
-    person("Sayed-Rzgar", "Hosseini", email = "rzgar.hosseini@indstate.edu", role = c("aut"), comment = c(ORCID = "0000-0002-2308-6754")))
+    person("Sayed-Rzgar", "Hosseini", email = "razgar@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-2308-6754")))
 Description: CBN2Path package provides a unifying interface to facilitate CBN-based quantification, analysis and visualization of cancer progression pathways. 
 URL: https://github.com/rockwillck/CBN2Path, http://dx.doi.org/10.1093/biomet/asp023, http://dx.doi.org/10.1093/bioinformatics/btp505
 BugReports: https://github.com/rockwillck/CBN2Path/issues

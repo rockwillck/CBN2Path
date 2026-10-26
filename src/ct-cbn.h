@@ -4,6 +4,7 @@
 #include <time.h>
 #include <math.h>
 #include <getopt.h>
+#include <R.h>
 
 #include <gsl/gsl_randist.h>
 #include <gsl/gsl_sf_gamma.h>
@@ -71,8 +72,7 @@ int* get_int_array(const int n)
 
   if (x == NULL)
   {
-    // fprintf(stderr, "Error: Out of memory!\n");
-    // exit(1);
+    Rf_error("Error: Out of memory!");
   }
 
   return x;
@@ -84,8 +84,7 @@ unsigned int* get_uint_array(const int n)
 
   if (x == NULL)
   {
-    // fprintf(stderr, "Error: Out of memory!\n");
-    // exit(1);
+    Rf_error("Error: Out of memory!");
   }
 
   return x;
@@ -98,8 +97,7 @@ double* get_double_array(const int n)
 
   if (x == NULL)
   {
-    // fprintf(stderr, "Error: Out of memory!\n");
-    // exit(1);
+    Rf_error("Error: Out of memory!");
   }
 
   return x;
@@ -112,18 +110,19 @@ int** get_int_matrix(const int m, const int n)
 
   if (x == NULL)
   {
-    // fprintf(stderr, "Error: Out of memory!\n");
-    // exit(1);
+    Rf_error("Error: Out of memory!");
   }
 
-  int i;
+  int i, j;
   for (i=0; i<m; i++)
   {
     x[i] = calloc(n, sizeof(int));
     if (x[i] == NULL)
     {
-      // fprintf(stderr, "Error: Out of memory!\n");
-      // exit(1);
+      for (j=0; j<i; j++)
+        free(x[j]);
+      free(x);
+      Rf_error("Error: Out of memory!");
     }
   }
 
@@ -137,18 +136,19 @@ double** get_double_matrix(const int m, const int n)
 
   if (x == NULL)
   {
-    // fprintf(stderr, "Error: Out of memory!\n");
-    // exit(1);
+    Rf_error("Error: Out of memory!");
   }
 
-  int i;
+  int i, j;
   for (i=0; i<m; i++)
   {
     x[i] = calloc(n, sizeof(double));
     if (x[i]  == NULL)
     {
-      // fprintf(stderr, "Error: Out of memory!\n");
-      // exit(1);
+      for (j=0; j<i; j++)
+        free(x[j]);
+      free(x);
+      Rf_error("Error: Out of memory!");
     }
   }
 
@@ -161,18 +161,23 @@ double*** get_double_cube(const int m, const int n, const int l)
 
   if (x == NULL)
   {
-    // fprintf(stderr, "Error: Out of memory!\n");
-    // exit(1);
+    Rf_error("Error: Out of memory!");
   }
 
-  int i;
+  int i, j, k;
   for (i=0; i<m; i++)
   {
     x[i] = get_double_matrix(n,l);
     if (x[i]  == NULL)
     {
-      // fprintf(stderr, "Error: Out of memory!\n");
-      // exit(1);
+      for (j=0; j<i; j++)
+      {
+        for (k=0; k<n; k++)
+          free(x[j][k]);
+        free(x[j]);
+      }
+      free(x);
+      Rf_error("Error: Out of memory!");
     }
   }
 
@@ -209,6 +214,8 @@ char* print_double_array(double* x, int n)
   int j;
   size_t buffer_size = 256;
   char* result = (char*)malloc(buffer_size);
+  if (result == NULL)
+    return NULL;
   result[0] = '\0';
   char buffer[50];
 
@@ -224,6 +231,7 @@ char* print_double_array(double* x, int n)
         char* new_result = (char*)realloc(result, buffer_size);
         if (new_result == NULL) {
           free(result);
+          return NULL;
         }
         result = new_result;
       }
@@ -243,7 +251,10 @@ void print_double_matrix(double** X, int m, int n)
   int i;
 
   for (i=0; i<m; i++)
-    print_double_array(X[i], n);
+  {
+    char* s = print_double_array(X[i], n);
+    free(s);
+  }
 
 }
 
@@ -261,13 +272,10 @@ void write_poset(int k, char* filestem, int** P, int n, int b)
     snprintf(filename, sizeof(filename), "%s-%05d.poset", filestem, k);
 
   FILE *output;
-  output = fopen(filename, "w");
-  // if ( (output = fopen(filename, "w")) == NULL )
-  // {
-  //   fprintf(stderr, "Error:  Could not write to file %s\n", filename);
-  //   fprintf(stderr, "        Make sure the directory '%s' exists.\n", filestem);
-  //   // exit(1);
-  // }
+  if ( (output = fopen(filename, "w")) == NULL )
+  {
+    Rf_error("Error: Could not write to file %s", filename);
+  }
 
   fprintf(output, "%d\n", n);
   for (i=1; i<=n; i++)
@@ -288,14 +296,16 @@ void write_patterns(char* filestem, int** pat, int N, int n)
   char suffix[15] = ".sim.pat";
   // char suffix[15] = ".pat";
   char *filename = (char *) calloc(strlen(filestem) + strlen(suffix) + 1, sizeof(char));
+  if (filename == NULL)
+    Rf_error("Error: Out of memory!");
   strcat(filename, filestem);
   strcat(filename, suffix);
 
   FILE *output;
   if ( (output = fopen(filename, "w")) == NULL )
   {
-    // fprintf(stderr, "Error:  Could not write to file %s\n", filename);
-    // exit(1);
+    free(filename);
+    Rf_error("Error: Could not write to file");
   }
 
   fprintf(output, "%d %d\n", N, n+1);
@@ -307,6 +317,7 @@ void write_patterns(char* filestem, int** pat, int N, int n)
   }
 
   fclose(output);
+  free(filename);
 }
 
 
@@ -318,14 +329,16 @@ void write_times(char* filestem, double** t, int N, int n)
   char suffix[15] = ".sim.time";
   //char suffix[15] = ".time";
   char *filename = (char *) calloc(strlen(filestem) + strlen(suffix) + 1, sizeof(char));
+  if (filename == NULL)
+    Rf_error("Error: Out of memory!");
   strcat(filename, filestem);
   strcat(filename, suffix);
 
   FILE *output;
   if ( (output = fopen(filename, "w")) == NULL )
   {
-    // fprintf(stderr, "Error:  Could not write to file %s\n", filename);
-    // exit(1);
+    free(filename);
+    Rf_error("Error: Could not write to file");
   }
 
   fprintf(output, "%d %d\n", N, n+1);
@@ -337,13 +350,14 @@ void write_times(char* filestem, double** t, int N, int n)
   }
 
   fclose(output);
+  free(filename);
 }
 
 
 
 
 
-inline void genotype_of(int index, int* x, int n)
+static inline void genotype_of(int index, int* x, int n)
 {
   int i;
 
@@ -420,16 +434,26 @@ void free_lattice(model* M)
   int i;
 
   free(M->J_P);
+  M->J_P = NULL;
   for (i=0; i<M->m; i++)
   {
     free(M->pa[i]);
     free(M->pa_diff[i]);
+    free(M->ch[i]);
     free(M->ch_diff[i]);
   }
   free(M->pa);
   free(M->pa_diff);
   free(M->N_pa);
+  free(M->ch);
   free(M->ch_diff);
+  free(M->N_ch);
+  M->pa = NULL;
+  M->pa_diff = NULL;
+  M->N_pa = NULL;
+  M->ch = NULL;
+  M->ch_diff = NULL;
+  M->N_ch = NULL;
 }
 
 
@@ -521,9 +545,12 @@ void free_data(data* D, int N_u, int n)
   {
     free(D[k].g);
     free(D[k].t);
-    for (j=0; j<=n; j++)
-      free(D[k].Q[j]);
-    free(D[k].Q);
+    if (D[k].Q != NULL)
+    {
+      for (j=0; j<=n; j++)
+        free(D[k].Q[j]);
+      free(D[k].Q);
+    }
     free(D[k].J_Q);
   }
   free(D);
@@ -537,14 +564,16 @@ int** read_patterns(char* filestem, int* N, int n)
 
   char suffix[15] = ".pat";
   char *filename = (char *) calloc(strlen(filestem) + strlen(suffix) + 1, sizeof(char));
+  if (filename == NULL)
+    Rf_error("Error: Out of memory!");
   strcat(filename, filestem);
   strcat(filename, suffix);
 
   FILE *input;
   if ( (input = fopen(filename, "r")) == NULL)
   {
-    // fprintf(stderr, "Error:  Could not read %s\n", filename);
-    // exit(1);
+    free(filename);
+    Rf_error("Error: Could not read pattern file");
   }
 
   /* Read dimensions */
@@ -552,13 +581,15 @@ int** read_patterns(char* filestem, int* N, int n)
   // if (verbose) printf("\nreading data from file %s :  %d samples, %d events ...\n\n", filename, *N, p-1);
   if (*N < 1)
   {
-    // fprintf(stderr, "Error:  Less than one data point!\n");
-    // exit(1);
+    fclose(input);
+    free(filename);
+    Rf_error("Error: Less than one data point!");
   }
-  if (n+1 != p)
+  if (p < n+1)
   {
-    // fprintf(stderr, "Error:  Number of events in poset and data do not match!\n");
-    // exit(1);
+    fclose(input);
+    free(filename);
+    Rf_error("Error: Number of events in poset and data do not match!");
   }
 
   int** pat = get_int_matrix(*N, p);
@@ -577,14 +608,19 @@ int** read_patterns(char* filestem, int* N, int n)
       }
       else
       {
-        // fprintf(stderr, "Error reading data from %s!\n", filename);
-        // exit(1);
+        for (k=0; k<*N; k++)
+          free(pat[k]);
+        free(pat);
+        fclose(input);
+        free(filename);
+        Rf_error("Error reading data from pattern file!");
       }
 
     }
   }
 
   fclose(input);
+  free(filename);
 
   return pat;
 }
@@ -597,14 +633,16 @@ double** read_times(char* filestem, int* N, int n)
 
   char suffix[15] = ".time";
   char *filename = (char *) calloc(strlen(filestem) + strlen(suffix) + 1, sizeof(char));
+  if (filename == NULL)
+    Rf_error("Error: Out of memory!");
   strcat(filename, filestem);
   strcat(filename, suffix);
 
   FILE *input;
   if ( (input = fopen(filename, "r")) == NULL)
   {
-    // fprintf(stderr, "Error:  Could not read %s\n", filename);
-    // exit(1);
+    free(filename);
+    Rf_error("Error: Could not read time file");
   }
 
   /* Read dimensions */
@@ -612,13 +650,15 @@ double** read_times(char* filestem, int* N, int n)
   // printf("read times: %d samples, %d events\n\n", *N, p-1);
   if (*N < 1)
   {
-    // fprintf(stderr, "Error:  Less than one data point!\n");
-    // exit(1);
+    fclose(input);
+    free(filename);
+    Rf_error("Error: Less than one data point!");
   }
-  if (n+1 != p)
+  if (p < n+1)
   {
-    // fprintf(stderr, "Error:  Number of events in poset and data do not match!\n");
-    // exit(1);
+    fclose(input);
+    free(filename);
+    Rf_error("Error: Number of events in poset and data do not match!");
   }
 
   double** t = get_double_matrix(*N, p);
@@ -635,14 +675,19 @@ double** read_times(char* filestem, int* N, int n)
       }
       else
       {
-        // fprintf(stderr, "Error reading data from %s!\n", filename);
-        // exit(1);
+        for (i=0; i<*N; i++)
+          free(t[i]);
+        free(t);
+        fclose(input);
+        free(filename);
+        Rf_error("Error reading data from time file!");
       }
 
     }
   }
 
   fclose(input);
+  free(filename);
 
   return t;
 }
@@ -655,14 +700,16 @@ void read_poset(char* filestem, model* M)
 
   char suffix[15] = ".poset";
   char *filename = (char *) calloc(strlen(filestem) + strlen(suffix) + 1, sizeof(char));
+  if (filename == NULL)
+    Rf_error("Error: Out of memory!");
   strcat(filename, filestem);
   strcat(filename, suffix);
 
   FILE *input;
   if ( (input = fopen(filename, "r")) == NULL)
   {
-    // fprintf(stderr, "Error:  Could not read %s\n", filename);
-    // exit(1);
+    free(filename);
+    Rf_error("Error: Could not read poset file");
   }
 
   /* Read number of relations */
@@ -671,8 +718,9 @@ void read_poset(char* filestem, model* M)
   // if (verbose)  printf("n = %d events\n\n", n);
   if ((n < 1) || (n > 25))
   {
-    // fprintf(stderr, "Error:  Number of events is %d.  Supported range is {1, ..., 14}.\n", n);
-    // exit(1);
+    fclose(input);
+    free(filename);
+    Rf_error("Error: Number of events is %d. Supported range is {1, ..., 25}.", n);
   }
 
   M->n = n;
@@ -685,14 +733,20 @@ void read_poset(char* filestem, model* M)
     // if (verbose)  printf("%d --> %d\n", left, right);  // i.e., left < right
     if ((left > n) || (right > n) || (left < 0) || (right < 1))
     {
-      // fprintf(stderr, "Error:  Undefined event in %s!\n", filename);
-      // exit(1);
+      for (int i=0; i<=n; i++)
+        free(M->P[i]);
+      free(M->P);
+      M->P = NULL;
+      fclose(input);
+      free(filename);
+      Rf_error("Error: Undefined event in poset file!");
     }
     M->P[left][right] = 1;
     if(fscanf(input,"%d %d", &left, &right));
   }
 
   fclose(input);
+  free(filename);
 }
 
 
@@ -703,14 +757,16 @@ void read_lambda(char* filestem, double* lambda, int n)
 
   char suffix[15] = ".lambda";
   char *filename = (char *) calloc(strlen(filestem) + strlen(suffix) + 1, sizeof(char));
+  if (filename == NULL)
+    Rf_error("Error: Out of memory!");
   strcat(filename, filestem);
   strcat(filename, suffix);
 
   FILE *input;
   if ( (input = fopen(filename, "r")) == NULL)
   {
-    // fprintf(stderr, "Error:  Could not read %s\n", filename);
-    // exit(1);
+    free(filename);
+    Rf_error("Error: Could not read lambda file");
   }
 
   double x;
@@ -721,6 +777,7 @@ void read_lambda(char* filestem, double* lambda, int n)
   }
 
   fclose(input);
+  free(filename);
 }
 
 
@@ -731,14 +788,16 @@ void write_lambda(char* filestem, double* lambda, const int n)
 
   char suffix[15] = ".lambda";
   char *filename = (char *) calloc(strlen(filestem) + strlen(suffix) + 1, sizeof(char));
+  if (filename == NULL)
+    Rf_error("Error: Out of memory!");
   strcat(filename, filestem);
   strcat(filename, suffix);
 
   FILE *output;
   if ( (output = fopen(filename, "w")) == NULL)
   {
-    // fprintf(stderr, "Error:  Could not write to file %s\n", filename);
-    // exit(1);
+    free(filename);
+    Rf_error("Error: Could not write to lambda file");
   }
 
   for (i=0; i<=n; i++)
@@ -747,6 +806,7 @@ void write_lambda(char* filestem, double* lambda, const int n)
   }
 
   fclose(output);
+  free(filename);
 }
 
 void write_gps(char* filestem, double* cond_GPS, int N, int* pat_idx)
@@ -755,14 +815,16 @@ void write_gps(char* filestem, double* cond_GPS, int N, int* pat_idx)
 
   char suffix[15] = ".gps";
   char *filename = (char *) calloc(strlen(filestem) + strlen(suffix) + 1, sizeof(char));
+  if (filename == NULL)
+    Rf_error("Error: Out of memory!");
   strcat(filename, filestem);
   strcat(filename, suffix);
 
   FILE *output;
   if ( (output = fopen(filename, "w")) == NULL)
   {
-    // fprintf(stderr, "Error:  Could not write to file %s\n", filename);
-    // exit(1);
+    free(filename);
+    Rf_error("Error: Could not write to gps file");
   }
 
   for (k=0; k<N; k++)
@@ -772,20 +834,23 @@ void write_gps(char* filestem, double* cond_GPS, int N, int* pat_idx)
   }
 
   fclose(output);
+  free(filename);
 }
 
 void write_double_array(char* filestem, char suffix[], double* array, int n)
 {
   int i;
   char *filename = (char *) calloc(strlen(filestem) + strlen(suffix) + 1, sizeof(char));
+  if (filename == NULL)
+    Rf_error("Error: Out of memory!");
   strcat(filename, filestem);
   strcat(filename, suffix);
 
   FILE *output;
   if ( (output = fopen(filename, "w")) == NULL)
   {
-    // fprintf(stderr, "Error:  Could not write to file %s\n", filename);
-    // exit(1);
+    free(filename);
+    Rf_error("Error: Could not write to file");
   }
 
   for (i=0; i<n; i++){
@@ -794,6 +859,7 @@ void write_double_array(char* filestem, char suffix[], double* array, int n)
   }
 
   fclose(output);
+  free(filename);
 
 }
 
@@ -821,6 +887,11 @@ int* bfs_order_ideals(int** poset, const int len, int* count, int* lin_ext)
   int* g = get_int_array(len);  // current genotype
 
   int* lattice = malloc(sizeof(int));
+  if (lattice == NULL)
+  {
+    free(g);
+    Rf_error("Error: Out of memory!");
+  }
 
   int* added = get_int_array(pow2(len));  // records added genotypes
   /* TODO: make this dynamic, e.g., using a list */
@@ -837,11 +908,15 @@ int* bfs_order_ideals(int** poset, const int len, int* count, int* lin_ext)
 
     // visit...
     (*count)++;
-    if ((lattice = (int*) realloc(lattice, (*count) * sizeof(int))) == NULL)
+    int* new_lattice = (int*) realloc(lattice, (*count) * sizeof(int));
+    if (new_lattice == NULL)
     {
-      // fprintf(stderr, "Error: Out of memory!\n");
-      // exit(1);
+      free(lattice);
+      free(g);
+      free(added);
+      Rf_error("Error: Out of memory!");
     }
+    lattice = new_lattice;
     lattice[(*count)-1] = g_idx;
 
     // linear extension
@@ -979,8 +1054,10 @@ void parents(model* M)
   M->pa_diff = malloc(m * sizeof(int*));
   if ((M->pa == NULL) || (M->pa_diff == NULL))
   {
-    // fprintf(stderr, "Error: Out of memory!\n");
-    // exit(1);
+    free(M->N_pa);
+    free(M->pa);
+    free(M->pa_diff);
+    Rf_error("Error: Out of memory!");
   }
 
   // count parents:
@@ -1034,8 +1111,10 @@ void children(model* M)
   M->ch_diff = malloc(m * sizeof(int*));
   if (M->ch_diff == NULL || M->ch == NULL)
   {
-    // fprintf(stderr, "Error: Out of memory!\n");
-    // exit(1);
+    free(M->N_ch);
+    free(M->ch);
+    free(M->ch_diff);
+    Rf_error("Error: Out of memory!");
   }
 
   // count children:
@@ -1487,6 +1566,7 @@ double compute_total_loglik(model* M, data* D, int N_u, double* Prob, double** c
   compute_loglik(M, D, N_u, Prob, condprob, epsilon, loglik);
   for (k = 0; k < N_u; k++)
     total_loglik += loglik[k] * D[k].count;
+  free(loglik);
   return total_loglik;
 }
 
@@ -1705,6 +1785,9 @@ double* compute_ProbY_ctcbn(model* M, double* Prob)
     else
       ProbY_ctcbn[k] = (1 - alpha) * q_eps;
   }
+
+  free(is_compatible);
+  free(which);
 
   return ProbY_ctcbn;
 }
@@ -1940,7 +2023,8 @@ double EM(model* M, data* D, int N_u, double* lambda, double* alpha, double q_ep
       {
         // printf("%d\t", iter);
         // printf(DOUBLE_FORMAT, loglik_new);  printf("\t");
-        print_double_array(lambda, n+1);
+        char* s = print_double_array(lambda, n+1);
+        free(s);
       }
 
       /************************************
@@ -1965,13 +2049,15 @@ double EM(model* M, data* D, int N_u, double* lambda, double* alpha, double q_ep
     char filestem[15] = "X";
     char suffix[15] = ".tab";
     char *filename = (char *) calloc(strlen(filestem) + strlen(suffix) + 1, sizeof(char));
+    if (filename == NULL)
+      Rf_error("Error: Out of memory!");
     strcat(filename, filestem);
     strcat(filename, suffix);
     FILE *output;
     if ( (output = fopen(filename, "w")) == NULL )
     {
-      // fprintf(stderr, "Error:  Could not write to file %s\n", filename);
-      // exit(1);
+      free(filename);
+      Rf_error("Error: Could not write to file");
     }
 
     fprintf(output, "count\tis_comp\tresp");
@@ -2008,6 +2094,7 @@ double EM(model* M, data* D, int N_u, double* lambda, double* alpha, double q_ep
     }
 
     fclose(output);
+    free(filename);
 
   }
 
@@ -2387,6 +2474,12 @@ data* make_data_set(int** pat, int N, int n, int* N_u, int* pat_idx)
   // if (verbose)  printf("N_u = %d unique patterns\n", *N_u);
 
   data* D = calloc(*N_u, sizeof(data));
+  if (D == NULL)
+  {
+    free(idx);
+    free(count);
+    Rf_error("Error: Out of memory!");
+  }
 
   c = 0;
   for (k=0; k<N; k++)
@@ -2403,6 +2496,9 @@ data* make_data_set(int** pat, int N, int n, int* N_u, int* pat_idx)
     }
   }
 
+  free(idx);
+  free(count);
+
   return D;
 }
 
@@ -2410,12 +2506,21 @@ data* make_data_set(int** pat, int N, int n, int* N_u, int* pat_idx)
 
 void construct_sublattices(data* D, int N_u, model* M)
 {
-  int k;
+  int k, j;
   int m = M->m;
   int n = M->n;
 
   for (k=0; k<N_u; k++)
   {
+    if (D[k].Q != NULL)
+    {
+      for (j=0; j<=n; j++)
+        free(D[k].Q[j]);
+      free(D[k].Q);
+    }
+    free(D[k].J_Q);
+    free(D[k].t);
+
     D[k].Q = get_int_matrix(n+1, n+1);
     poset_from_data(M->P, n, D[k].g, D[k].Q);
 
@@ -2547,7 +2652,10 @@ int reduce_to_cover_relations ( int** P, int n )
 
             // Check if cyclic
             if (P[k][i])
+            {
+              free(visit);
               return 2; // Fatal
+            }
           }
         }
       }
@@ -2653,6 +2761,9 @@ char* select_poset(int k, double eps, model* M, double* lambda, data* D, int N_u
 
   compatibility(D, N_u, M);
 
+  if (M->J_P != NULL)
+    free_lattice(M);
+
   M->J_P = bfs_order_ideals(M->P, M->n+1, &(M->m), M->lin_ext);
   parents(M);
   children(M);
@@ -2672,7 +2783,9 @@ char* select_poset(int k, double eps, model* M, double* lambda, data* D, int N_u
       }
 
       // Format the string into the buffer
-      snprintf(buffer, 512, "%d %g %g %g %s", k, eps, alpha, loglik, print_double_array(lambda, M->n+1));
+      char* lambda_str = print_double_array(lambda, M->n+1);
+      snprintf(buffer, 512, "%d %g %g %g %s", k, eps, alpha, loglik, lambda_str ? lambda_str : "");
+      free(lambda_str);
       return(buffer);
     }
   }
@@ -2685,14 +2798,21 @@ void make_model(model* M, int n, int** P)
 {
   int i,j;
 
-  M->n = n;
-  M->P = get_int_matrix(n+1, n+1);
-  precompute_binary(M->n+1);
-  M->lin_ext = get_int_array(M->n);  // a linear extension of the poset
-
+  int** new_P = get_int_matrix(n+1, n+1);
   for (i=0;i<n+1;i++)
     for (j=0;j<n+1;j++)
-      M->P[i][j] = P[i][j];
+      new_P[i][j] = P[i][j];
+
+  if (M->P != NULL)
+    free_poset(M);
+  if (M->J_P != NULL)
+    free_lattice(M);
+
+  M->n = n;
+  M->P = new_P;
+  if (GENOTYPE == NULL)
+    precompute_binary(M->n+1);
+  M->lin_ext = get_int_array(M->n);  // a linear extension of the poset
 
   M->J_P = bfs_order_ideals(M->P, M->n+1, &(M->m), M->lin_ext);
   parents(M);
@@ -2992,6 +3112,10 @@ double try_edge(model* M, model* M2, data* D, int N_u, double* lambda, double* e
           lambda[i] = lambda_new[i];
         free(R4);
         free(R5);
+        free(lambda_new);
+        for (i=0; i<n; i++)
+          free(alpha_all[i]);
+        free(alpha_all);
         for(i=0; i < M->n; i++)
           for(j=0; j < M->n; j++)
             loglik_next[i][j] = 0.0; // Re-initialize possible logliks
@@ -3010,6 +3134,10 @@ double try_edge(model* M, model* M2, data* D, int N_u, double* lambda, double* e
             lambda[i] = lambda_new[i];
           free(R4);
           free(R5);
+          free(lambda_new);
+          for (i=0; i<n; i++)
+            free(alpha_all[i]);
+          free(alpha_all);
           for(i=0; i < M->n; i++)
             for(j=0; j < M->n; j++)
               loglik_next[i][j] = 0.0; // Re-initialize possible logliks
@@ -3025,6 +3153,8 @@ double try_edge(model* M, model* M2, data* D, int N_u, double* lambda, double* e
   free(R4);
   free(R5);
   free(lambda_new);
+  for (i=0; i<n; i++)
+    free(alpha_all[i]);
   free(alpha_all);
   return loglik;
 }
@@ -3035,6 +3165,8 @@ double** read_loglik_next(char* filestem, int n)
 
   char suffix[15] = ".log";
   char *filename = (char *) calloc(strlen(filestem) + strlen(suffix) + 1, sizeof(char));
+  if (filename == NULL)
+    Rf_error("Error: Out of memory!");
   strcat(filename, filestem);
   strcat(filename, suffix);
 
@@ -3047,6 +3179,7 @@ double** read_loglik_next(char* filestem, int n)
     for(k=0; k < n; k++)
       for(j=0; j < n; j++)
         loglik_next[k][j] = 0.0;
+    free(filename);
     return loglik_next;
   }
 
@@ -3067,14 +3200,19 @@ double** read_loglik_next(char* filestem, int n)
       }
       else
       {
-        // fprintf(stderr, "Error reading data from %s!\n", filename);
-        // exit(1);
+        for (int i=0; i<n; i++)
+          free(loglik_next[i]);
+        free(loglik_next);
+        fclose(input);
+        free(filename);
+        Rf_error("Error reading data from log file!");
       }
 
     }
   }
 
   fclose(input);
+  free(filename);
 
   return loglik_next;
 }
@@ -3085,14 +3223,16 @@ void write_loglik_next(char* filestem, double** loglik_next, const int n)
 
   char suffix[15] = ".log";
   char *filename = (char *) calloc(strlen(filestem) + strlen(suffix) + 1, sizeof(char));
+  if (filename == NULL)
+    Rf_error("Error: Out of memory!");
   strcat(filename, filestem);
   strcat(filename, suffix);
 
   FILE *output;
   if ( (output = fopen(filename, "w")) == NULL)
   {
-    // fprintf(stderr, "Error:  Could not write to file %s\n", filename);
-    // exit(1);
+    free(filename);
+    Rf_error("Error: Could not write to log file");
   }
 
   for (k=0; k<n; k++)
@@ -3105,23 +3245,25 @@ void write_loglik_next(char* filestem, double** loglik_next, const int n)
   }
 
   fclose(output);
+  free(filename);
 }
 
 
 double local_search(model* M, data* D, int N_u, double* lambda, double* epsilon, double loglik, double T, int N_iter, char* filestem, int l_flag, int w_flag)
 {
-  model M2;
+  model M2 = {0};
   make_model(&M2, M->n, M->P);
 
   int iter = 0;
 
   double loglik_new = loglik;
-  double** loglik_next = get_double_matrix(M->n,M->n); // Store loglik of possible steps
+  double** loglik_next; // Store loglik of possible steps
   int i,j;
   if(l_flag)
     loglik_next = read_loglik_next(filestem, M->n);
   else
   {
+    loglik_next = get_double_matrix(M->n,M->n);
     for(i=0; i < M->n; i++)
       for(j=0; j < M->n; j++)
         loglik_next[i][j] = 0.0;
@@ -3162,6 +3304,7 @@ double local_search(model* M, data* D, int N_u, double* lambda, double* epsilon,
       for(i=0; i < M->n; i++)
         free(loglik_next[i]);
       free(loglik_next);
+      free_model(&M2);
 
       return loglik_new;
 }

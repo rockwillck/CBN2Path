@@ -79,7 +79,7 @@ readPoset <- function(fileStem) {
         return(list(mutations = as.numeric(lines[[1]]), sets = matrix()))
     }
     allSets <- c()
-    for (i in 3:length(lines) - 1) {
+    for (i in 2:(length(lines) - 1)) {
         allSets <- c(allSets, as.numeric(unlist(
             strsplit(lines[[i]], " ")
         )[[1]]))

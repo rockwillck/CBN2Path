@@ -151,7 +151,7 @@ bc <-  Spock$new(
      numMutations = 4,
      genotypeMatrix = gMat
 )
-resultsC3 <- ctcbn(bc, nCores = 3)
+resultsC3 <- ctcbn(bc, nCores = 2)
 ```
 
 You can see that the result is a list of 219 components each including the estimated parameters corresponding to one of the 219 posets in the input list. This strategy is utilized in the R-CBN and B-CBN models for quantifying the pathway probabilities.
@@ -235,7 +235,7 @@ bc <- Spock$new(
      numMutations = 4,
      genotypeMatrix = gMat
 )
-resultsH3 <- hcbn(bc, nCores = 3)
+resultsH3 <- hcbn(bc, nCores = 2)
 ```
 
 You can obtain the log likelihood corresponding to each poset as follows:

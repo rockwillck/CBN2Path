@@ -97,7 +97,6 @@ hcbnSingle <- function(datasetObj,
 #' @param annealingSteps Number of simulated annealing steps.
 #' @param epsilon Value of eps for CT-CBN model selection. Requires both pattern and lambda data in input `Spock`.
 #' @param nCores Maximum number of threads to use to parallelize.
-#' @param progressBar Print out progress bar; default is FALSE
 #'
 #' @return A matrix of results.
 #' @export
@@ -116,8 +115,7 @@ hcbn <- function(datasets,
                  temp = 0,
                  annealingSteps = 0,
                  epsilon = 2,
-                 nCores = 1,
-                 progressBar = FALSE) {
+                 nCores = 1) {
 
     if (inherits(datasets, "Spock") && length(datasets$poset) == 1) {
       return(hcbnSingle(datasets, anneal, temp, annealingSteps, epsilon))
@@ -144,7 +142,7 @@ hcbn <- function(datasets,
       } else {
         p <- MulticoreParam(workers = min(length(datasets), nCores))
       }
-      rets <- bplapply(datasets, \(x) hcbnSingle(x, anneal, temp, annealingSteps, epsilon), BPOPTIONS = bpoptions(progressbar = progressBar), BPPARAM = p)
+      rets <- bplapply(datasets, \(x) hcbnSingle(x, anneal, temp, annealingSteps, epsilon), BPPARAM = p)
     } else {
       message("Parallelization not found - running sequentially.")
       rets <- lapply(datasets, \(x) hcbnSingle(x, anneal, temp, annealingSteps, epsilon))

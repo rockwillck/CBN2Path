@@ -7,6 +7,7 @@
 #define DT_CBN_H_
 
 #include "queue.h"
+#include <R.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -24,11 +25,11 @@
 #define MAX(a,b) ( (a) > (b) ? (a) : (b) )
 #define MIN(a,b) ( (a) < (b) ? (a) : (b) )
 
-int bcbn_verbose;
+extern int bcbn_verbose;
 
-gsl_rng *bcbn_RNG;  // random number generator
+extern gsl_rng *bcbn_RNG;  // random number generator
 
-int** bcbn_GENOTYPE;  // bcbn_GENOTYPE[i] is the integer i in binary (as int array)
+extern int** bcbn_GENOTYPE;  // bcbn_GENOTYPE[i] is the integer i in binary (as int array)
 
 
 typedef struct {
@@ -78,7 +79,7 @@ void bcbn_print_double_array(double* x, int n);
 void bcbn_print_double_matrix(double** X, int m, int n);
 void bcbn_write_poset(int k, char* filestem, int** P, int n, int b);
 void bcbn_write_patterns(char* filestem, int** pat, int N, int n);
-inline void genotype_of(int index, int* x, int n);
+void genotype_of(int index, int* x, int n);
 int bcbn_pow2(int k);
 void bcbn_precompute_binary(const int n);
 int bcbn_index_of(int* x, int n);

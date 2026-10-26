@@ -64,7 +64,7 @@
 //  3. Initialize the DLL
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 extern SEXP ctcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP mb, SEXP bs, SEXP rs, SEXP sr, SEXP epsilon, SEXP nd, SEXP emr);
-extern SEXP hcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP s, SEXP temp, SEXP n);
+extern SEXP hcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP fs3, SEXP s, SEXP temp, SEXP n, SEXP repsilon);
 extern void sample_full_cbn(double *theta_in, int *nevents, double *epsilon_in, int * edges_in, int *number_samples, int *thinout, int *patdata,
                             int *number_cases, double *theta_out, double *epsilon_out, int* edges_out, double* log_posterior_out );
 

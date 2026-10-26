@@ -23,6 +23,7 @@ SEXP char_to_sexp(const char* input) {
     return result;
 }
 
+// Caller is responsible for freeing the returned buffer.
 char* read_file(const char *filename) {
     FILE *file = fopen(filename, "rb");
     if (file == NULL) {
@@ -31,12 +32,19 @@ char* read_file(const char *filename) {
     }
 
     // Determine the file size
-    fseek(file, 0, SEEK_END);
+    if (fseek(file, 0, SEEK_END) != 0) {
+        fclose(file);
+        return NULL;
+    }
     long file_size = ftell(file);
+    if (file_size < 0) {
+        fclose(file);
+        return NULL;
+    }
     rewind(file);
 
     // Allocate memory for the file content (+1 for the null-terminator)
-    char *buffer = (char *)malloc((file_size + 1) * sizeof(char));
+    char *buffer = (char *)malloc(((size_t)file_size + 1) * sizeof(char));
     if (buffer == NULL) {
         perror("Memory allocation error");
         fclose(file);
@@ -44,8 +52,8 @@ char* read_file(const char *filename) {
     }
 
     // Read the file into the buffer
-    size_t read_size = fread(buffer, sizeof(char), file_size, file);
-    if (read_size != file_size) {
+    size_t read_size = fread(buffer, sizeof(char), (size_t)file_size, file);
+    if (read_size != (size_t)file_size) {
         perror("Error reading file");
         free(buffer);
         fclose(file);
@@ -69,6 +77,13 @@ SEXP ctcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP mb, SEXP bs, SEXP rs, SEXP sr, SE
   char *filestem1 = strdup(filestem1Raw);
   const char *filestem2Raw = CHAR(STRING_ELT(fs2, 0));
   char *filestem2 = strdup(filestem2Raw);
+  if (ofilestem == NULL || filestem1 == NULL || filestem2 == NULL)
+  {
+    free(ofilestem);
+    free(filestem1);
+    free(filestem2);
+    Rf_error("Error: Out of memory!");
+  }
 
   // defaults:
   double eps = REAL(epsilon)[0];                         // e
@@ -106,6 +121,9 @@ SEXP ctcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP mb, SEXP bs, SEXP rs, SEXP sr, SE
 
   if (error_flag)
   {
+    free(ofilestem);
+    free(filestem1);
+    free(filestem2);
     return(char_to_sexp("Error: Bad parameter values!"));
     // fprintf(stderr, "Error: Bad parameter values!\n");
     // exit(1);
@@ -137,7 +155,7 @@ SEXP ctcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP mb, SEXP bs, SEXP rs, SEXP sr, SE
 
   int i, j, k;
 
-  model M;
+  model M = {0};
   read_poset(filestem1, &M);
 
   // precompute binary expansions
@@ -157,6 +175,7 @@ SEXP ctcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP mb, SEXP bs, SEXP rs, SEXP sr, SE
     for (k = 0; k < N; k++)
       free(pat[k]);
     free(pat);
+    free(pat_idx);
 
     if (eps >= 0.0) // fixed epsilon
     {
@@ -184,6 +203,8 @@ SEXP ctcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP mb, SEXP bs, SEXP rs, SEXP sr, SE
       for (b = 1; b <= B; b++)
       {
         resample(D, p_orig, N_u);
+        if (output != NULL && strcmp(output, "N") != 0)
+          free(output);
         output = select_poset(b, eps, &M, lambda, D, N_u, R, mode, 1); // e_flag
 
         int_matrix_sum(bootstrap_cover_count, M.P, bootstrap_cover_count, M.n + 1);
@@ -207,9 +228,11 @@ SEXP ctcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP mb, SEXP bs, SEXP rs, SEXP sr, SE
       {
         free(T[i]);
         free(bootstrap_count[i]);
+        free(bootstrap_cover_count[i]);
       }
       free(T);
       free(bootstrap_count);
+      free(bootstrap_cover_count);
       free(p_orig);
     }
     else // sample epsilon
@@ -229,9 +252,12 @@ SEXP ctcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP mb, SEXP bs, SEXP rs, SEXP sr, SE
       for (k = 0; k < N; k++)
       {
         epsilon = (double)k / (2.0 * (double)N);
-        if (summaryFile == NULL) {
-        } else {
-          fprintf(summaryFile, "%s\n", select_poset(k, epsilon, &M, lambda, D, N_u, R, LEARN_BOTH, 1));
+        char *poset_out = select_poset(k, epsilon, &M, lambda, D, N_u, R, LEARN_BOTH, 1);
+        if (summaryFile != NULL) {
+          fprintf(summaryFile, "%s\n", poset_out);
+        }
+        if (poset_out != NULL && strcmp(poset_out, "N") != 0) {
+          free(poset_out);
         }
 
         if (e_flag) {
@@ -239,15 +265,17 @@ SEXP ctcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP mb, SEXP bs, SEXP rs, SEXP sr, SE
         }
       }
 
-      fclose(summaryFile);
+      if (summaryFile != NULL)
+        fclose(summaryFile);
     }
     free_data(D, N_u, M.n);
+    if (M.J_P != NULL)
+      free_lattice(&M);
     free_poset(&M);
   }
   else // sample from given model:
   {
     // construct model:
-    M.lin_ext = get_int_array(M.n); // a linear extension of the poset
     M.J_P = bfs_order_ideals(M.P, M.n + 1, &(M.m), M.lin_ext);
     parents(&M);
     children(&M);
@@ -269,15 +297,40 @@ SEXP ctcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP mb, SEXP bs, SEXP rs, SEXP sr, SE
     free(pat_draw);
     free(t_draw);
 
+    int n_genotypes = pow2(M.n + 1);
+    for (i = 0; i < n_genotypes; i++)
+      free(GENOTYPE[i]);
+    free(GENOTYPE);
+    GENOTYPE = NULL;
+
     free_model(&M);
+    free(lambda);
+    free(ofilestem);
+    free(filestem1);
+    free(filestem2);
+    gsl_rng_free(RNG);
+    RNG = NULL;
     return char_to_sexp("haiii >_<");
   }
 
+  int n_genotypes = pow2(M.n + 1);
+  for (i = 0; i < n_genotypes; i++)
+    free(GENOTYPE[i]);
+  free(GENOTYPE);
+  GENOTYPE = NULL;
+
   free(lambda);
+  free(ofilestem);
+  free(filestem1);
+  free(filestem2);
+  gsl_rng_free(RNG);
+  RNG = NULL;
 
+  SEXP res = char_to_sexp(output);
+  if (output != NULL && strcmp(output, "N") != 0 && strcmp(output, "multi") != 0)
+    free(output);
 
-
-  return char_to_sexp(output);
+  return res;
 }
 
 SEXP hcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP fs3, SEXP s, SEXP temp, SEXP n, SEXP repsilon)
@@ -290,6 +343,14 @@ SEXP hcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP fs3, SEXP s, SEXP temp, SEXP n, SE
   char *filestem2 = strdup(filestem2Raw);
   const char *filestem3Raw = CHAR(STRING_ELT(fs3, 0));
   char *filestem3 = strdup(filestem3Raw);
+  if (ofilestem == NULL || filestem1 == NULL || filestem2 == NULL || filestem3 == NULL)
+  {
+    free(ofilestem);
+    free(filestem1);
+    free(filestem2);
+    free(filestem3);
+    Rf_error("Error: Out of memory!");
+  }
 
   // defaults:
   double eps = REAL(repsilon)[0];  // e
@@ -317,7 +378,7 @@ SEXP hcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP fs3, SEXP s, SEXP temp, SEXP n, SE
   int mode = LEARN_PARAM;
   double epsilon = 0.0;
   int c = 0;
-  char* rOutput;
+  char* rOutput = "N";
 
   // // no epsilon provided from R
   if (eps > 1.0) {
@@ -339,7 +400,7 @@ SEXP hcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP fs3, SEXP s, SEXP temp, SEXP n, SE
 
   int i, k;
 
-  model M;
+  model M = {0};
   read_poset(filestem1, &M);
 
   // precompute binary expansions
@@ -362,13 +423,16 @@ SEXP hcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP fs3, SEXP s, SEXP temp, SEXP n, SE
       for (k=0; k<N; k++)
         free(pat[k]);
       free(pat);
+      free(pat_idx);
 
       if (eps >= 0.0)  // fixed epsilon
       {
         eps = MIN(eps, 1.0);
 
         /*  single run: */
-        select_poset(0 /* poset value in output (k in select_poset) */, eps, &M, lambda, D, N_u, R, mode,1);
+        char *sel_out = select_poset(0 /* poset value in output (k in select_poset) */, eps, &M, lambda, D, N_u, R, mode,1);
+        if (sel_out != NULL && strcmp(sel_out, "N") != 0)
+          free(sel_out);
 
         if(eps > 0){
           read_lambda(filestem3, lambda, M.n);
@@ -389,6 +453,7 @@ SEXP hcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP fs3, SEXP s, SEXP temp, SEXP n, SE
         if (p_flag){
           double* ProbY_ctcbn = compute_ProbY_ctcbn(&M, Prob);
           write_double_array(ofilestem, ".prY_ctcbn", ProbY_ctcbn, pow2(M.n));
+          free(ProbY_ctcbn);
         }
 
 
@@ -416,7 +481,9 @@ SEXP hcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP fs3, SEXP s, SEXP temp, SEXP n, SE
           if (buffer == NULL) {
             rOutput = "N";
           } else {
-            snprintf(buffer, 512, "0.0 %f %g %g %s",  epsilon, alpha, total_loglik, print_double_array(lambda, M.n+1));
+            char* lambda_str = print_double_array(lambda, M.n+1);
+            snprintf(buffer, 512, "0.0 %f %g %g %s",  epsilon, alpha, total_loglik, lambda_str ? lambda_str : "");
+            free(lambda_str);
             rOutput = buffer;
           }
         }
@@ -428,7 +495,9 @@ SEXP hcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP fs3, SEXP s, SEXP temp, SEXP n, SE
           if (buffer == NULL) {
             rOutput = "N";
           } else {
-            snprintf(buffer, 512, "0 %f %g %g %s",  epsilon, pow(1-epsilon,M.n), total_loglik, print_double_array(lambda, M.n+1));
+            char* lambda_str = print_double_array(lambda, M.n+1);
+            snprintf(buffer, 512, "0 %f %g %g %s",  epsilon, pow(1-epsilon,M.n), total_loglik, lambda_str ? lambda_str : "");
+            free(lambda_str);
             rOutput = buffer;
           }
         }
@@ -443,6 +512,7 @@ SEXP hcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP fs3, SEXP s, SEXP temp, SEXP n, SE
         if (p_flag){
           double* ProbY = compute_ProbY(&M, Prob, only_falsepos, epsilon);
           write_double_array(ofilestem, ".prY", ProbY, pow2(M.n));
+          free(ProbY);
         }
 
         /* Local search */
@@ -454,16 +524,41 @@ SEXP hcbn_(SEXP ofs, SEXP fs1, SEXP fs2, SEXP fs3, SEXP s, SEXP temp, SEXP n, SE
           // local_search(&M, D, N_u, lambda, &epsilon, total_loglik, T, N_iter, filestem, l_flag, w_flag);
         }
 
+        for (i=0; i < M.m; i++)
+          free(condprob[i]);
+        free(condprob);
+        free(Prob);
+        free(lambda_exit);
+        free(lattice_index);
       }
       free_data(D, N_u, M.n);
       /* Print final poset */
       // for (i = 0; i< pow2(M.n); i++)
       // print_int_array(GENOTYPE[i + pow2(M.n)], M.n+1);
       if(m_flag) ML_path(&M, lambda);
+      if (M.J_P != NULL)
+        free_lattice(&M);
       free_poset(&M);
     }
   }
-  free(lambda);
 
-  return char_to_sexp(rOutput);
+  int n_genotypes = pow2(M.n + 1);
+  for (i = 0; i < n_genotypes; i++)
+    free(GENOTYPE[i]);
+  free(GENOTYPE);
+  GENOTYPE = NULL;
+
+  free(lambda);
+  free(ofilestem);
+  free(filestem1);
+  free(filestem2);
+  free(filestem3);
+  gsl_rng_free(RNG);
+  RNG = NULL;
+
+  SEXP res = char_to_sexp(rOutput);
+  if (rOutput != NULL && strcmp(rOutput, "N") != 0)
+    free(rOutput);
+
+  return res;
 }

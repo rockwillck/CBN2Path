@@ -17,8 +17,7 @@ int* bcbn_get_int_array(const int n)
 
   if (x == NULL)
   {
-    // fprintf(stderr, "Error: Out of memory!\n");
-    // exit(1);
+    Rf_error("Error: Out of memory!");
   }
 
   return x;
@@ -31,8 +30,7 @@ unsigned int* bcbn_get_uint_array(const int n)
 
   if (x == NULL)
   {
-    // fprintf(stderr, "Error: Out of memory!\n");
-    // exit(1);
+    Rf_error("Error: Out of memory!");
   }
 
   return x;
@@ -45,8 +43,7 @@ double* bcbn_get_double_array(const int n)
 
   if (x == NULL)
   {
-    // fprintf(stderr, "Error: Out of memory!\n");
-    // exit(1);
+    Rf_error("Error: Out of memory!");
   }
 
   return x;
@@ -59,18 +56,19 @@ int** bcbn_get_int_matrix(const int m, const int n)
 
   if (x == NULL)
   {
-    // fprintf(stderr, "Error: Out of memory!\n");
-    // exit(1);
+    Rf_error("Error: Out of memory!");
   }
 
-  int i;
+  int i, j;
   for (i=0; i<m; i++)
   {
     x[i] = calloc(n, sizeof(int));
     if (x[i] == NULL)
     {
-      // fprintf(stderr, "Error: Out of memory!\n");
-      // exit(1);
+      for (j=0; j<i; j++)
+        free(x[j]);
+      free(x);
+      Rf_error("Error: Out of memory!");
     }
   }
 
@@ -84,18 +82,19 @@ double** bcbn_get_double_matrix(const int m, const int n)
 
   if (x == NULL)
   {
-    // fprintf(stderr, "Error: Out of memory!\n");
-    // exit(1);
+    Rf_error("Error: Out of memory!");
   }
 
-  int i;
+  int i, j;
   for (i=0; i<m; i++)
   {
     x[i] = calloc(n, sizeof(double));
     if (x[i]  == NULL)
     {
-      // fprintf(stderr, "Error: Out of memory!\n");
-      // exit(1);
+      for (j=0; j<i; j++)
+        free(x[j]);
+      free(x);
+      Rf_error("Error: Out of memory!");
     }
   }
 
@@ -108,18 +107,19 @@ double*** bcbn_get_double_cube(const int m, const int n, const int l)
 
   if (x == NULL)
   {
-    // fprintf(stderr, "Error: Out of memory!\n");
-    // exit(1);
+    Rf_error("Error: Out of memory!");
   }
 
-  int i;
+  int i, j;
   for (i=0; i<m; i++)
   {
     x[i] = bcbn_get_double_matrix(n,l);
     if (x[i]  == NULL)
     {
-      // fprintf(stderr, "Error: Out of memory!\n");
-      // exit(1);
+      for (j=0; j<i; j++)
+        free_double_matrix(x[j], n);
+      free(x);
+      Rf_error("Error: Out of memory!");
     }
   }
 
@@ -132,18 +132,19 @@ int*** get_int_cube(const int m, const int n, const int l)
 
   if (x == NULL)
   {
-    // fprintf(stderr, "Error: Out of memory!\n");
-    // exit(1);
+    Rf_error("Error: Out of memory!");
   }
 
-  int i;
+  int i, j;
   for (i=0; i<m; i++)
   {
     x[i] = bcbn_get_int_matrix(n,l);
     if (x[i]  == NULL)
     {
-      // fprintf(stderr, "Error: Out of memory!\n");
-      // exit(1);
+      for (j=0; j<i; j++)
+        free_int_matrix(x[j], n);
+      free(x);
+      Rf_error("Error: Out of memory!");
     }
   }
 
@@ -218,9 +219,7 @@ void bcbn_write_poset(int k, char* filestem, int** P, int n, int b)
   FILE *output;
   if ( (output = fopen(filename, "w")) == NULL )
   {
-    // fprintf(stderr, "Error:  Could not write to file %s\n", filename);
-    // fprintf(stderr, "        Make sure the directory '%s' exists.\n", filestem);
-    // exit(1);
+    Rf_error("Error: Could not write to file %s", filename);
   }
 
   fprintf(output, "%d\n", n);
@@ -242,14 +241,16 @@ void bcbn_write_patterns(char* filestem, int** pat, int N, int n)
   char suffix[15] = ".sim.pat";
   //char suffix[15] = ".pat";
   char *filename = (char *) calloc(strlen(filestem) + strlen(suffix) + 1, sizeof(char));
+  if (filename == NULL)
+    Rf_error("Error: Out of memory!");
   strcat(filename, filestem);
   strcat(filename, suffix);
 
   FILE *output;
   if ( (output = fopen(filename, "w")) == NULL )
   {
-    // fprintf(stderr, "Error:  Could not write to file %s\n", filename);
-    // exit(1);
+    free(filename);
+    Rf_error("Error: Could not write to file");
   }
 
   fprintf(output, "%d %d\n", N, n+1);
@@ -261,12 +262,13 @@ void bcbn_write_patterns(char* filestem, int** pat, int N, int n)
   }
 
   fclose(output);
+  free(filename);
 }
 
 
 
 
-inline void genotype_of(int index, int* x, int n)
+void genotype_of(int index, int* x, int n)
 {
   int i;
 
@@ -398,7 +400,7 @@ void free_int_cube( int*** A, int n, int m) {
     free_int_matrix(A[j], m );
   }
   //printf("before free A\n");
-  //free(A);
+  free(A);
 }
 
 
@@ -426,6 +428,7 @@ void bcbn_free_lattice(model* M)
   free(M->pa_diff);
   free(M->N_pa);
   free(M->ch_diff);
+  free(M->N_ch);
 }
 
 void bcbn_free_lattice_children(model* M)
@@ -524,9 +527,12 @@ void bcbn_free_data(data* D, int N_u, int n)
   for (k=0; k<N_u; k++)
   {
     free(D[k].g);
-    for (j=0; j<=n; j++)
-      free(D[k].Q[j]);
-    free(D[k].Q);
+    if (D[k].Q != NULL)
+    {
+      for (j=0; j<n; j++)
+        free(D[k].Q[j]);
+      free(D[k].Q);
+    }
     free(D[k].J_Q);
   }
   free(D);
@@ -540,14 +546,16 @@ int** bcbn_read_patterns(char* filestem, int* N, int n)
 
   char suffix[15] = ".pat";
   char *filename = (char *) calloc(strlen(filestem) + strlen(suffix) + 1, sizeof(char));
+  if (filename == NULL)
+    Rf_error("Error: Out of memory!");
   strcat(filename, filestem);
   strcat(filename, suffix);
 
   FILE *input;
   if ( (input = fopen(filename, "r")) == NULL)
   {
-    // fprintf(stderr, "Error:  Could not read %s\n", filename);
-    // exit(1);
+    free(filename);
+    Rf_error("Error: Could not read pattern file");
   }
 
   /* Read dimensions */
@@ -555,13 +563,15 @@ int** bcbn_read_patterns(char* filestem, int* N, int n)
   // if (bcbn_verbose) printf("\nreading data from file %s :  %d samples, %d events ...\n\n", filename, *N, p-1);
   if (*N < 1)
   {
-    // fprintf(stderr, "Error:  Less than one data point!\n");
-    // exit(1);
+    fclose(input);
+    free(filename);
+    Rf_error("Error: Less than one data point!");
   }
-  if (n != p)
+  if (p < n)
   {
-    // fprintf(stderr, "Error:  Number of events in poset and data do not match!\n");
-    // exit(1);
+    fclose(input);
+    free(filename);
+    Rf_error("Error: Number of events in poset and data do not match!");
   }
 
   int** pat = bcbn_get_int_matrix(*N, p);
@@ -580,12 +590,18 @@ int** bcbn_read_patterns(char* filestem, int* N, int n)
       }
       else
       {
-        // fprintf(stderr, "Error reading data from %s!\n", filename);
-        // exit(1);
+        free_int_matrix(pat, *N);
+        fclose(input);
+        free(filename);
+        Rf_error("Error reading data from pattern file!");
       }
 
     }
   }
+
+  if (input != NULL)
+    fclose(input);
+  free(filename);
 
   return pat;
 }
@@ -596,14 +612,16 @@ void bcbn_read_poset(char* filestem, model* M)
 
   char suffix[15] = ".poset";
   char *filename = (char *) calloc(strlen(filestem) + strlen(suffix) + 1, sizeof(char));
+  if (filename == NULL)
+    Rf_error("Error: Out of memory!");
   strcat(filename, filestem);
   strcat(filename, suffix);
 
   FILE *input;
   if ( (input = fopen(filename, "r")) == NULL)
   {
-    // fprintf(stderr, "Error:  Could not read %s\n", filename);
-    // exit(1);
+    free(filename);
+    Rf_error("Error: Could not read poset file");
   }
 
   /* Read number of relations */
@@ -612,8 +630,9 @@ void bcbn_read_poset(char* filestem, model* M)
   // if (bcbn_verbose)  printf("n = %d events\n\n", n);
   if ((n < 1) || (n > 25))
   {
-    // fprintf(stderr, "Error:  Number of events is %d.  Supported range is {1, ..., 14}.\n", n);
-    // exit(1);
+    fclose(input);
+    free(filename);
+    Rf_error("Error: Number of events is %d. Supported range is {1, ..., 25}.", n);
   }
 
   M->n = n;
@@ -626,14 +645,18 @@ void bcbn_read_poset(char* filestem, model* M)
     // if (bcbn_verbose)  printf("%d --> %d\n", left, right);  // i.e., left < right
     if ((left > n) || (right > n) || (left < 0) || (right < 1))
     {
-      // fprintf(stderr, "Error:  Undefined event in %s!\n", filename);
-      // exit(1);
+      free_int_matrix(M->P, n+1);
+      M->P = NULL;
+      fclose(input);
+      free(filename);
+      Rf_error("Error: Undefined event in poset file!");
     }
     M->P[left][right] = 1;
     if(fscanf(input,"%d %d", &left, &right));
   }
 
   fclose(input);
+  free(filename);
 }
 
 void bcbn_print_genotype(int* x, int n)
@@ -659,6 +682,11 @@ int* bcbn_bfs_order_ideals(int** poset, const int len, int* count, int* lin_ext)
   int* g = bcbn_get_int_array(len);  // current genotype
 
   int* lattice = malloc(sizeof(int));
+  if (lattice == NULL)
+  {
+    free(g);
+    Rf_error("Error: Out of memory!");
+  }
 
   int* added = bcbn_get_int_array(bcbn_pow2(len));  // records added genotypes
   /* TODO: make this dynamic, e.g., using a list */
@@ -675,11 +703,15 @@ int* bcbn_bfs_order_ideals(int** poset, const int len, int* count, int* lin_ext)
 
     // visit...
     (*count)++;
-    if ((lattice = (int*) realloc(lattice, (*count) * sizeof(int))) == NULL)
+    int* new_lattice = (int*) realloc(lattice, (*count) * sizeof(int));
+    if (new_lattice == NULL)
     {
-      // fprintf(stderr, "Error: Out of memory!\n");
-      // exit(1);
+      free(lattice);
+      free(g);
+      free(added);
+      Rf_error("Error: Out of memory!");
     }
+    lattice = new_lattice;
     lattice[(*count)-1] = g_idx;
 
     // linear extension
@@ -815,8 +847,10 @@ void parents_dt(model* M)
   M->pa_diff = malloc(m * sizeof(int*));
   if ((M->pa == NULL) || (M->pa_diff == NULL))
   {
-    // fprintf(stderr, "Error: Out of memory!\n");
-    // exit(1);
+    free(M->N_pa);
+    free(M->pa);
+    free(M->pa_diff);
+    Rf_error("Error: Out of memory!");
   }
 
   // count parents:
@@ -869,8 +903,8 @@ void children_dt(model* M)
   M->ch_diff = malloc(m * sizeof(int*));
   if (M->ch_diff == NULL)
   {
-    // fprintf(stderr, "Error: Out of memory!\n");
-    // exit(1);
+    free(M->N_ch);
+    Rf_error("Error: Out of memory!");
   }
 
   // count children:
@@ -916,14 +950,16 @@ void bcbn_read_poset_dt(char* filestem, model* M)
 
   char suffix[15] = ".poset";
   char *filename = (char *) calloc(strlen(filestem) + strlen(suffix) + 1, sizeof(char));
+  if (filename == NULL)
+    Rf_error("Error: Out of memory!");
   strcat(filename, filestem);
   strcat(filename, suffix);
 
   FILE *input;
   if ( (input = fopen(filename, "r")) == NULL)
   {
-    // fprintf(stderr, "Error:  Could not read %s\n", filename);
-    // exit(1);
+    free(filename);
+    Rf_error("Error: Could not read poset file");
   }
 
   /* Read number of relations */
@@ -932,8 +968,9 @@ void bcbn_read_poset_dt(char* filestem, model* M)
   // if (bcbn_verbose)  printf("n = %d events\n\n", n);
   if ((n < 1) || (n > 25))
   {
-    // fprintf(stderr, "Error:  Number of events is %d.  Supported range is {1, ..., 14}.\n", n);
-    // exit(1);
+    fclose(input);
+    free(filename);
+    Rf_error("Error: Number of events is %d. Supported range is {1, ..., 25}.", n);
   }
 
   M->n = n;
@@ -946,14 +983,18 @@ void bcbn_read_poset_dt(char* filestem, model* M)
     // if (bcbn_verbose)  printf("%d --> %d\n", left, right);  // i.e., left < right
     if ((left > n) || (right > n) || (left < 0) || (right < 1))
     {
-      // fprintf(stderr, "Error:  Undefined event in %s!\n", filename);
-      // exit(1);
+      free_int_matrix(M->P, n);
+      M->P = NULL;
+      fclose(input);
+      free(filename);
+      Rf_error("Error: Undefined event in poset file!");
     }
     M->P[left-1][right-1] = 1;
     if(fscanf(input,"%d %d", &left, &right));
   }
 
   fclose(input);
+  free(filename);
 }
 
 data* bcbn_make_data_set(int** pat, int N, int n, int* N_u, int* pat_idx)
@@ -996,6 +1037,12 @@ data* bcbn_make_data_set(int** pat, int N, int n, int* N_u, int* pat_idx)
   // if (bcbn_verbose)  printf("N_u = %d unique patterns\n", *N_u);
 
   data* D = calloc(*N_u, sizeof(data));
+  if (D == NULL)
+  {
+    free(idx);
+    free(count);
+    Rf_error("Error: Out of memory!");
+  }
 
   c = 0;
   for (k=0; k<N; k++)
@@ -1011,6 +1058,9 @@ data* bcbn_make_data_set(int** pat, int N, int n, int* N_u, int* pat_idx)
       c++;
     }
   }
+
+  free(idx);
+  free(count);
 
   return D;
 }
@@ -1656,6 +1706,8 @@ void propose_event_exchange_move( model* M, double* tp, int *ti, int *tj ) {
 
   (*tp) = 2/(double)(n*(n-1));
 
+  free(h_in);
+  free(h_out);
 }
 
 
@@ -2076,6 +2128,10 @@ void start_MH( double eps, model* M, double* theta, data* D, int N_u, int burn_i
   double* theta_p = bcbn_get_double_array(n);
   memcpy( theta_p, theta, sizeof(double)*n);
   model* M_p = malloc( sizeof(model) );
+  if (M_p == NULL) {
+    free(theta_p);
+    Rf_error("Error: Out of memory!");
+  }
   int i,j,k = 0;
   long double posterior_o, posterior_p;
   double msp, msp_r, tp, tp_r;
@@ -2316,11 +2372,13 @@ void start_MH( double eps, model* M, double* theta, data* D, int N_u, int burn_i
 
     //log samples
     if( k>burn_in && !(k%record_ith) ) {
-      for (j=0; j<n; j++) {
-        fprintf(samplelog, DOUBLE_FORMAT, theta[j]);
-        fprintf(samplelog, "\t");
+      if (samplelog != NULL) {
+        for (j=0; j<n; j++) {
+          fprintf(samplelog, DOUBLE_FORMAT, theta[j]);
+          fprintf(samplelog, "\t");
+        }
+        fprintf(samplelog, "posterior %.10Lg log-posterior %.5Lg number edges %d epsilon: %.3f accepted: %d, samplenr: %d u: %.5f ms: %.5f\n", posterior_o, log10l(posterior_o), n_edges, eps, accepted, k, u, ms );
       }
-      fprintf(samplelog, "posterior %.10Lg log-posterior %.5Lg number edges %d epsilon: %.3f accepted: %d, samplenr: %d u: %.5f ms: %.5f\n", posterior_o, log10l(posterior_o), n_edges, eps, accepted, k, u, ms );
       //bcbn_write_poset(0, "data/output/SYNrun8.1", M->P, n, k);
       //int** T = bcbn_get_int_matrix(n, n);
       //bcbn_transitive_closure( M->P, T, n );
@@ -2333,9 +2391,13 @@ void start_MH( double eps, model* M, double* theta, data* D, int N_u, int burn_i
 
   }
 
-  fclose(samplelog);
+  if (samplelog != NULL)
+    fclose(samplelog);
 
+  bcbn_free_poset(M_p);
+  bcbn_free_lattice_children(M_p);
   free(M_p);
+  free(theta_p);
   // printf("poset:\n");
   bcbn_print_int_matrix( M->P, n, n);
   // printf("\n accepted: %d, ratio %f\n", accepted, (float)accepted/number_samples);
@@ -2406,6 +2468,7 @@ long double start_Exp_theta_MH( double eps, model* M, double* theta, data* D, in
     }
 
   }
+  free(theta_p);
   return posterior_sum/recorded;
 }
 
@@ -2424,6 +2487,10 @@ void start_nested_MH(double eps, model* M, double* theta, data* D, int N_u, int 
   double* theta_p = bcbn_get_double_array(n);
   memcpy( theta_p, theta, sizeof(double)*n);
   model* M_p = malloc( sizeof(model) );
+  if (M_p == NULL) {
+    free(theta_p);
+    Rf_error("Error: Out of memory!");
+  }
   int i,j,k = 0;
   long double posterior_o, posterior_p;
   double msp, msp_r, tp, tp_r;
@@ -2585,7 +2652,8 @@ void start_nested_MH(double eps, model* M, double* theta, data* D, int N_u, int 
 
     //log samples
     if( k>burn_in && !(k%record_ith) ) {
-      fprintf(samplelog, "posterior %.10Lg log-posterior %.5Lg number edges %d epsilon: %.3f\n", posterior_o, log10l(posterior_o), n_edges, eps );
+      if (samplelog != NULL)
+        fprintf(samplelog, "posterior %.10Lg log-posterior %.5Lg number edges %d epsilon: %.3f\n", posterior_o, log10l(posterior_o), n_edges, eps );
       bcbn_write_poset(0, "data/output/SYNrun1Nest2", M->P, n, k);
       int** T = bcbn_get_int_matrix(n, n);
       bcbn_transitive_closure( M->P, T, n );
@@ -2593,7 +2661,12 @@ void start_nested_MH(double eps, model* M, double* theta, data* D, int N_u, int 
       free_int_matrix( T, n );
     }
   }
+  if (samplelog != NULL)
+    fclose(samplelog);
+  bcbn_free_poset(M_p);
+  bcbn_free_lattice_children(M_p);
   free(M_p);
+  free(theta_p);
   // printf("poset:\n");
   bcbn_print_int_matrix( M->P, n, n);
   // printf("\n accepted: %d, ratio %f\n", accepted, (float)accepted/number_samples);
@@ -2624,6 +2697,10 @@ void run_MH_sampler( model* M, double *theta_in, double epsilon_in, data* D, int
   double* theta_p = bcbn_get_double_array(n);
   memcpy( theta_p, theta_in, sizeof(double)*n);
   model* M_p = malloc( sizeof(model) );
+  if (M_p == NULL) {
+    free(theta_p);
+    Rf_error("Error: Out of memory!");
+  }
   int i,j,k = 0;
   long double posterior_o, posterior_p;
   double msp, msp_r, tp, tp_r;
@@ -2818,6 +2895,7 @@ void run_MH_sampler( model* M, double *theta_in, double epsilon_in, data* D, int
   bcbn_free_poset( M_p );
   bcbn_free_lattice_children( M_p );
   free(M_p);
+  free(theta_p);
 }
 
 
@@ -2909,5 +2987,12 @@ void sample_full_cbn(double *theta_in, int *nevents, double *epsilon_in, int * e
   }
   free_double_matrix( theta_matrix_out, n_samples );
   free_int_cube( edges_cube_out, n_samples, n );
-  //bcbn_free_data( D, N_u, n);
+  free(pat_idx);
+  bcbn_free_data( D, N_u, n);
+  bcbn_free_poset(&M);
+  bcbn_free_lattice_children(&M);
+  free_int_matrix(bcbn_GENOTYPE, bcbn_pow2(n));
+  bcbn_GENOTYPE = NULL;
+  gsl_rng_free(bcbn_RNG);
+  bcbn_RNG = NULL;
 }

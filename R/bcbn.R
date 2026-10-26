@@ -19,14 +19,13 @@ defaultData <- function() {
 #' @param thin Thin <def: 10>
 #' @param nCores Number of parallelized cores <def: 1>
 #' @param maxL The maximum number of iteration <def: 1000>
-#' @param progressBar Print out progress bar; default is FALSE
 #'
 #' @return A matrix
 #' @export
 #'
 #' @examples
 #' bcbn()
-bcbn <- function(data = defaultData(), nSamples = 25000, theta = 0, epsilon = 0.05, nChains = 4, thin = 10, maxL = 1000, nCores = 1, progressBar = FALSE) {
+bcbn <- function(data = defaultData(), nSamples = 25000, theta = 0, epsilon = 0.05, nChains = 4, thin = 10, maxL = 1000, nCores = 1) {
   if (nChains < nCores) {
     message(paste("Number of chains was less than number of cores. Using number of chains (", nChains, ") as thread count.", sep = ""))
   }
@@ -36,7 +35,6 @@ bcbn <- function(data = defaultData(), nSamples = 25000, theta = 0, epsilon = 0.
   edgeList <- list()
   l <- 0
   converged <- 0
-  converged2 <- 0
   repeat {
     l <- l + 1
 
@@ -60,10 +58,10 @@ bcbn <- function(data = defaultData(), nSamples = 25000, theta = 0, epsilon = 0.
       } else {
         p <- MulticoreParam(workers = min(nChains, nCores))
       }
-      rets <- bplapply(1:nChains, retWorker, BPPARAM = p, BPOPTIONS = bpoptions(progressbar = progressBar))
+      rets <- bplapply(1:nChains, retWorker, BPPARAM = p)
     } else {
       message("Parallelization not found - running sequentially.")
-      rets <- lapply(datasets, retWorker)
+      rets <- lapply(data, retWorker)
     }
 
     mList <- list()

@@ -3,7 +3,7 @@
 \docType{package}
 \name{CBN2Path-package}
 \alias{CBN2Path-package}
-\title{CBN2Path: "CBN2Path: an R/Bioconductor package for the analysis of cancer progression pathways using Conjunctive Bayesian Networks}
+\title{CBN2Path: CBN2Path: an R/Bioconductor package for the analysis of cancer progression pathways using Conjunctive Bayesian Networks}
 \description{
 CBN2Path package provides a unifying interface to facilitate CBN-based quantification, analysis and visualization of cancer progression pathways.
 
@@ -25,15 +25,6 @@ Useful links:
   \item \url{http://dx.doi.org/10.1093/biomet/asp023}
   \item \url{http://dx.doi.org/10.1093/bioinformatics/btp505}
   \item Report bugs at \url{https://github.com/rockwillck/CBN2Path/issues}
-}
-
-}
-\author{
-\strong{Maintainer}: William Choi-Kim \email{william@williamck.com} (\href{https://orcid.org/0009-0000-3902-4745}{ORCID})
-
-Authors:
-\itemize{
-  \item Sayed-Rzgar Hosseini \email{rzgar.hosseini@indstate.edu} (\href{https://orcid.org/0000-0002-2308-6754}{ORCID})
 }
 
 }

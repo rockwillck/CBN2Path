@@ -655,6 +655,9 @@ pathNormalization <- function(pathProb, x) {
 }
 
 
+
+
+
 #' pathProbQuartetRCBN
 #'
 #' @param gMat The n by 4 binary genotype matrix representing a given quartet for a sample of n genotypes.
@@ -690,6 +693,239 @@ pathProbQuartetRCBN <- function(gMat) {
     pathProb1 <- apply((w1 * p), 2, sum,na.rm=TRUE) / sum(w1)
     pathProb2 <- pathNormalization(pathProb1, 4)
     return(pathProb2)
+}
+
+
+
+
+#' pathEnumerator
+#'
+#' @param m The number of genes (or mutations) considered for genotype definition
+#' @param n The number of genes (or mutations) considered in the sub-pathways
+#'
+#' @return lists of sub-pathways of length n chosen from the set of m genes (or mutations)
+#' @export
+#'
+#' @examples
+#' m<-10
+#' n<-4
+#' pathEnumerator(m, n)
+pathEnumerator<-function(m,n){
+  x<-choose(m,n)
+  y<-factorial(n)
+  
+  paths<-list()
+  subSets<-t(combn(1:m,n))
+  perms<-permutations(n,n)
+  
+  for (i in 1:x){
+    paths[[i]]<-matrix(0,y,n)
+    for (j in 1:y){
+      temp<-subSets[i,perms[j,]]
+      for (k in 1:n){
+        paths[[i]][j,k]<-temp[k]      
+      }
+    }
+  }
+  
+  return(paths)
+}
+
+
+
+#' pathIdAssigner
+#'
+#' @param m The number of genes (or mutations) considered for genotype definition
+#' @param n The number of genes (or mutations) considered in the sub-pathways
+#'
+#' @return A vector storing the indices of all sub-pathways of length n chosen from the set of m genes (or mutations)
+#' @export
+#'
+#' @examples
+#' m<-10
+#' n<-4
+#' pathIdAssigner(m, n)
+pathIdAssigner<-function(m,n){
+  x<-choose(m,n)
+  y<-factorial(n)
+  u<-(x*y)
+  paths<-numeric(u)
+  subSets<-t(combn(1:m,n))
+  perms<-permutations(n,n)
+  count<-0
+  for (i in 1:x){
+    for (j in 1:y){
+      count<-count+1
+      temp<-subSets[i,perms[j,]]
+      paths[count]<-as.numeric(paste0(temp,collapse=""))
+    }
+  }
+  return(paths)
+}
+
+
+
+#' pathProbAssigner
+#'
+#' @param probMatrix The probability matrix that stores the probability distribution of the n! pathways of length n (the colums) for any one of the choose(m,n) subsets of length n (the rows). 
+#' @param m The number of genes (or mutations) considered for genotype definition
+#' @param n The number of genes (or mutations) considered in the sub-pathways
+#'
+#' @return A vector storing the probabilities of all sub-pathways of length n chosen from the set of m genes (or mutations)
+#' @export
+#'
+#' @examples
+#' m<-10
+#' n<-4
+#' temp<-matrix(runif(choose(m,n)*factorial(n)),choose(m,n),factorial(n))
+#' probMatrix<-temp/apply(temp,1,sum)
+#' pathProbAssigner(probMatrix,m, n)
+pathProbAssigner<-function(probMatrix,m,n){
+  x<-choose(m,n)
+  y<-factorial(n)
+  u<-(x*y)
+  pathProbs<-numeric(u)
+  
+  count<-0
+  for (i in 1:x){
+    for (j in 1:y){
+      count<-count+1
+      pathProbs[count]<-probMatrix[i,j]     
+    }
+  }
+  return(pathProbs)
+}
+
+
+
+#' pathProber
+#'
+#' @param pathN A given path of length n, whose probability is to be computed.
+#' @param pathsX All existing paths of length x 
+#' @param pathProbsX The corresponding probability of the existing paths of length x
+#'
+#' @return The probability of the given path of length n, which is calculated according to the approximate eq. 10 in the paper.
+#' @export
+#'
+#' @examples
+#' m<-10
+#' n<-4
+#' temp<-matrix(runif(choose(m,n)*factorial(n)),choose(m,n),factorial(n))
+#' probMatrix<-temp/apply(temp,1,sum)
+#' pathProbsX<-pathProbAssigner(probMatrix,m,n)
+#' pathsX<-pathIdAssigner(m,n)
+#' pathN<-c(1,2,3,4,5)
+#' pathProber(pathN,pathsX,pathProbsX)
+pathProber<-function(pathN,pathsX,pathProbsX){
+  
+  n<-length(pathN)
+  x<-(n-1)
+  vec<-1:n
+  cIndx<-numeric(n)
+  aIndx<-list()
+  bIndx<-list()
+  
+  for (i in 1:n){
+    num<-pathN[i]
+    wec<-vec[-i]
+    aIndx[[i]]<-numeric((n-1))
+    count<-0
+    
+    for (j in wec){
+      count<-count+1
+      aPath<-pathN[-j]
+      aIndx[[i]][count]<-as.numeric(paste0(aPath,collapse=""))
+    }
+    
+    count<-0
+    bIndx[[i]]<-numeric((n*(n-1)))
+    tPath<-pathN[-i]
+    
+    for (p in 1:n){
+      if (p==1){bPathN<-c(num,tPath)}
+      else if (p==n){bPathN<-c(tPath,num)}
+      else{bPathN<-c(tPath[1:(p-1)],num,tPath[p:(n-1)])}
+      yec<-vec[-p]
+      for (q in yec){
+        count<-count+1
+        bPath<-bPathN[-q] 
+        bIndx[[i]][count]<-as.numeric(paste0(bPath,collapse=""))
+      }
+    }
+    
+    cPath<-pathN[-i] 
+    cIndx[i]<-as.numeric(paste0(cPath,collapse=""))
+  }
+  pcIndx <- match(cIndx, pathsX, nomatch = 0)
+  
+  paIndxx<-c()
+  pbIndxx<-c()
+  for (i in 1:n){
+    paIndxx<-c(paIndxx,aIndx[[i]])
+    pbIndxx<-c(pbIndxx,bIndx[[i]])
+  }
+  paIndx <- match(paIndxx, pathsX, nomatch = 0)
+  pbIndx <- match(pbIndxx, pathsX, nomatch = 0)
+  
+  pEstimate<-numeric(n)
+  for (i in 1:n){
+    aNum1<-(((n-1)*(i-1))+1)
+    aNum2<-((n-1)*i)
+    bNum1<-((n*(n-1)*(i-1))+1)
+    bNum2<-(n*(n-1)*i)
+    cProb<-pathProbsX[pcIndx[i]]
+    aProb<-sum(pathProbsX[paIndx[aNum1:aNum2]])  
+    bProb<-sum(pathProbsX[pbIndx[bNum1:bNum2]])
+    pEstimate[i]<-((aProb/bProb)*cProb)
+  }
+  Final<-mean(pEstimate)
+  return(Final)
+}
+
+
+#' pathProbEnsembleRCBN
+#'
+#' @param pathProbs is a matrix containing the probabilities of pathways of length 4
+#' @param nn is the total number of genes (mutations) considered 
+#' @param outputDir full path to the directory, where the final files will be saved.
+#'
+#' @return The list of probability matrices of all sub-pathways of n, where n is between 5 and nn.
+#' @export
+#'
+#' @examples
+#' m<-10
+#' n<-4
+#' temp<-matrix(runif(choose(m,n)*factorial(n)),choose(m,n),factorial(n))
+#' probMatrix<-temp/apply(temp,1,sum)
+#' pathProbs<-pathProbAssigner(probMatrix,m,n)
+#' outputDir<-getwd()
+#' pathProber(pathProbs,m,outputDir)
+pathProbEnsembleRCBN<-function(pathProbs,nn,outputDir){
+  
+  nQuartets<-choose(nn,4)
+  d1<-dim(pathProbs)[1] 
+  d2<-dim(pathProbs)[2] 
+  if ((d1!=nQuartets)||(d2!=factorial(4))){print("the Initial matrix of (quartet) pathway probabilities is not of right dimension!");return(NULL)}
+  
+  n<-4
+  while (n<nn){
+    n<-n+1
+    paths<-pathEnumerator(nn,n)
+    pathIndices<-pathIdAssigner(nn,(n-1))
+    pathProbs2<-pathProbAssigner(pathProbs,nn,(n-1))
+    temp<-matrix(0,choose(nn,n),factorial(n))
+    for (i in 1:choose(nn,n)){
+      for (j in 1:factorial(n)){
+        pathX<-paths[[i]][j,]
+        temp[i,j]<-pathProber(pathX,pathIndices,pathProbs2)
+      }
+    }
+    pathProbs<-temp
+    pathProbR<-pathProbs
+    finalFileName<-paste0(outputDir,"/pathProbR",n,".RData")
+    save(pathProbR,file=finalFileName)
+    print(paste0("quantifying pathways of length n=",n," is done."))
+  }
 }
 
 
@@ -774,6 +1010,240 @@ pathProbQuartetBCBN <- function(gMat) {
     pathProb <- apply((wB * p), 2, sum) / sum(wB)
     return(pathProb)
 }
+
+
+
+
+#' pathEnumerator
+#'
+#' @param m The number of genes (or mutations) considered for genotype definition
+#' @param n The number of genes (or mutations) considered in the sub-pathways
+#'
+#' @return lists of sub-pathways of length n chosen from the set of m genes (or mutations)
+#' @export
+#'
+#' @examples
+#' m<-10
+#' n<-4
+#' pathEnumerator(m, n)
+pathEnumerator<-function(m,n){
+  x<-choose(m,n)
+  y<-factorial(n)
+  
+  paths<-list()
+  subSets<-t(combn(1:m,n))
+  perms<-permutations(n,n)
+  
+  for (i in 1:x){
+    paths[[i]]<-matrix(0,y,n)
+    for (j in 1:y){
+      temp<-subSets[i,perms[j,]]
+      for (k in 1:n){
+        paths[[i]][j,k]<-temp[k]      
+      }
+    }
+  }
+  
+  return(paths)
+}
+
+
+
+#' pathIdAssigner
+#'
+#' @param m The number of genes (or mutations) considered for genotype definition
+#' @param n The number of genes (or mutations) considered in the sub-pathways
+#'
+#' @return A vector storing the indices of all sub-pathways of length n chosen from the set of m genes (or mutations)
+#' @export
+#'
+#' @examples
+#' m<-10
+#' n<-4
+#' pathIdAssigner(m, n)
+pathIdAssigner<-function(m,n){
+  x<-choose(m,n)
+  y<-factorial(n)
+  u<-(x*y)
+  paths<-numeric(u)
+  subSets<-t(combn(1:m,n))
+  perms<-permutations(n,n)
+  count<-0
+  for (i in 1:x){
+    for (j in 1:y){
+      count<-count+1
+      temp<-subSets[i,perms[j,]]
+      paths[count]<-as.numeric(paste0(temp,collapse=""))
+    }
+  }
+  return(paths)
+}
+
+
+
+#' pathProbAssigner
+#'
+#' @param probMatrix The probability matrix that stores the probability distribution of the n! pathways of length n (the colums) for any one of the choose(m,n) subsets of length n (the rows). 
+#' @param m The number of genes (or mutations) considered for genotype definition
+#' @param n The number of genes (or mutations) considered in the sub-pathways
+#'
+#' @return A vector storing the probabilities of all sub-pathways of length n chosen from the set of m genes (or mutations)
+#' @export
+#'
+#' @examples
+#' m<-10
+#' n<-4
+#' temp<-matrix(runif(choose(m,n)*factorial(n)),choose(m,n),factorial(n))
+#' probMatrix<-temp/apply(temp,1,sum)
+#' pathProbAssigner(probMatrix,m, n)
+pathProbAssigner<-function(probMatrix,m,n){
+  x<-choose(m,n)
+  y<-factorial(n)
+  u<-(x*y)
+  pathProbs<-numeric(u)
+  
+  count<-0
+  for (i in 1:x){
+    for (j in 1:y){
+      count<-count+1
+      pathProbs[count]<-probMatrix[i,j]     
+    }
+  }
+  return(pathProbs)
+}
+
+
+
+#' pathProber
+#'
+#' @param pathN A given path of length n, whose probability is to be computed.
+#' @param pathsX All existing paths of length x 
+#' @param pathProbsX The corresponding probability of the existing paths of length x
+#'
+#' @return The probability of the given path of length n, which is calculated according to the approximate eq. 10 in the paper.
+#' @export
+#'
+#' @examples
+#' m<-10
+#' n<-4
+#' temp<-matrix(runif(choose(m,n)*factorial(n)),choose(m,n),factorial(n))
+#' probMatrix<-temp/apply(temp,1,sum)
+#' pathProbsX<-pathProbAssigner(probMatrix,m,n)
+#' pathsX<-pathIdAssigner(m,n)
+#' pathN<-c(1,2,3,4,5)
+#' pathProber(pathN,pathsX,pathProbsX)
+pathProber<-function(pathN,pathsX,pathProbsX){
+  
+  n<-length(pathN)
+  x<-(n-1)
+  vec<-1:n
+  cIndx<-numeric(n)
+  aIndx<-list()
+  bIndx<-list()
+  
+  for (i in 1:n){
+    num<-pathN[i]
+    wec<-vec[-i]
+    aIndx[[i]]<-numeric((n-1))
+    count<-0
+    
+    for (j in wec){
+      count<-count+1
+      aPath<-pathN[-j]
+      aIndx[[i]][count]<-as.numeric(paste0(aPath,collapse=""))
+    }
+    
+    count<-0
+    bIndx[[i]]<-numeric((n*(n-1)))
+    tPath<-pathN[-i]
+    
+    for (p in 1:n){
+      if (p==1){bPathN<-c(num,tPath)}
+      else if (p==n){bPathN<-c(tPath,num)}
+      else{bPathN<-c(tPath[1:(p-1)],num,tPath[p:(n-1)])}
+      yec<-vec[-p]
+      for (q in yec){
+        count<-count+1
+        bPath<-bPathN[-q] 
+        bIndx[[i]][count]<-as.numeric(paste0(bPath,collapse=""))
+      }
+    }
+    
+    cPath<-pathN[-i] 
+    cIndx[i]<-as.numeric(paste0(cPath,collapse=""))
+  }
+  pcIndx <- match(cIndx, pathsX, nomatch = 0)
+  
+  paIndxx<-c()
+  pbIndxx<-c()
+  for (i in 1:n){
+    paIndxx<-c(paIndxx,aIndx[[i]])
+    pbIndxx<-c(pbIndxx,bIndx[[i]])
+  }
+  paIndx <- match(paIndxx, pathsX, nomatch = 0)
+  pbIndx <- match(pbIndxx, pathsX, nomatch = 0)
+  
+  pEstimate<-numeric(n)
+  for (i in 1:n){
+    aNum1<-(((n-1)*(i-1))+1)
+    aNum2<-((n-1)*i)
+    bNum1<-((n*(n-1)*(i-1))+1)
+    bNum2<-(n*(n-1)*i)
+    cProb<-pathProbsX[pcIndx[i]]
+    aProb<-sum(pathProbsX[paIndx[aNum1:aNum2]])  
+    bProb<-sum(pathProbsX[pbIndx[bNum1:bNum2]])
+    pEstimate[i]<-((aProb/bProb)*cProb)
+  }
+  Final<-mean(pEstimate)
+  return(Final)
+}
+
+
+#' pathProbEnsembleRCBN
+#'
+#' @param pathProbs is a matrix containing the probabilities of pathways of length 4
+#' @param nn is the total number of genes (mutations) considered 
+#' @param outputDir full path to the directory, where the final files will be saved.
+#'
+#' @return The list of probability matrices of all sub-pathways of n, where n is between 5 and nn.
+#' @export
+#'
+#' @examples
+#' m<-10
+#' n<-4
+#' temp<-matrix(runif(choose(m,n)*factorial(n)),choose(m,n),factorial(n))
+#' probMatrix<-temp/apply(temp,1,sum)
+#' pathProbs<-pathProbAssigner(probMatrix,m,n)
+#' outputDir<-getwd()
+#' pathProber(pathProbs,m,outputDir)
+pathProbEnsembleRCBN<-function(pathProbs,nn,outputDir){
+  
+  nQuartets<-choose(nn,4)
+  d1<-dim(pathProbs)[1] 
+  d2<-dim(pathProbs)[2] 
+  if ((d1!=nQuartets)||(d2!=factorial(4))){print("the Initial matrix of (quartet) pathway probabilities is not of right dimension!");return(NULL)}
+  
+  n<-4
+  while (n<nn){
+    n<-n+1
+    paths<-pathEnumerator(nn,n)
+    pathIndices<-pathIdAssigner(nn,(n-1))
+    pathProbs2<-pathProbAssigner(pathProbs,nn,(n-1))
+    temp<-matrix(0,choose(nn,n),factorial(n))
+    for (i in 1:choose(nn,n)){
+      for (j in 1:factorial(n)){
+        pathX<-paths[[i]][j,]
+        temp[i,j]<-pathProber(pathX,pathIndices,pathProbs2)
+      }
+    }
+    pathProbs<-temp
+    pathProbR<-pathProbs
+    finalFileName<-paste0(outputDir,"/pathProbR",n,".RData")
+    save(pathProbR,file=finalFileName)
+    print(paste0("quantifying pathways of length n=",n," is done."))
+  }
+}
+
 
 
 

@@ -229,9 +229,9 @@ base2IndVec <- function(vec) {
 
 #' pathwayCompatibility
 #'
-#' @param gMat The n by 4 binary genotype matrix representing a given quartet for a sample of n genotypes.
+#' @param gMat The n by m binary genotype matrix representing a given quartet for a sample of n genotypes.
 #'
-#' @return The compatibility score, which is represented as a vector of length 24, each element of which corresponds to one of the 24 pathways of length 4.
+#' @return The compatibility score, which is represented as a vector of length m!, each element of which corresponds to one of the m! pathways of length m.
 #' @export
 #'
 #' @examples
@@ -239,14 +239,14 @@ base2IndVec <- function(vec) {
 #' gMat <- matrix(sample(c(0, 1), 800, replace = TRUE), 200, 4)
 #' pathwayCompatibility(gMat)
 pathwayCompatibility <- function(gMat) {
-  n<-dim(gMat)[2]
-  g <- generateMatrixGenotypes(n)
-  indxs <- numeric((2^n))
-  for (i in 1:(2^n)) {
+  m <- dim(gMat)[2]
+  g <- generateMatrixGenotypes(m)
+  indxs <- numeric((2^m))
+  for (i in 1:(2^m)) {
     indxs[i] <- base2IndVec(g[i, ])
   }
   d <- dim(gMat)[1]
-  v <- numeric((2^n))
+  v <- numeric((2^m))
   for (i in 1:d) {
     vec <- gMat[i, ]
     indx <- base2IndVec(vec)
@@ -254,14 +254,14 @@ pathwayCompatibility <- function(gMat) {
     v[gIdx] <- v[gIdx] + 1
   }
   v <- v / sum(v)
-  perm <- permutations(n, n)
-  m <- matrix(0, factorial(n), (2^n))
-  for (i in 1:factorial(n)) {
-    for (j in 1:(2^n)) {
-      m[i, j] <- pathwayGenotypeCompatibility(perm[i, ], g[j, ])
+  perm <- permutations(m, m)
+  mgc <- matrix(0, factorial(m), (2^m))
+  for (i in 1:factorial(m)) {
+    for (j in 1:(2^m)) {
+      mgc[i, j] <- pathwayGenotypeCompatibility(perm[i, ], g[j, ])
     }
   }
-  c <- as.numeric(m %*% v)
+  c <- as.numeric(mgc %*% v)
   return(c)
 }
 
@@ -497,6 +497,58 @@ pathProbQuartetCTCBN <- function(gMat) {
 
 
 
+#' pathProbGeneralCTCBN
+#'
+#' @param gMat The n by m binary genotype matrix representing a given quartet for a sample of n genotypes.
+#'
+#' @return The probability distribution (returned by the CT-CBN model), which is represented as a vector of length m!.
+#' @export
+#'
+#' @examples
+#' set.seed(100)
+#' gMat <- matrix(sample(c(0, 1), 180, replace = TRUE), 30, 6)
+#' pathProbGeneralCTCBN(gMat)
+pathProbGeneralCTCBN <- function(gMat) {
+  m <- dim(gMat)[2]
+  bc <- Spock$new(
+    poset = matrix(0, 0, 0),
+    numMutations = m,
+    genotypeMatrix = gMat
+  )
+  results <- ctcbn(bc, epsilon =  -1)
+  indx <- which.max(results$summary$Loglike)
+  dag <- results$poset[[indx]]$sets
+  if (sum(is.na(dag)) > 0){dag <- matrix(0, 0, 0)}
+  lambda <- as.numeric(results$summary[indx, 5:(m+5)])
+  pathProb <- pathProbCBN(dag, lambda, m)
+  return(pathProb)
+}
+
+
+
+#' pathProbCTCBN
+#'
+#' @param gMat The n by m binary genotype matrix representing a given quartet for a sample of n genotypes.
+#'
+#' @return The probability distribution (returned by the CT-CBN model), which is represented as a vector of length m!.
+#' @export
+#'
+#' @examples
+#' set.seed(100)
+#' gMat <- matrix(sample(c(0, 1), 180, replace = TRUE), 30, 6)
+#' pathProbCTCBN(gMat)
+pathProbCTCBN <- function(gMat) {
+  m <- dim(gMat)[2]
+  if (m == 4){
+    PathProb <- pathProbQuartetCTCBN(gMat)
+  } else {
+    PathProb <- pathProbGeneralCTCBN(gMat)
+  }  
+  return(PathProb)
+}
+
+
+
 #' pathProbQuartetHCBN
 #'
 #' @param gMat The n by 4 binary genotype matrix representing a given quartet for a sample of n genotypes.
@@ -526,6 +578,66 @@ pathProbQuartetHCBN <- function(gMat) {
    else { dag <- posets[[indx]] }
    pathProb <- pathProbCBN(dag, lambda, 4)
    return(pathProb)
+}
+
+
+
+#' pathProbGeneralHCBN
+#'
+#' @param gMat The n by m binary genotype matrix representing a given quartet for a sample of n genotypes.
+#'
+#' @return The probability distribution (returned by the H-CBN model), which is represented as a vector of length m!.
+#' @export
+#'
+#' @examples
+#' set.seed(100)
+#' gMat <- matrix(sample(c(0, 1), 180, replace = TRUE), 30, 6)
+#' pathProbGeneralHCBN(gMat)
+pathProbGeneralHCBN <- function(gMat) {
+  m <- dim(gMat)[2]
+  bc <- Spock$new(
+    poset = matrix(0, 0, 0),
+    numMutations = m,
+    genotypeMatrix = gMat
+  )
+  resultsC <- ctcbn(bc, epsilon =  -1)
+  indx <- which.max(resultsC$summary$Loglike)
+  dagC <- resultsC$poset[[indx]]$sets
+  if (sum(is.na(dagC)) > 0){dagC <- matrix(0, 0, 0)}
+  bcH <- Spock$new(
+    poset = dagC,
+    numMutations = m,
+    genotypeMatrix = gMat
+  )  
+  resultsH <- hcbnSingle(bcH, anneal = TRUE, temp = 1, annealingSteps = 10000)
+  dagH<-resultsH$poset$sets
+  if (sum(is.na(dagH)) > 0){dagH <- matrix(0, 0, 0)}
+  lambdaH <- as.numeric(resultsH$lambda)
+  pathProb <- pathProbCBN(dagH, lambdaH, m)
+  return(pathProb)
+}
+
+
+
+#' pathProbHCBN
+#'
+#' @param gMat The n by m binary genotype matrix representing a given quartet for a sample of n genotypes.
+#'
+#' @return The probability distribution (returned by the H-CBN model), which is represented as a vector of length m!.
+#' @export
+#'
+#' @examples
+#' set.seed(100)
+#' gMat <- matrix(sample(c(0, 1), 180, replace = TRUE), 30, 6)
+#' pathProbHCBN(gMat)
+pathProbHCBN <- function(gMat) {
+  m <- dim(gMat)[2]
+  if (m == 4){
+    PathProb <- pathProbQuartetHCBN(gMat)
+  } else {
+    PathProb <- pathProbGeneralHCBN(gMat)
+  }  
+  return(PathProb)
 }
 
 
@@ -713,27 +825,24 @@ pathProbQuartetRCBN <- function(gMat) {
 #' @export
 #'
 #' @examples
-#' m<-10
-#' n<-4
+#' m <- 10
+#' n <- 4
 #' pathEnumerator(m, n)
-pathEnumerator<-function(m,n){
-  x<-choose(m,n)
-  y<-factorial(n)
-  
-  paths<-list()
-  subSets<-t(combn(1:m,n))
-  perms<-permutations(n,n)
-  
+pathEnumerator <- function(m, n){
+  x <- choose(m, n)
+  y <- factorial(n)
+  paths <- list()
+  subSets <- t(combn(1:m, n))
+  perms <- permutations(n, n)
   for (i in 1:x){
-    paths[[i]]<-matrix(0,y,n)
+    paths[[i]] <- matrix(0, y, n)
     for (j in 1:y){
-      temp<-subSets[i,perms[j,]]
+      temp <- subSets[i, perms[j, ]]
       for (k in 1:n){
-        paths[[i]][j,k]<-temp[k]      
+        paths[[i]][j, k] <- temp[k]      
       }
     }
   }
-  
   return(paths)
 }
 
@@ -748,22 +857,22 @@ pathEnumerator<-function(m,n){
 #' @export
 #'
 #' @examples
-#' m<-10
-#' n<-4
+#' m <- 10
+#' n <- 4
 #' pathIdAssigner(m, n)
-pathIdAssigner<-function(m,n){
-  x<-choose(m,n)
-  y<-factorial(n)
-  u<-(x*y)
-  paths<-numeric(u)
-  subSets<-t(combn(1:m,n))
-  perms<-permutations(n,n)
-  count<-0
+pathIdAssigner <- function(m, n){
+  x <- choose(m, n)
+  y <- factorial(n)
+  u <- (x*y)
+  paths <- numeric(u)
+  subSets <- t(combn(1:m, n))
+  perms <- permutations(n, n)
+  count <- 0
   for (i in 1:x){
     for (j in 1:y){
-      count<-count+1
-      temp<-subSets[i,perms[j,]]
-      paths[count]<-as.numeric(paste0(temp,collapse=""))
+      count <- count+1
+      temp <- subSets[i, perms[j, ]]
+      paths[count] <- as.numeric(paste0(temp, collapse = ""))
     }
   }
   return(paths)
@@ -781,22 +890,21 @@ pathIdAssigner<-function(m,n){
 #' @export
 #'
 #' @examples
-#' m<-10
-#' n<-4
-#' temp<-matrix(runif(choose(m,n)*factorial(n)),choose(m,n),factorial(n))
-#' probMatrix<-temp/apply(temp,1,sum)
-#' pathProbAssigner(probMatrix,m, n)
-pathProbAssigner<-function(probMatrix,m,n){
-  x<-choose(m,n)
-  y<-factorial(n)
-  u<-(x*y)
-  pathProbs<-numeric(u)
-  
-  count<-0
+#' m <- 10
+#' n <- 4
+#' temp <- matrix(runif(choose(m, n) * factorial(n)), choose(m, n), factorial(n))
+#' probMatrix <- temp/apply(temp, 1, sum)
+#' pathProbAssigner(probMatrix, m, n)
+pathProbAssigner<-function(probMatrix, m, n){
+  x <- choose(m, n)
+  y <- factorial(n)
+  u <- (x * y)
+  pathProbs <- numeric(u)
+  count <- 0
   for (i in 1:x){
     for (j in 1:y){
-      count<-count+1
-      pathProbs[count]<-probMatrix[i,j]     
+      count <- count + 1
+      pathProbs[count] <- probMatrix[i,j]     
     }
   }
   return(pathProbs)
@@ -814,75 +922,67 @@ pathProbAssigner<-function(probMatrix,m,n){
 #' @export
 #'
 #' @examples
-#' m<-10
-#' n<-4
-#' temp<-matrix(runif(choose(m,n)*factorial(n)),choose(m,n),factorial(n))
-#' probMatrix<-temp/apply(temp,1,sum)
-#' pathProbsX<-pathProbAssigner(probMatrix,m,n)
-#' pathsX<-pathIdAssigner(m,n)
-#' pathN<-c(1,2,3,4,5)
-#' pathProber(pathN,pathsX,pathProbsX)
-pathProber<-function(pathN,pathsX,pathProbsX){
-  
-  n<-length(pathN)
-  x<-(n-1)
-  vec<-1:n
-  cIndx<-numeric(n)
-  aIndx<-list()
-  bIndx<-list()
-  
+#' m <- 10
+#' n <- 4
+#' temp <- matrix(runif(choose(m, n) * factorial(n)), choose(m, n), factorial(n))
+#' probMatrix <- temp/apply(temp, 1, sum)
+#' pathProbsX <- pathProbAssigner(probMatrix, m, n)
+#' pathsX <- pathIdAssigner(m, n)
+#' pathN <- c(1, 2, 3, 4, 5)
+#' pathProber(pathN, pathsX, pathProbsX)
+pathProber<-function(pathN, pathsX, pathProbsX){
+  n <- length(pathN)
+  x <- (n - 1)
+  vec <- 1:n
+  cIndx <- numeric(n)
+  aIndx <- list()
+  bIndx <- list()
   for (i in 1:n){
-    num<-pathN[i]
-    wec<-vec[-i]
-    aIndx[[i]]<-numeric((n-1))
-    count<-0
-    
+    num <- pathN[i]
+    wec <- vec[-i]
+    aIndx[[i]] <- numeric((n - 1))
+    count <- 0
     for (j in wec){
-      count<-count+1
-      aPath<-pathN[-j]
-      aIndx[[i]][count]<-as.numeric(paste0(aPath,collapse=""))
+      count <- count + 1
+      aPath <- pathN[-j]
+      aIndx[[i]][count] <- as.numeric(paste0(aPath, collapse = ""))
     }
-    
-    count<-0
-    bIndx[[i]]<-numeric((n*(n-1)))
-    tPath<-pathN[-i]
-    
+    count <- 0
+    bIndx[[i]] <- numeric((n * (n - 1)))
+    tPath <- pathN[-i]
     for (p in 1:n){
-      if (p==1){bPathN<-c(num,tPath)}
-      else if (p==n){bPathN<-c(tPath,num)}
-      else{bPathN<-c(tPath[1:(p-1)],num,tPath[p:(n-1)])}
-      yec<-vec[-p]
+      if (p == 1){bPathN <- c(num,tPath)}
+      else if (p == n){bPathN <- c(tPath,num)}
+      else{bPathN <- c(tPath[1:(p-1)], num, tPath[p:(n-1)])}
+      yec <- vec[-p]
       for (q in yec){
-        count<-count+1
-        bPath<-bPathN[-q] 
-        bIndx[[i]][count]<-as.numeric(paste0(bPath,collapse=""))
+        count <- count + 1
+        bPath <- bPathN[-q] 
+        bIndx[[i]][count] <- as.numeric(paste0(bPath, collapse = ""))
       }
     }
-    
-    cPath<-pathN[-i] 
-    cIndx[i]<-as.numeric(paste0(cPath,collapse=""))
+    cPath <- pathN[-i] 
+    cIndx[i] <- as.numeric(paste0(cPath, collapse = ""))
   }
   pcIndx <- match(cIndx, pathsX, nomatch = 0)
-  
-  paIndxx<-c()
-  pbIndxx<-c()
+  paIndxx <- c()
+  pbIndxx <- c()
   for (i in 1:n){
-    paIndxx<-c(paIndxx,aIndx[[i]])
-    pbIndxx<-c(pbIndxx,bIndx[[i]])
+    paIndxx <- c(paIndxx, aIndx[[i]])
+    pbIndxx <- c(pbIndxx, bIndx[[i]])
   }
   paIndx <- match(paIndxx, pathsX, nomatch = 0)
   pbIndx <- match(pbIndxx, pathsX, nomatch = 0)
-  
-  pEstimate<-numeric(n)
+  pEstimate <- numeric(n)
   for (i in 1:n){
-    aNum1<-(((n-1)*(i-1))+1)
-    aNum2<-((n-1)*i)
-    bNum1<-((n*(n-1)*(i-1))+1)
-    bNum2<-(n*(n-1)*i)
-    cProb<-pathProbsX[pcIndx[i]]
-    aProb<-sum(pathProbsX[paIndx[aNum1:aNum2]])  
-    bProb<-sum(pathProbsX[pbIndx[bNum1:bNum2]])
-    pEstimate[i]<-((aProb/bProb)*cProb)
+    aNum1 <- (((n - 1) * (i - 1)) + 1)
+    aNum2 <- ((n - 1) * i)
+    bNum1 <- ((n * (n - 1) * (i - 1)) + 1)
+    bNum2 <- (n * (n - 1) * i)
+    cProb <- pathProbsX[pcIndx[i]]
+    aProb <- sum(pathProbsX[paIndx[aNum1:aNum2]])  
+    bProb <- sum(pathProbsX[pbIndx[bNum1:bNum2]])
+    pEstimate[i] <- ((aProb / bProb) * cProb)
   }
   Final<-mean(pEstimate)
   return(Final)
@@ -900,37 +1000,38 @@ pathProber<-function(pathN,pathsX,pathProbsX){
 #' @export
 #'
 #' @examples
-#' m<-10
-#' n<-4
-#' temp<-matrix(runif(choose(m,n)*factorial(n)),choose(m,n),factorial(n))
-#' probMatrix<-temp/apply(temp,1,sum)
-#' pathProbs<-pathProbAssigner(probMatrix,m,n)
-#' outputDir<-getwd()
-#' pathProber(pathProbs,m,outputDir)
-pathProbEnsembleRCBN<-function(pathProbs,nn,outputDir){
-  
-  nQuartets<-choose(nn,4)
-  d1<-dim(pathProbs)[1] 
-  d2<-dim(pathProbs)[2] 
-  if ((d1!=nQuartets)||(d2!=factorial(4))){print("the Initial matrix of (quartet) pathway probabilities is not of right dimension!");return(NULL)}
-  
-  n<-4
-  while (n<nn){
-    n<-n+1
-    paths<-pathEnumerator(nn,n)
-    pathIndices<-pathIdAssigner(nn,(n-1))
-    pathProbs2<-pathProbAssigner(pathProbs,nn,(n-1))
-    temp<-matrix(0,choose(nn,n),factorial(n))
-    for (i in 1:choose(nn,n)){
+#' m <- 10
+#' n <- 4
+#' temp <- matrix(runif(choose(m, n) * factorial(n)), choose(m, n), factorial(n))
+#' probMatrix <- temp / apply(temp, 1, sum)
+#' pathProbs <- pathProbAssigner(probMatrix, m, n)
+#' outputDir <- getwd()
+#' pathProber(pathProbs, m, outputDir)
+pathProbEnsembleRCBN <- function(pathProbs, nn, outputDir){
+  nQuartets <- choose(nn, 4)
+  d1 <- dim(pathProbs)[1] 
+  d2 <- dim(pathProbs)[2] 
+  if ((d1 != nQuartets) || (d2 != factorial(4))){
+    print("the Initial matrix of (quartet) pathway probabilities is not of right dimension!")
+    return(NULL)
+  }
+  n <- 4
+  while (n < nn){
+    n <- n + 1
+    paths <- pathEnumerator(nn, n)
+    pathIndices <- pathIdAssigner(nn, (n - 1))
+    pathProbs2 <- pathProbAssigner(pathProbs, nn, (n - 1))
+    temp <- matrix(0, choose(nn, n), factorial(n))
+    for (i in 1:choose(nn, n)){
       for (j in 1:factorial(n)){
-        pathX<-paths[[i]][j,]
-        temp[i,j]<-pathProber(pathX,pathIndices,pathProbs2)
+        pathX <- paths[[i]][j,]
+        temp[i,j] <- pathProber(pathX, pathIndices, pathProbs2)
       }
     }
-    pathProbs<-temp
-    pathProbR<-pathProbs
-    finalFileName<-paste0(outputDir,"/pathProbR",n,".RData")
-    save(pathProbR,file=finalFileName)
+    pathProbs <- temp
+    pathProbR <- pathProbs
+    finalFileName <- paste0(outputDir, "/pathProbR", n, ".RData")
+    save(pathProbR, file = finalFileName)
     print(paste0("quantifying pathways of length n=",n," is done."))
   }
 }
@@ -1016,6 +1117,130 @@ pathProbQuartetBCBN <- function(gMat) {
     wB <- wB / sum(wB)
     pathProb <- apply((wB * p), 2, sum) / sum(wB)
     return(pathProb)
+}
+
+
+
+#' binarizer
+#'
+#' @param mat an x by x binary matrix.
+#' @param x an The dimension of the matrix.
+#'
+#' @return The probability distribution (returned by the B-CBN model), which is represented as a vector of length 24.
+#' @export
+#'
+#' @examples
+#' set.seed(100)
+#' mat <- matrix(sample(c(0, 1), 25, replace = TRUE), 5, 5)
+#' binarizer(mat,5)
+binarizer<-function(mat, x){
+  count <- 0
+  num <- 0
+  for (i in 1:x){
+    for (j in 1:x){
+      count <- count + 1
+      if (mat[i,j] == 1){num <- num + 2^count}
+    }
+  }
+  return(num)
+}
+
+
+
+#' mat2Dag
+#'
+#' @param mat an x by x binary matrix.
+#' @param x an The dimension of the matrix.
+#'
+#' @return a mtrix with 2 columns representing a given Dag of restriction
+#' @export
+#'
+#' @examples
+#' set.seed(100)
+#' mat <- matrix(sample(c(0, 1), 25, replace = TRUE), 5, 5)
+#' mat2Dag(mat, 5)
+mat2Dag <- function(mat, x){
+  d <- sum(mat)
+  if (d == 0){dag <- matrix(0, 0, 0)}
+  else{
+    dag <- matrix(0, d, 2)
+    count <- 0
+    for (i in 1:x){
+      for (j in 1:x){
+        if (mat[i,j] == 1){
+          count <- count + 1
+          dag[count,1] <- i
+          dag[count,2] <- j
+        }
+      }
+    }
+    if (count != d){print("Error!")}
+  }
+  return(dag)
+}
+
+
+
+#' pathProbGeneralBCBN
+#'
+#' @param gMat The n by m binary genotype matrix representing a given quartet for a sample of n genotypes.
+#'
+#' @return The probability distribution (returned by the B-CBN model), which is represented as a vector of length m!.
+#' @export
+#'
+#' @examples
+#' set.seed(100)
+#' gMat <- matrix(sample(c(0, 1), 180, replace = TRUE), 30, 6)
+#' pathProbGeneralBCBN(gMat)
+pathProbGeneralBCBN <- function(gMat) {
+  m <- dim(gMat)[2]
+  results <- bcbn_mcmc(data = gMat, n_samples = 25000, theta = 0, epsilon = 0.05, n_chains = 4,thin = 10, Max_L = 1000, n_cores = 1)
+  indxS <- numeric(100000)
+  for (i in 1:100000){indxS[i] <- binarizer(results[[i]], m)}
+  uu <- unique(indxS)
+  ll <- length(uu)
+  wt <- numeric(ll)
+  pathProbTemp <- numeric(ll)
+  dags <- list()
+  for (i in 1:ll){
+    wt[i] <- (length(which(indxS == uu[i])) / 100000)
+    tempIndx <- which(indxS == uu[i])[1]
+    tempMat <- results[[tempIndx]]
+    dags[[i]] <- mat2Dag(tempMat, m)
+    bc <- Spock$new(
+      poset = dags[[i]],
+      numMutations = m,
+      genotypeMatrix = gMat
+    )
+    results <- ctcbn(bc)
+    lambda <- as.numeric(results$lambda)
+    pathProbTemp[i] <- pathProbCBN(dags[[i]], lambda, m)
+  }
+  PathProb <- apply((wt * pathProbTemp), 2, sum) / sum(wt)  
+  return(PathProb)
+}
+
+
+
+#' pathProbBCBN
+#'
+#' @param gMat The n by m binary genotype matrix representing a given quartet for a sample of n genotypes.
+#'
+#' @return The probability distribution (returned by the B-CBN model), which is represented as a vector of length m!.
+#' @export
+#'
+#' @examples
+#' set.seed(100)
+#' gMat <- matrix(sample(c(0, 1), 180, replace = TRUE), 30, 6)
+#' pathProbBCBN(gMat)
+pathProbBCBN <- function(gMat) {
+  m <- dim(gMat)[2]
+  if (m == 4){
+    PathProb <- pathProbQuartetBCBN(gMat)
+  } else {
+    PathProb <- pathProbGeneralBCBN(gMat)
+  }  
+  return(PathProb)
 }
 
 

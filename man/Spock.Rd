@@ -21,171 +21,184 @@ bc <- Spock$new(
 )
 }
 \section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{poset}}{Poset matrix.}
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{poset}}{Poset matrix.}
 
-\item{\code{numMutations}}{Number of mutations.}
+    \item{\code{numMutations}}{Number of mutations.}
 
-\item{\code{genotypeMatrix}}{Genotype matrix.}
+    \item{\code{genotypeMatrix}}{Genotype matrix.}
 
-\item{\code{lambda}}{Lambda list.}
-}
-\if{html}{\out{</div>}}
+    \item{\code{lambda}}{Lambda list.}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-Spock-new}{\code{Spock$new()}}
-\item \href{#method-Spock-getSize}{\code{Spock$getSize()}}
-\item \href{#method-Spock-getPoset}{\code{Spock$getPoset()}}
-\item \href{#method-Spock-getSecond}{\code{Spock$getSecond()}}
-\item \href{#method-Spock-getPattern}{\code{Spock$getPattern()}}
-\item \href{#method-Spock-getLambda}{\code{Spock$getLambda()}}
-\item \href{#method-Spock-show}{\code{Spock$show()}}
-\item \href{#method-Spock-clone}{\code{Spock$clone()}}
-}
+  \itemize{
+    \item \href{#method-Spock-initialize}{\code{Spock$new()}}
+    \item \href{#method-Spock-getSize}{\code{Spock$getSize()}}
+    \item \href{#method-Spock-getPoset}{\code{Spock$getPoset()}}
+    \item \href{#method-Spock-getSecond}{\code{Spock$getSecond()}}
+    \item \href{#method-Spock-getPattern}{\code{Spock$getPattern()}}
+    \item \href{#method-Spock-getLambda}{\code{Spock$getLambda()}}
+    \item \href{#method-Spock-show}{\code{Spock$show()}}
+    \item \href{#method-Spock-clone}{\code{Spock$clone()}}
+  }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Spock-new"></a>}}
-\if{latex}{\out{\hypertarget{method-Spock-new}{}}}
-\subsection{Method \code{new()}}{
-Create a new Spock object.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Spock$new(poset, numMutations, genotypeMatrix, lambda = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<a id="method-Spock-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-Spock-initialize}{}}}
+\subsection{\code{Spock$new()}}{
+  Create a new Spock object.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Spock$new(poset, numMutations, genotypeMatrix, lambda = NULL)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{poset}}{Poset matrix or list of poset matrices.}
+      \item{\code{numMutations}}{Number of mutations.}
+      \item{\code{genotypeMatrix}}{Genotype matrix.}
+      \item{\code{lambda}}{Lambda list.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A new \code{Spock} object.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{poset}}{Poset matrix or list of poset matrices.}
-
-\item{\code{numMutations}}{Number of mutations.}
-
-\item{\code{genotypeMatrix}}{Genotype matrix.}
-
-\item{\code{lambda}}{Lambda list.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-A new \code{Spock} object.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Spock-getSize"></a>}}
 \if{latex}{\out{\hypertarget{method-Spock-getSize}{}}}
-\subsection{Method \code{getSize()}}{
-Get the number of posets.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Spock$getSize()}\if{html}{\out{</div>}}
+\subsection{\code{Spock$getSize()}}{
+  Get the number of posets.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Spock$getSize()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Number of posets.
+  }
 }
 
-\subsection{Returns}{
-Number of posets.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Spock-getPoset"></a>}}
 \if{latex}{\out{\hypertarget{method-Spock-getPoset}{}}}
-\subsection{Method \code{getPoset()}}{
-Write poset data to a tempfile.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Spock$getPoset(index = 1)}\if{html}{\out{</div>}}
+\subsection{\code{Spock$getPoset()}}{
+  Write poset data to a tempfile.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Spock$getPoset(index = 1)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{index}}{Index of poset.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    File path to tempfile.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{index}}{Index of poset.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-File path to tempfile.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Spock-getSecond"></a>}}
 \if{latex}{\out{\hypertarget{method-Spock-getSecond}{}}}
-\subsection{Method \code{getSecond()}}{
-Write pattern/lambda data to a tempfile.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Spock$getSecond(n)}\if{html}{\out{</div>}}
+\subsection{\code{Spock$getSecond()}}{
+  Write pattern/lambda data to a tempfile.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Spock$getSecond(n)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{n}}{Number of drawn samples.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    File path to tempfile.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{n}}{Number of drawn samples.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-File path to tempfile.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Spock-getPattern"></a>}}
 \if{latex}{\out{\hypertarget{method-Spock-getPattern}{}}}
-\subsection{Method \code{getPattern()}}{
-Write pattern data to a tempfile.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Spock$getPattern()}\if{html}{\out{</div>}}
+\subsection{\code{Spock$getPattern()}}{
+  Write pattern data to a tempfile.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Spock$getPattern()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    File path to tempfile.
+  }
 }
 
-\subsection{Returns}{
-File path to tempfile.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Spock-getLambda"></a>}}
 \if{latex}{\out{\hypertarget{method-Spock-getLambda}{}}}
-\subsection{Method \code{getLambda()}}{
-Write lambda data to a tempfile.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Spock$getLambda()}\if{html}{\out{</div>}}
+\subsection{\code{Spock$getLambda()}}{
+  Write lambda data to a tempfile.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Spock$getLambda()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    File path to tempfile.
+  }
 }
 
-\subsection{Returns}{
-File path to tempfile.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Spock-show"></a>}}
 \if{latex}{\out{\hypertarget{method-Spock-show}{}}}
-\subsection{Method \code{show()}}{
-Print summary information to console.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Spock$show(verbose = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{Spock$show()}}{
+  Print summary information to console.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Spock$show(verbose = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{verbose}}{Method prints contents as well as dimensions to console if \code{TRUE}.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Nothing.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{verbose}}{Method prints contents as well as dimensions to console if \code{TRUE}.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Nothing.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Spock-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-Spock-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Spock$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{Spock$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Spock$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

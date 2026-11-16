@@ -1,5 +1,5 @@
 Package: CBN2Path
-Title:  CBN2Path: an R/Bioconductor package for the analysis of cancer progression pathways using Conjunctive Bayesian Networks
+Title: CBN2Path: an R/Bioconductor package for the analysis of cancer progression pathways using Conjunctive Bayesian Networks
 Version: 1.1.7
 Author: William Choi-Kim [aut, cre], Sayed-Rzgar Hosseini [aut, cre]
 Maintainer: William Choi-Kim <william@williamck.com>, Sayed-Rzgar Hosseini <razgar@gmail.com>
@@ -9,7 +9,6 @@ BugReports: https://github.com/rockwillck/CBN2Path/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
 Imports: 
     R6,
     ggraph,
@@ -36,3 +35,4 @@ VignetteBuilder: knitr
 SystemRequirements: GNU Scientific Library (GSL)
 OS_type: unix
 Config/Bioconductor/UnsupportedPlatforms: windows
+Config/roxygen2/version: 8.1.1

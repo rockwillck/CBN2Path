@@ -28,14 +28,17 @@
 ## No modifications were made to these files. These files are used in examples and unit tests.
 
 
-## Furthermore, the Posets.rds file in the extdata folder includes the 219 transitively closed unique posets.
-## The extdata/Posets.rds file has been generated in a previous study [4] using the posetEnumerator.R program, which is available here in the RawData folder (RawData/posetEnumerator.R).
+## Furthermore, the Posets.rds file in the extdata folder includes the 219 transitively closed unique posets of size 4.
+## The extdata/Posets.rds file has been generated in a previous study [4] using the PosetEnumerator4.R program, which is available here in the RawData folder (RawData/posetEnumerator.R).
+## Similarly, the Posets5.rds file in the extdata folder includes the 4231 transitively closed unique posets of size 5.
+## The extdata/Posets5.rds file has been generated in a previous study [4] using the PosetEnumerator5.R program, which is available here in the RawData folder (RawData/posetEnumerator.R).
+
 
 ## References:
    # [1] Jones S, et al. Core signaling pathways in human pancreatic cancers revealed by global genomic analyses. Science. 2008 Sep 26;321(5897):1801-6. doi: 10.1126/science.1164368. Epub 2008 Sep 4. PMID: 18772397; PMCID: PMC2848990.
    # [2] Wood LD, et al. (2007) The genomic landscapes of human breast and colorectal cancers. Science 318: 1108–1113.
    # [3] Parsons DW, et al. (2008) An integrated genomic analysis of human glioblastoma multiforme. Science 321: 1807–1812. 
-   # [4] Hosseini, S.-R. Robust inference of cancer progression pathways using Conjunctive Bayesian Networks. BioRxiv, July 2025. doi: <https://doi.org/10.1101/2025.07.15.663924>.
+   # [4] Hosseini, S.-R. Robust and scalable inference of cancer progression pathways using Conjunctive Bayesian Networks. BioRxiv, July 2025. doi: <https://doi.org/10.1101/2025.07.15.663924>.
 
 
 

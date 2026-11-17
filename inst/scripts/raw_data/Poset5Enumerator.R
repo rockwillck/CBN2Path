@@ -63,33 +63,37 @@ CycleDetector<-function(cDAG){
   return(cycle)
 }
 
-Pathway_Enumerator<-function(Poset){
+
+### Pathway_Enumerator:
+Pathway_Enumerator<-function(Poset,x){
   library('gtools')
   d<-dim(Poset)[1]
-  PERM<-permutations(4,4)
-  FEASIBLE<-rep(1,24)
+  PERM<-permutations(x,x)
+  FEASIBLE<-rep(1,factorial(x))
   if (d>1){
     for (i in 2:d){
-      for (j in 1:24){
-        x<-which(PERM[j,]==Poset[i,1])
-        y<-which(PERM[j,]==Poset[i,2])
-        if (x>y){FEASIBLE[j]<-0}
+      for (j in 1:factorial(x)){
+        xx<-which(PERM[j,]==Poset[i,1])
+        yy<-which(PERM[j,]==Poset[i,2])
+        if (xx>yy){FEASIBLE[j]<-0}
       }
     }
   }
   return(FEASIBLE)
 }
 
-######################################################################################################################################################################################################Associated_TNBC<-read.csv("/Users/rzgar/Desktop/Research/ENCORE_LIBRARY/OLD/Associated_TNBC.csv")
+
+
 ######################################################################################################################################################################################################Associated_TNBC<-read.csv("/Users/rzgar/Desktop/Research/ENCORE_LIBRARY/OLD/Associated_TNBC.csv")
 ######################################################################################################################################################################################################Associated_TNBC<-read.csv("/Users/rzgar/Desktop/Research/ENCORE_LIBRARY/OLD/Associated_TNBC.csv")
 
-## Step 1: Enumerating all potential graphs of length 4 and checking whether they are are acyclic or not.
-allMats<-expand.grid(replicate(16, 0:1, simplify = FALSE))
-allG<-numeric(2^16)
+## Step 1: Enumerating all potential graphs of length 4 
 
+allMats4<-expand.grid(replicate(16, 0:1, simplify = FALSE))
+
+DAGs4<-numeric(2^16)
 for (i in 1:(2^16)){
-  vec<-which(allMats[i,]==1)
+  vec<-which(allMats4[i,]==1)
   matt<-matrix(0,nrow=length(vec),ncol=2)
   count<-0
   for (j in vec){
@@ -100,68 +104,93 @@ for (i in 1:(2^16)){
     matt[count,1]<-n1
     matt[count,2]<-n2
   }
-  allG[i]<-CycleDetector(matt)
+  DAGs4[i]<-CycleDetector(matt)
   print(i)
 }
 
-DAGs_Index<-which(allG==0) ## Obtain the index of all potential acyclic graphs (543 DAGs) 
 
+## Step 2:  Enumerating all directed acyclic graphs (DAGs) of length 5
 
-## Step 2:  Enumerating all directed acyclic graphs (DAGs)
+## Step 2.1: Enumerating all potential graphs of length 5 starting from the graphs of length 4
+vecINDX<-c(rep(1:4,each=4),1:4,rep(5,5),rep(1:4,4),rep(5,4),1:5)
+edgeINDX<-matrix(vecINDX,25,2)
+
+selMats4<-allMats4[which(DAGs4==0),]
+allMats3<-expand.grid(replicate(9, 0:1, simplify = FALSE))
+allMats5<-matrix(0,(543*512),25)
+
 count<-0
-DAGs<-list()
-for (i in DAGs_Index){
+for (i in 1:543){
+  for (j in 1:512){
+    count<-count+1
+    allMats5[count,]<-c(as.numeric(selMats4[i,]),as.numeric(allMats3[j,]))
+    print(paste(i,j))
+  }
+}
+
+## Step 2.2. Finding acyclic graphs of length 5.
+DAGs5<-numeric(543*512)
+for (i in 1:(543*512)){
+  vec<-which(allMats5[i,]==1)
+  matt<-matrix(0,nrow=length(vec),ncol=2)
+  count<-0
+  for (j in vec){
+    count<-count+1
+    matt[count,1]<-edgeINDX[j,1]
+    matt[count,2]<-edgeINDX[j,2]
+  }
+  DAGs5[i]<-CycleDetector(matt)
+  print(i)
+}
+
+### Step 3: Identify the set of feasible pathways for each DAG [This will help us to idetify the set of unique transitively closed DAGs]
+
+#Step 3.1
+count<-0
+POSETS5<-list()
+for (i in which(DAGs5==0)){
   count<-count+1
-  
-  vec<-which(allMats[i,]==1)
+  vec<-which(allMats5[i,]==1)
   matt<-matrix(0,nrow=length(vec),ncol=2)
   countt<-0
   for (j in vec){
-    n1<-ceiling(j/4)
-    n2<-j%%4
-    if (n2==0){n2<-4}
     countt<-countt+1
-    matt[countt,1]<-n1
-    matt[countt,2]<-n2
+    matt[countt,1]<-edgeINDX[j,1]
+    matt[countt,2]<-edgeINDX[j,2]
   }
   matt<-rbind(c(0,0),matt)
-  DAGs[[count]]<-matt
+  POSETS5[[count]]<-matt
   print(i)
 }
 
 
-
-### Step 3: Identify the set of feasible pathways for each DAG [This will help us to idetify the set of unique transitively closed DAGs]
-pathways<-matrix(0,nrow=543,ncol=24)
-for (i in 1:543){
-  pathways[i,]<-Pathway_Enumerator(DAGs[[i]])
+#Step 3.2
+pathways5<-matrix(0,nrow=29281,ncol=120)
+for (i in 1:29281){
+  pathways5[i,]<-Pathway_Enumerator(POSETS5[[i]],5)
+  print(i)
 }
-Upathways<-unique(pathways) ### 219 uniue pathway signatures ---> 219 unique transitively closed DAGs
+Upathways5<-unique(pathways5)
 
 
-### Step 4: Enumerating the set of the 219 unique transitively closed DAGs.
-sumpath<-apply(pathways,1,sum)
+### Step 4: Enumerating the set of the 4231 unique transitively closed DAGs.
+sumpath5<-apply(pathways5,1,sum)
 tcDAGs<-list()
-for (i in 1:219){
-  mat<-c()
-  for (j in 1:543){mat<-rbind(mat,Upathways[i,])}
-  sel<-which(apply(abs(pathways-mat),1,sum)==0)
-  tcDAGs[[i]]<-DAGs[[sel[which.min(sumpath[sel])]]]
+for (i in 1:4231){
+  mat<-matrix(rep(Upathways5[i,], each = 29281), nrow = 29281)
+  sel<-which(apply(abs(pathways5-mat),1,sum)==0)
+  tcDAGs[[i]]<-POSETS5[[sel[which.min(sumpath5[sel])]]]
+  print(i)
 }
 
-
-### Step 5: Formatting and storing the 219 unique transitively closed DAGs as the 219 unique posets to be utilized in the R-CBN model.
+### Step 5: Formatting and storing the 4231 unique transitively closed DAGs as the 4231 unique posets to be utilized in the R-CBN model.
 Posets<-list()
 Posets[[1]]<-matrix(0,0,0)
-for (i in 2:219){
+for (i in 2:4231){
   d<-dim(tcDAGs[[i]])[1]
   Posets[[i]]<-matrix(tcDAGs[[i]][(2:d),],(d-1),2)
 }
 
-saveRDS(Posets, file = "~/Posets.rds")
-
-
-
-
-
+saveRDS(Posets, file = "~/Posets5.rds")
+#The final number of unique posets of size 5 according to the above code is thus 4231, which corroborates with the number reported in The On-Line Encyclopedia of Integer Sequences (OEIS): https://oeis.org/A001035
 

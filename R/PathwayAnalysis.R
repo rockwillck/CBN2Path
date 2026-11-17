@@ -816,6 +816,45 @@ pathProbQuartetRCBN <- function(gMat) {
 
 
 
+#' pathProbQuintetRCBN
+#'
+#' @param gMat The n by 5 binary genotype matrix representing a given quintet for a sample of n genotypes.
+#'
+#' @return The probability distribution (returned by the R-CBN model), which is represented as a vector of length 120
+#' @export
+#'
+#' @examples
+#' set.seed(100)
+#' gMat <- matrix(sample(c(0, 1), 15, replace = TRUE), 3, 5)
+#' pathProbQuintetRCBN(gMat)
+pathProbQuintetRCBN <- function(gMat) {
+  posets <- readRDS(system.file("extdata", "Posets5.rds", package = "CBN2Path"))
+  bc <- Spock$new(
+    poset = posets,
+    numMutations = 5,
+    genotypeMatrix = gMat
+  )
+  results <- ctcbn(bc)
+  logLik <- numeric(4231)
+  p <- matrix(0, 4231, 120)
+  for (i in 1:4231) {
+    logLik[i] <- as.numeric(results[[i]]$summary[4])
+    lambda <- as.numeric(results[[i]]$summary[5:10])
+    if (i == 1) {
+      dag <- matrix(0, 0, 0)
+    } else {
+      dag <- posets[[i]]
+    }
+    p[i, ] <- pathProbCBN(dag, lambda, 5)
+  }
+  w1 <- posetWeightingRCBN(logLik)
+  pathProb1 <- apply((w1 * p), 2, sum,na.rm=TRUE) / sum(w1)
+  pathProb2 <- pathNormalization(pathProb1, 5)
+  return(pathProb2)
+}
+
+
+
 #' pathEnumerator
 #'
 #' @param m The number of genes (or mutations) considered for genotype definition

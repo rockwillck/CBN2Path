@@ -36,7 +36,6 @@ library(CBN2Path)
 ```
 
 ```{r include=FALSE}
-library(rBCBN)
 library(TCGAbiolinks)
 library(BiocParallel)
 ```
